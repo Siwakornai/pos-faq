@@ -865,54 +865,72 @@
     }
 
         async function callEatAiWithRAG(userMessage) {
-      const qLower = userMessage.toLowerCase().trim();
-      const sheetResult = retrieveRelevantSheetKB(userMessage, 6);
-      const officialResult = retrieveOfficialEats365KB(userMessage, 4);
+      // 1. แปลงข้อมูลทั้ง 2 Source พร้อมใส่ Tag ป้ายกำกับ (ID) ให้ชัดเจน
+      const allSheetData = KB_DATA.map((it, idx) => `[Source-Q&A-#${idx+1}] หมวดหมู่: ${it.category} | คำถาม: ${it.question}\nคำตอบ: ${it.answer}\nวิธีแก้: ${it.steps || '-'}`).join('\n\n');
+      const allOfficialData = OFFICIAL_EATS365_KB.map((it, idx) => `[Source-Official-#${idx+1}] เรื่อง: ${it.topic}\nคำตอบ: ${it.answer}\nวิธีแก้: ${it.steps}`).join('\n\n');
 
-      // Check if we have a strong match from sheet or official KB
-      const bestSheet = sheetResult.matches.length > 0 ? sheetResult.matches[0] : null;
-      const bestOfficial = officialResult.matches.length > 0 ? officialResult.matches[0] : null;
+      // 2. กำหนด System Prompt บังคับให้ AI อ้างอิง Source ทุกครั้งที่ตอบ
+      const systemPrompt = `คุณคือ "EatAi" ผู้ช่วยอัจฉริยะผู้เชี่ยวชาญระบบร้านอาหาร Eats365 POS และ Food Market Hub (FMH)
+หน้าที่ของคุณคืออ่านคำถาม แล้วใช้ข้อมูลจาก "2 Source หลัก" ด้านล่างนี้ในการวิเคราะห์คำตอบ พร้อมทั้ง **ระบุแหล่งที่มา (Source Citation)** ทุกครั้งที่ให้ข้อมูล
 
-      // Smart keyword boosts for common questions
-      let chosenAnswer = '';
-      let chosenSteps = '';
-      let chosenTitle = '';
+=== Source ที่ 1: Q&A Knowledge Bank (เคสจากทีม Support) ===
+${allSheetData}
 
-      if (qLower.includes('single') && qLower.includes('multiple') && qLower.includes('modifier')) {
-        chosenTitle = 'ความแตกต่างระหว่าง Single Modifier และ Multiple Modifier ใน Eats365 POS';
-        chosenAnswer = '• Single Modifier: อนุญาตให้ลูกค้าเลือกตัวเลือกย่อยได้เพียง 1 รายการเท่านั้นในกลุ่มนั้น (เช่น เลือกระดับความหวานได้เพียงระดับเดียว)\n• Multiple Modifier: อนุญาตให้ลูกค้าเลือกตัวเลือกย่อยได้หลายรายการพร้อมกันในกลุ่มเดียวกัน (เช่น การเลือกท็อปปิ้งเสริมหลายอย่าง)';
-        chosenSteps = '1. เข้าสู่ Merchant Portal > Menu Setup > Modifiers\n2. สร้าง Modifier Group ที่ต้องการ\n3. กำหนด Minimum และ Maximum (เช่น Min = 1, Max = 1 สำหรับ Single; Min = 0, Max = หลายรายการ สำหรับ Multiple)\n4. เพิ่ม Modifier Options แล้วกด Save และ Update บน POS';
-      } else if (qLower.includes('tax exclusive') || qLower.includes('exclusive')) {
-        chosenTitle = 'การตั้งค่าราคาแบบ Tax Exclusive';
-        chosenAnswer = 'Tax Exclusive คือการตั้งค่าราคาอาหารแบบยังไม่รวมภาษี โดยระบบจะนำอัตราภาษีไปคำนวณบวกเพิ่มเข้าไปในยอดรวมเมื่อทำการคิดเงิน (Checkout)';
-        chosenSteps = '1. เข้าสู่ Merchant Portal > Restaurant Settings > Tax & Surcharge\n2. สร้างหรือเลือก Tax Group (เช่น VAT 7%)\n3. กำหนดรูปแบบการคิดภาษีให้เป็น Tax Exclusive\n4. ไปที่ Menu Setup > Items แล้วผูก Tax Group เข้ากับรายการเมนูที่ต้องการ\n5. เปิดแอป Eats365 POS บน iPad แล้วกดปุ่ม Red Dot Update เพื่อซิงค์ข้อมูลล่าสุด';
-      } else if (qLower.includes('modifier') && (qLower.includes('คือ') || qLower.includes('ทำยังไง') || qLower.includes('สร้าง'))) {
-        chosenTitle = 'การสร้างและตั้งค่าตัวเลือกเสริม (Modifiers)';
-        chosenAnswer = 'Modifier ใช้สำหรับสร้างตัวเลือกเสริมของเมนู เช่น ระดับความหวาน, ความเผ็ด, หรือการเพิ่มท็อปปิ้งบวกราคาเพิ่ม โดยกำหนดจำนวนขั้นต่ำ (Min) และสูงสุด (Max) ที่ต้องเลือกได้';
-        chosenSteps = '1. เข้า Merchant Portal > Menu Setup > Modifiers\n2. สร้าง Modifier Group (เช่น ระดับความหวาน, เพิ่มท็อปปิ้ง)\n3. กำหนดเงื่อนไขการเลือก (Minimum และ Maximum)\n4. เพิ่ม Modifier Options พร้อมระบุราคาบวกเพิ่ม แล้วผูกเข้ากับเมนูที่ต้องการ';
-      } else if (sheetResult.topScore >= 25 && sheetResult.topCoverage >= 0.5) {
-        chosenTitle = bestSheet.question;
-        chosenAnswer = stripSupportLinks(bestSheet.answer);
-        chosenSteps = stripSupportLinks(bestSheet.steps);
-      } else if (officialResult.topScore >= 25) {
-        chosenTitle = bestOfficial.topic;
-        chosenAnswer = bestOfficial.answer;
-        chosenSteps = bestOfficial.steps;
-      } else {
-        // Fallback natural response
-        chosenTitle = userMessage;
-        chosenAnswer = `สำหรับคำถามเรื่อง "${userMessage}" ระบบ Eats365 POS สามารถตั้งค่าและจัดการได้ผ่านระบบหลังบ้าน (Merchant Portal) หรือบนแอปพลิเคชัน POS บน iPad ครับ`;
-        chosenSteps = '1. เข้าสู่ระบบ Merchant Portal หรือตรวจสอบการตั้งค่าที่เมนูที่เกี่ยวข้อง\n2. ทำการบันทึกการตั้งค่า (Save)\n3. ไปที่แอป Eats365 POS บน iPad แล้วกด Red Dot Update เพื่อซิงค์ข้อมูลล่าสุด';
+=== Source ที่ 2: Official Support Knowledge Base (คู่มือทางการ Eats365) ===
+${allOfficialData}
+==================================================
+
+กฎการตอบ (บังคับเคร่งครัด):
+1. วิเคราะห์คำตอบจาก Source ที่เกี่ยวข้องที่สุด
+2. แบ่งรูปแบบคำตอบให้ชัดเจนด้วย:
+   - 💡 **คำตอบ:** [สรุปประเด็นหลัก]
+   - 🛠️ **วิธีเข้าถึง / วิธีแก้ไข:** [อธิบายเป็นขั้นตอน 1, 2, 3]
+   - 📌 **แหล่งอ้างอิง (Source):** [ระบุชื่อ Source หรือหมายเลข Source ที่นำมาใช้ เช่น (อ้างอิงจาก: Q&A Knowledge Bank ข้อที่ X) หรือ (อ้างอิงจาก: คู่มือทางการ Eats365 - หัวข้อ...)]
+3. ห้ามแต่งข้อมูลเอง หากไม่มีใน Source ให้แนะนำตามมาตรฐาน Eats365 POS ทั่วไป`;
+
+      const key = geminiApiKey.trim();
+      const vertexEndpoint = `https://aiplatform.googleapis.com/v1/publishers/google/models/${geminiModel}:generateContent?key=${encodeURIComponent(key)}`;
+      const studioEndpoint = `https://generativelanguage.googleapis.com/v1beta/models/${geminiModel}:generateContent?key=${encodeURIComponent(key)}`;
+      const endpoints = key.startsWith('AQ.') ? [vertexEndpoint, studioEndpoint] : [studioEndpoint, vertexEndpoint];
+
+      const normalizedContents = [
+        ...chatHistory.slice(-4).map(msg => ({
+          role: msg.role || 'user',
+          parts: msg.parts
+        })),
+        { role: 'user', parts: [{ text: userMessage }] }
+      ];
+
+      const payload = {
+        systemInstruction: { parts: [{ text: systemPrompt }] },
+        contents: normalizedContents,
+        generationConfig: { temperature: 0.2, maxOutputTokens: 1024 }
+      };
+
+      for (const endpoint of endpoints) {
+        try {
+          const response = await fetch(endpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            const parts = data?.candidates?.[0]?.content?.parts || [];
+            const aiText = parts.map(p => p.text || '').join('').trim();
+            if (aiText) {
+              chatHistory.push({ role: 'user', parts: [{ text: userMessage }] });
+              chatHistory.push({ role: 'model', parts: [{ text: aiText }] });
+              return { text: aiText };
+            }
+          }
+        } catch (err) {
+          console.warn('AI API call warning:', err);
+        }
       }
 
-      let reply = `💡 **คำตอบ:**\n${chosenAnswer}\n`;
-      if (chosenSteps) {
-        reply += `\n🛠️ **วิธีเข้าถึง / วิธีแก้ไข:**\n${chosenSteps}`;
-      }
-
-      chatHistory.push({ role: 'user', parts: [{ text: userMessage }] });
-      chatHistory.push({ role: 'model', parts: [{ text: reply }] });
-      return { text: reply };
+      return { text: `💡 **คำตอบ:**\nสำหรับคำถามเรื่อง "${userMessage}" สามารถตั้งค่าได้ผ่าน **Merchant Portal** หรือแอป **Eats365 POS** ครับ\n\n📌 **แหล่งอ้างอิง (Source):** มาตรฐานระบบ Eats365 POS` };
     }
 
     function synthesizeHybridResponse(userMessage, sheetResult, officialResult) {
