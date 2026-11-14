@@ -1,0 +1,1368 @@
+<!DOCTYPE html>
+<html lang="th" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Eats365 POS — Help Center & EatAi Knowledge Hub</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"IBM Plex Sans Thai"', 'Inter', 'sans-serif'],
+            serif: ['Fraunces', '"IBM Plex Sans Thai"', 'serif'],
+          },
+          colors: {
+            fmh: {
+              50: '#FFFDF7',
+              100: '#FFF7E0',
+              200: '#FDE8B2',
+              300: '#FBD374',
+              400: '#F7B733',
+              500: '#F29F05',
+              600: '#D98600',
+              700: '#9E5E00',
+              800: '#2A2419',
+              900: '#1D1912',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      font-family: 'IBM Plex Sans Thai', 'Inter', sans-serif;
+      background-color: #FAF7F0;
+      color: #1D1912;
+    }
+    .glass-header {
+      background: rgba(255, 253, 248, 0.9);
+      backdrop-filter: blur(12px);
+    }
+    .fmh-hero-bg {
+      background: radial-gradient(circle at 18% 35%, #FDE7B0 0%, #FFF8E7 45%, #FAF7F0 85%);
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #F4EFE4;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #D5CBB8;
+      border-radius: 9999px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: #B8AA91;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.3); opacity: 0.65; }
+    }
+    .animate-pulse-dot {
+      animation: pulse-dot 2s infinite;
+    }
+    mark {
+      background-color: #FDE08D;
+      color: #5C3900;
+      padding: 0 3px;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-amber-400 selection:text-stone-900">
+
+  <!-- Top Navigation (FMH Style) -->
+  <header class="sticky top-0 z-30 glass-header border-b border-amber-900/10 transition-all">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-full bg-amber-100 border border-amber-300 flex items-center justify-center text-amber-800 font-bold text-sm shadow-sm">
+          E365
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="font-bold text-stone-900 text-base sm:text-lg leading-tight">Eats365 POS Knowledge Hub</h1>
+            <span class="hidden sm:inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-amber-100/90 text-amber-900 border border-amber-300/80">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse-dot"></span>
+              EatAi Connected
+            </span>
+          </div>
+          <p class="text-xs text-stone-500">ศูนย์ช่วยเหลือ & ฐานข้อมูล Q&A POS Knowledge Bank</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2 sm:gap-2.5">
+        <a href="https://yielding-hoverfly-f41.notion.site/Eats365-POS-Help-Center-3c1fa42ca2d38030b0c7c19e3a03f500" target="_blank" rel="noopener noreferrer"
+           class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs sm:text-sm font-medium text-stone-800 bg-white hover:bg-amber-50/70 border border-stone-200/90 shadow-sm transition">
+          <svg class="w-4 h-4 text-amber-600" fill="currentColor" viewBox="0 0 24 24"><path d="M4 4h16v16H4V4zm2 2v12h12V6H6zm2 3h8v2H8V9zm0 4h5v2H8v-2z"/></svg>
+          <span>Notion Help Center</span>
+          <svg class="w-3.5 h-3.5 text-stone-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+        </a>
+
+        <button type="button" onclick="openSettingsModal()" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs sm:text-sm font-medium text-stone-800 bg-white hover:bg-amber-50/70 border border-stone-200/90 shadow-sm transition cursor-pointer" title="ตั้งค่า EatAi">
+          <svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          <span class="hidden md:inline">ตั้งค่า EatAi</span>
+        </button>
+
+
+
+        <button type="button" onclick="toggleChatbot(true)" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs sm:text-sm font-semibold text-stone-900 bg-[#F4A61D] hover:bg-[#E0920B] shadow-sm shadow-amber-500/20 transition cursor-pointer">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
+          <span>ถาม EatAi ตอนนี้</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section & Search (FMH Warm Cream & Golden Yellow Aesthetic) -->
+  <section class="relative fmh-hero-bg text-stone-900 py-12 sm:py-16 px-4 border-b border-amber-900/10 overflow-hidden">
+    <div class="max-w-4xl mx-auto text-center relative z-10">
+      <!-- FMH-style New Badge Pill -->
+      <div class="inline-flex items-center gap-2 pl-1.5 pr-3.5 py-1 rounded-full bg-white border border-amber-200/90 shadow-sm text-stone-700 text-xs font-medium mb-5">
+        <span class="px-2 py-0.5 rounded-full bg-[#F4A61D] text-stone-900 font-bold text-[11px]">✨ EatAi</span>
+        <span>ศูนย์รวมความรู้ Q&A POS Knowledge Bank + Official Eats365 Support</span>
+      </div>
+
+      <h2 class="font-serif text-3xl sm:text-5xl font-bold tracking-tight text-[#1D1912] mb-4 leading-tight">
+        ค้นหาวิธีตั้งค่า <span class="text-[#E59500]">แก้ปัญหา</span> และคู่มือ Eats365 POS
+      </h2>
+      <p class="text-stone-600 text-sm sm:text-base max-w-2xl mx-auto mb-8 leading-relaxed">
+        รวบรวมคำถาม-คำตอบ วิธีเข้าถึง และวิธีแก้ไขปัญหาจากทีม Support ครบทุกหมวดหมู่ พร้อมแชทบอท EatAi อัจฉริยะ
+      </p>
+
+      <!-- Search Input -->
+      <div class="relative max-w-2xl mx-auto">
+        <div class="flex items-center bg-white rounded-full p-1.5 shadow-lg shadow-amber-900/5 border border-stone-200/90 focus-within:ring-4 focus-within:ring-amber-400/30 focus-within:border-amber-400 transition">
+          <div class="pl-4 pr-2 text-stone-400">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+          </div>
+          <input id="searchInput" type="text" placeholder="พิมพ์คำค้นหา เช่น ปิดเสียงเครื่องปริ้น, ตั้งค่าบุฟเฟต์ AYCE, ตัดสต็อก FMH, ใบกำกับภาษี..."
+                 class="w-full py-2.5 px-2 text-stone-900 placeholder-stone-400 text-sm sm:text-base focus:outline-none bg-transparent"
+                 oninput="handleSearch()" />
+          <button id="clearSearchBtn" type="button" onclick="clearSearch()" class="hidden px-2 text-stone-400 hover:text-stone-600 cursor-pointer" title="ล้างคำค้นหา">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+          </button>
+          <button type="button" onclick="askAIFromSearch()" class="shrink-0 bg-[#F4A61D] hover:bg-[#E0920B] text-stone-900 font-semibold text-xs sm:text-sm px-5 py-2.5 rounded-full transition flex items-center gap-1.5 shadow-sm cursor-pointer">
+            <span>ให้ EatAi สรุปคำตอบ</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+          </button>
+        </div>
+
+        <!-- Popular Quick Tags -->
+        <div class="mt-4 flex flex-wrap items-center justify-center gap-2 text-xs">
+          <span class="text-stone-500 font-medium">คำค้นยอดฮิต:</span>
+          <button type="button" onclick="setQuickSearch('AYCE บุฟเฟต์')" class="px-3 py-1 rounded-full bg-white/90 hover:bg-[#F4A61D] hover:text-stone-900 text-stone-700 border border-amber-900/15 shadow-sm transition cursor-pointer">ตั้งค่าบุฟเฟต์ AYCE</button>
+          <button type="button" onclick="setQuickSearch('XPrinter ปิดเสียง')" class="px-3 py-1 rounded-full bg-white/90 hover:bg-[#F4A61D] hover:text-stone-900 text-stone-700 border border-amber-900/15 shadow-sm transition cursor-pointer">ปิดเสียง XPrinter</button>
+          <button type="button" onclick="setQuickSearch('FMH')" class="px-3 py-1 rounded-full bg-white/90 hover:bg-[#F4A61D] hover:text-stone-900 text-stone-700 border border-amber-900/15 shadow-sm transition cursor-pointer">การเชื่อมต่อ FMH & สต็อก</button>
+          <button type="button" onclick="setQuickSearch('SUNMI V2s')" class="px-3 py-1 rounded-full bg-white/90 hover:bg-[#F4A61D] hover:text-stone-900 text-stone-700 border border-amber-900/15 shadow-sm transition cursor-pointer">เครื่องพิมพ์ mPOS SUNMI</button>
+          <button type="button" onclick="setQuickSearch('End of Day')" class="px-3 py-1 rounded-full bg-white/90 hover:bg-[#F4A61D] hover:text-stone-900 text-stone-700 border border-amber-900/15 shadow-sm transition cursor-pointer">ปิดกะ / End of Day</button>
+          <button type="button" onclick="setQuickSearch('Tax Invoice')" class="px-3 py-1 rounded-full bg-white/90 hover:bg-[#F4A61D] hover:text-stone-900 text-stone-700 border border-amber-900/15 shadow-sm transition cursor-pointer">ออกใบกำกับภาษี</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Notion Help Center Quick Modules Banner -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6 relative z-20">
+    <div class="bg-white rounded-2xl shadow-md shadow-amber-900/5 border border-stone-200/90 p-4 sm:p-5">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3 pb-3 border-b border-stone-100">
+        <div class="flex items-center gap-2.5">
+          <span class="w-8 h-8 rounded-lg bg-amber-100 text-amber-800 flex items-center justify-center font-bold">📚</span>
+          <div>
+            <h3 class="text-sm font-bold text-stone-900">คู่มือหลักจาก Notion Help Center & Official Resources</h3>
+            <p class="text-xs text-stone-500">ลิงก์ตรงไปยังหมวดหมู่คู่มือการใช้งาน Eats365 POS สำหรับทีม Onboarding และร้านค้า</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <a href="https://yielding-hoverfly-f41.notion.site/Eats365-POS-Help-Center-3c1fa42ca2d38030b0c7c19e3a03f500" target="_blank" rel="noopener noreferrer"
+           class="group p-3.5 rounded-xl border border-stone-200/80 hover:border-amber-400 hover:bg-amber-50/50 transition flex items-start gap-3">
+          <span class="text-xl">🖥️</span>
+          <div>
+            <div class="text-xs sm:text-sm font-bold text-stone-800 group-hover:text-amber-800">คู่มือเริ่มใช้งาน POS & ตั้งค่าร้าน</div>
+            <div class="text-[11px] text-stone-500 mt-0.5">Notion Help Center</div>
+          </div>
+        </a>
+        <a href="https://www.youtube.com/@Eats365Academy" target="_blank" rel="noopener noreferrer"
+           class="group p-3.5 rounded-xl border border-stone-200/80 hover:border-amber-400 hover:bg-amber-50/50 transition flex items-start gap-3">
+          <span class="text-xl">🎬</span>
+          <div>
+            <div class="text-xs sm:text-sm font-bold text-stone-800 group-hover:text-amber-800">วิดีโอสอนใช้งาน Eats365</div>
+            <div class="text-[11px] text-stone-500 mt-0.5">Eats365 Academy YouTube</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content Area: Categories + FAQ List -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full">
+    <div class="flex flex-col lg:flex-row gap-6">
+
+      <!-- Left Sidebar: Category Filter -->
+      <aside class="lg:w-64 shrink-0">
+        <div class="bg-white rounded-2xl border border-stone-200/90 p-4 sticky top-20 shadow-sm">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-stone-400">หมวดหมู่คำถาม (Categories)</h3>
+          </div>
+          <nav id="categoryNav" class="space-y-1 flex lg:flex-col overflow-x-auto lg:overflow-visible pb-2 lg:pb-0 gap-1 lg:gap-0 custom-scrollbar">
+            <!-- Populated by JS -->
+          </nav>
+
+          <div class="mt-6 pt-4 border-t border-stone-100 hidden lg:block">
+            <div class="bg-gradient-to-br from-amber-50/90 to-orange-50/60 rounded-xl p-3.5 border border-amber-200/80">
+              <div class="flex items-center gap-2 text-stone-900 font-bold text-xs mb-1">
+                <span>🤖 หาคำตอบไม่เจอ?</span>
+              </div>
+              <p class="text-[11px] text-stone-700 leading-relaxed mb-2.5">
+                ถามแชทบอท EatAi ได้เลย บอทจะค้นหาข้อมูลจากข้อมูลและสรุปขั้นตอนให้ทันที
+              </p>
+              <button type="button" onclick="toggleChatbot(true)" class="w-full py-2 px-3 rounded-full bg-[#F4A61D] hover:bg-[#E0920B] text-stone-900 font-semibold text-xs transition shadow-sm cursor-pointer">
+                เปิดแชทคุยกับ EatAi
+              </button>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Right Content: FAQ Cards -->
+      <div class="flex-1 min-w-0">
+        <!-- Filter Status Bar -->
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-4 bg-white px-4 py-3 rounded-xl border border-stone-200/80 shadow-sm">
+          <div class="flex items-center gap-2">
+            <span id="activeCategoryTitle" class="font-bold text-stone-900 text-sm sm:text-base">ทุกหมวดหมู่ (All Categories)</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <button type="button" onclick="expandAllFAQs(true)" class="text-xs text-stone-600 hover:text-amber-700 font-medium px-2 py-1 rounded hover:bg-amber-50 cursor-pointer">กางทั้งหมด</button>
+            <span class="text-stone-300">|</span>
+            <button type="button" onclick="expandAllFAQs(false)" class="text-xs text-stone-600 hover:text-amber-700 font-medium px-2 py-1 rounded hover:bg-amber-50 cursor-pointer">ย่อทั้งหมด</button>
+          </div>
+        </div>
+
+        <!-- FAQ Accordion Container -->
+        <div id="faqListContainer" class="space-y-3">
+          <!-- Populated by JS -->
+        </div>
+
+        <!-- Empty State -->
+        <div id="emptyState" class="hidden bg-white rounded-2xl border border-stone-200 p-10 text-center">
+          <div class="w-12 h-12 rounded-full bg-amber-50 text-amber-600 flex items-center justify-center mx-auto mb-3 text-xl">🔍</div>
+          <h4 class="font-bold text-stone-900 text-base mb-1">ไม่พบคำถามนี้ในรายการหลัก</h4>
+          <p class="text-xs text-stone-500 mb-4">กดปุ่มด้านล่างเพื่อให้แชทบอท EatAi ค้นหาคำตอบเพิ่มเติมจากฐานความรู้ Eats365 POS ให้ทันที</p>
+          <button type="button" onclick="askAIFromSearch()" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#F4A61D] hover:bg-[#E0920B] text-stone-900 text-xs font-semibold transition cursor-pointer shadow-sm">
+            <span>ถามคำถามนี้กับ EatAi</span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Floating AI Chatbot Drawer / Widget (FMH Dark Espresso & Warm Amber Style) -->
+  <div id="chatbotWrapper" class="fixed bottom-5 right-5 z-50 flex flex-col items-end">
+    <!-- Chat Window -->
+    <div id="chatWindow" class="hidden w-[92vw] sm:w-[440px] h-[600px] max-h-[82vh] bg-white rounded-2xl shadow-2xl border border-stone-200/90 flex flex-col overflow-hidden mb-3 transition-all">
+      <!-- Chat Header (Dark Espresso Card look from FMH right panel) -->
+      <div class="bg-[#231F18] text-white px-4 py-3.5 flex items-center justify-between shrink-0 border-b border-amber-500/30">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-xl bg-[#F4A61D] text-stone-900 flex items-center justify-center text-lg font-bold shadow-sm">🤖</div>
+          <div>
+            <div class="flex items-center gap-1.5">
+              <h3 class="font-bold text-sm leading-tight text-amber-50">EatAi Support Assistant</h3>
+              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse-dot"></span>
+            </div>
+            <p class="text-[11px] text-stone-300">ค้นหาจาก Q&A Sheet + Official Eats365 Support</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-1">
+
+          <button type="button" onclick="clearChatHistory()" class="p-1.5 rounded-lg text-stone-300 hover:text-white hover:bg-white/10 transition cursor-pointer" title="ล้างประวัติแชท">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+          </button>
+          <button type="button" onclick="toggleChatbot(false)" class="p-1.5 rounded-lg text-stone-300 hover:text-white hover:bg-white/10 transition cursor-pointer" title="ย่อหน้าต่างแชท">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Chat Messages -->
+      <div id="chatMessages" class="flex-1 p-4 overflow-y-auto space-y-3 bg-[#FAF7F0] custom-scrollbar">
+        <!-- Initial Welcome Message rendered by JS -->
+      </div>
+
+      <!-- Quick Suggestions Bar -->
+      <div class="px-3 py-2 bg-white border-t border-stone-100 flex items-center gap-1.5 overflow-x-auto custom-scrollbar shrink-0">
+        <button type="button" onclick="sendQuickPrompt('วิธีสร้าง sales categories')" class="shrink-0 text-[11px] px-2.5 py-1 rounded-full bg-amber-50 hover:bg-[#F4A61D] hover:text-stone-900 text-stone-700 border border-amber-200/80 transition cursor-pointer">วิธีสร้าง Sales Categories</button>
+        <button type="button" onclick="sendQuickPrompt('วิธีตั้งค่าบุฟเฟต์ All You Can Eat (AYCE) ต้องทำยังไง?')" class="shrink-0 text-[11px] px-2.5 py-1 rounded-full bg-amber-50 hover:bg-[#F4A61D] hover:text-stone-900 text-stone-700 border border-amber-200/80 transition cursor-pointer">ตั้งค่าบุฟเฟต์ AYCE</button>
+        <button type="button" onclick="sendQuickPrompt('วิธีย้ายโต๊ะ รวมโต๊ะ และแยกบิลทำยังไง?')" class="shrink-0 text-[11px] px-2.5 py-1 rounded-full bg-amber-50 hover:bg-[#F4A61D] hover:text-stone-900 text-stone-700 border border-amber-200/80 transition cursor-pointer">ย้ายโต๊ะ/แยกบิล</button>
+        <button type="button" onclick="sendQuickPrompt('บิล Void ตีคืนเข้าครัว จะจัดการตัดสต็อกกับ FMH ยังไง?')" class="shrink-0 text-[11px] px-2.5 py-1 rounded-full bg-amber-50 hover:bg-[#F4A61D] hover:text-stone-900 text-stone-700 border border-amber-200/80 transition cursor-pointer">ตัดสต็อกบิล Void ใน FMH</button>
+      </div>
+
+      <!-- Chat Input Form -->
+      <form onsubmit="handleChatSubmit(event)" class="p-3 bg-white border-t border-stone-200 flex items-end gap-2 shrink-0">
+        <textarea id="chatInput" rows="1" placeholder="พิมพ์คำถามเกี่ยวกับ Eats365 POS ได้ทุกเรื่อง..."
+                  onkeydown="if(event.key==='Enter' && !event.shiftKey){event.preventDefault(); handleChatSubmit(event);}"
+                  class="flex-1 resize-none max-h-24 rounded-xl border border-stone-200 px-3.5 py-2.5 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-amber-400/50 focus:border-amber-500"></textarea>
+        <button id="sendBtn" type="submit" class="px-4 py-2.5 rounded-xl bg-[#F4A61D] hover:bg-[#E0920B] disabled:opacity-50 text-stone-900 font-bold text-xs sm:text-sm transition flex items-center gap-1 shrink-0 cursor-pointer">
+          <span>ส่ง</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+        </button>
+      </form>
+    </div>
+
+    <!-- Floating Toggle Button -->
+    <button id="chatToggleBtn" type="button" onclick="toggleChatbot()" class="group flex items-center gap-2.5 pl-4 pr-5 py-3.5 rounded-full bg-[#F4A61D] hover:bg-[#E0920B] text-stone-900 font-bold text-sm shadow-xl shadow-amber-900/15 border border-amber-300 transition transform hover:scale-[1.02] cursor-pointer">
+      <span class="relative flex h-3 w-3">
+        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-600 opacity-75"></span>
+        <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-600"></span>
+      </span>
+      <span>💬 ถาม EatAi ช่วยเหลือ (POS Q&A)</span>
+    </button>
+  </div>
+
+  <!-- Settings Modal -->
+  <div id="settingsModal" class="hidden fixed inset-0 z-50 bg-stone-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-stone-200 max-h-[90vh] overflow-y-auto custom-scrollbar">
+      <div class="flex items-center justify-between pb-3 border-b border-stone-100 mb-4">
+        <h3 class="font-bold text-stone-900 text-base flex items-center gap-2">
+          <span>⚙️ ตั้งค่าการเชื่อมต่อ EatAi & ระบบเก็บ Feedback</span>
+        </h3>
+        <button type="button" onclick="closeSettingsModal()" class="text-stone-400 hover:text-stone-600 cursor-pointer">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div class="space-y-4 text-xs sm:text-sm">
+        <div>
+          <label class="block font-semibold text-stone-700 mb-1">API Key</label>
+          <input id="apiKeyInput" type="password" value="AQ.Ab8RN6Jva_aaodZWatZU2LZPyDpYC_X8R2ukd7jiSxBNvxaKFQ"
+                 class="w-full rounded-xl border border-stone-300 px-3 py-2 text-stone-800 focus:outline-none focus:ring-2 focus:ring-amber-500" />
+          <p class="text-[11px] text-stone-500 mt-1">
+            เชื่อมต่อระบบค้นหา 2 ชั้น: ชั้นที่ 1 ค้นหาจาก Google Sheets (Q&A POS Knowledge Bank) และชั้นที่ 2 ค้นหาต่อยอดจากฐานความรู้ทางการของ Eats365
+          </p>
+        </div>
+
+        <div>
+          <label class="block font-semibold text-stone-700 mb-1">โมเดล AI</label>
+          <select id="modelSelect" class="w-full rounded-xl border border-stone-300 px-3 py-2 text-stone-800 focus:outline-none focus:ring-2 focus:ring-amber-500">
+            <option value="gemini-2.5-flash">gemini-2.5-flash (แนะนำ - รองรับค้นหาเว็บ Eats365 อัตโนมัติ)</option>
+            <option value="gemini-2.0-flash">gemini-2.0-flash</option>
+            <option value="gemini-1.5-pro">gemini-1.5-pro</option>
+          </select>
+        </div>
+
+        <div class="pt-2 border-t border-stone-100">
+          <label class="block font-semibold text-stone-700 mb-1">Google Sheets Webhook URL (สำหรับซิงค์ Feedback อัตโนมัติ)</label>
+          <input id="feedbackWebhookInput" type="url" placeholder="https://script.google.com/macros/s/.../exec (เว้นว่างได้)"
+                 class="w-full rounded-xl border border-stone-300 px-3 py-2 text-stone-800 focus:outline-none focus:ring-2 focus:ring-amber-500" />
+          <p class="text-[11px] text-stone-500 mt-1">
+            <strong>ที่เก็บข้อมูล Feedback (3 ช่องทาง):</strong><br>
+            1. <strong>LocalStorage ในเครื่องอัตโนมัติ:</strong> เก็บไว้ในคีย์ <code class="bg-stone-100 px-1 rounded">e365_eatai_feedbacks</code> เปิดดูได้ทันทีผ่านปุ่ม <strong>📊 Feedback</strong><br>
+            2. <strong>Export CSV / Excel:</strong> ดาวน์โหลดเป็นไฟล์ตารางไปเปิดใน Excel หรือ Google Sheets ได้ตลอดเวลา<br>
+            3. <strong>Google Sheets อัตโนมัติ (เมื่อใส่ URL ด้านบน):</strong> ส่งค่า Thumbs Up/Down + Comment เข้าชีตทันที
+          </p>
+        </div>
+
+        <div class="bg-[#FAF7F0] rounded-xl p-3.5 border border-amber-200/80 space-y-1.5">
+          <div class="font-semibold text-stone-800 text-xs">สถานะแหล่งข้อมูลของ EatAi</div>
+          <div class="text-xs text-stone-600 flex items-center justify-between">
+            <span>• ลำดับที่ 1: Q&A POS Knowledge Bank (Google Sheets)</span>
+            <span class="font-semibold text-emerald-700">เปิดใช้งาน</span>
+          </div>
+          <div class="text-xs text-stone-600 flex items-center justify-between">
+            <span>• ลำดับที่ 2: Eats365 Support Knowledge Base (เมื่อไม่มีในชีต)</span>
+            <span class="font-semibold text-emerald-700">เปิดใช้งานอัตโนมัติ</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-6 pt-3 border-t border-stone-100 flex flex-wrap items-center justify-between gap-2">
+        <button type="button" onclick="closeSettingsModal(); openFeedbackModal();" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-stone-900 hover:bg-stone-800 text-amber-300 text-xs font-bold shadow-sm cursor-pointer">
+          <span>📊 เปิดดู Feedback ของลูกค้า (สำหรับแอดมิน)</span>
+          <span id="navFeedbackCount" class="px-1.5 py-0.5 rounded-full bg-amber-400 text-stone-900 font-bold text-[10px]">0</span>
+        </button>
+        <div class="flex items-center gap-2">
+          <button type="button" onclick="closeSettingsModal()" class="px-4 py-2 rounded-full border border-stone-200 text-stone-600 text-xs font-semibold hover:bg-stone-50 cursor-pointer">ยกเลิก</button>
+          <button type="button" onclick="saveSettings()" class="px-5 py-2 rounded-full bg-[#F4A61D] hover:bg-[#E0920B] text-stone-900 text-xs font-bold shadow-sm cursor-pointer">บันทึกการตั้งค่า</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Feedback Dashboard & Storage Modal -->
+  <div id="feedbackModal" class="hidden fixed inset-0 z-50 bg-stone-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-4xl w-full p-6 shadow-2xl border border-stone-200 max-h-[88vh] flex flex-col">
+      <div class="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-stone-200">
+        <div>
+          <h3 class="font-bold text-stone-900 text-base sm:text-lg flex items-center gap-2">
+            <span>📊 ศูนย์รวมข้อมูล Feedback ของ EatAi (Feedback Log & Storage)</span>
+          </h3>
+          <p class="text-xs text-stone-500 mt-0.5">
+            ข้อมูลถูกบันทึกอัตโนมัติในเบราว์เซอร์ (<code class="bg-stone-100 px-1 rounded">localStorage: e365_eatai_feedbacks</code>) และสามารถ Export เป็นไฟล์ CSV หรือเชื่อมเข้า Google Sheets ได้
+          </p>
+        </div>
+        <button type="button" onclick="closeFeedbackModal()" class="text-stone-400 hover:text-stone-600 cursor-pointer">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <!-- Summary Stats Cards -->
+      <div class="grid grid-cols-3 gap-3 my-4 shrink-0">
+        <div class="bg-[#FAF7F0] rounded-xl p-3.5 border border-amber-200/80">
+          <div class="text-[11px] font-semibold text-stone-500">Feedback ทั้งหมด</div>
+          <div id="statTotalFeedback" class="text-xl sm:text-2xl font-bold text-stone-900 mt-0.5">0</div>
+        </div>
+        <div class="bg-emerald-50/70 rounded-xl p-3.5 border border-emerald-200/80">
+          <div class="text-[11px] font-semibold text-emerald-800">👍 มีประโยชน์ (Thumbs Up)</div>
+          <div id="statUpFeedback" class="text-xl sm:text-2xl font-bold text-emerald-700 mt-0.5">0</div>
+        </div>
+        <div class="bg-rose-50/70 rounded-xl p-3.5 border border-rose-200/80">
+          <div class="text-[11px] font-semibold text-rose-800">👎 ต้องปรับปรุง (Thumbs Down)</div>
+          <div id="statDownFeedback" class="text-xl sm:text-2xl font-bold text-rose-700 mt-0.5">0</div>
+        </div>
+      </div>
+
+      <!-- Action Toolbar -->
+      <div class="flex flex-wrap items-center justify-between gap-2 mb-3 shrink-0">
+        <div class="flex items-center gap-2">
+          <button type="button" onclick="exportFeedbackCSV()" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#F4A61D] hover:bg-[#E0920B] text-stone-900 font-bold text-xs shadow-sm transition cursor-pointer">
+            <span>📥 ดาวน์โหลดเป็นไฟล์ CSV (เปิดใน Excel / Sheets)</span>
+          </button>
+          <button type="button" onclick="toggleAppsScriptGuide()" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 font-semibold text-xs transition cursor-pointer">
+            <span>🔗 วิธีเชื่อมเข้า Google Sheets อัตโนมัติ</span>
+          </button>
+        </div>
+        <button type="button" onclick="clearAllFeedbacks()" class="text-xs text-rose-600 hover:text-rose-800 font-medium px-2.5 py-1.5 rounded-lg hover:bg-rose-50 transition cursor-pointer">
+          🗑️ ล้างข้อมูล Feedback ทั้งหมด
+        </button>
+      </div>
+
+      <!-- Optional Apps Script Guide Collapsible -->
+      <div id="appsScriptGuide" class="hidden mb-3 p-3.5 rounded-xl bg-stone-900 text-stone-100 text-xs space-y-2 shrink-0 overflow-y-auto max-h-48 custom-scrollbar">
+        <div class="flex items-center justify-between">
+          <span class="font-bold text-amber-400">📌 วิธีตั้งค่าให้บันทึกเข้า Google Sheets อัตโนมัติ (ใช้เวลา 1 นาที):</span>
+          <button type="button" onclick="toggleAppsScriptGuide()" class="text-stone-400 hover:text-white text-[11px]">ซ่อน</button>
+        </div>
+        <ol class="list-decimal list-inside space-y-1 text-stone-300 text-[11px]">
+          <li>เปิดไฟล์ Google Sheets ของคุณ > ไปที่เมนู <strong>Extensions (ส่วนขยาย)</strong> > <strong>Apps Script</strong></li>
+          <li>วางโค้ดด้านล่างนี้ลงไป แล้วกด <strong>Deploy > New deployment > เลือกประเภท Web app</strong> (ตั้งค่า Who has access เป็น <strong>Anyone</strong>)</li>
+          <li>คัดลอก <strong>Web app URL</strong> มาใส่ในช่องตั้งค่าของเว็บนี้ ระบบจะยิงข้อมูลเข้าชีตทันทีทุกครั้งที่มีคนกด 👍/👎 หรือคอมเมนต์!</li>
+        </ol>
+        <pre class="bg-black/50 p-2.5 rounded-lg text-[11px] text-amber-200 overflow-x-auto font-mono">function doPost(e) {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('EatAi_Feedback') || SpreadsheetApp.getActiveSpreadsheet().insertSheet('EatAi_Feedback');
+  if (sheet.getLastRow() === 0) {
+    sheet.appendRow(['Timestamp', 'Rating', 'Comment', 'User Question', 'EatAi Response']);
+  }
+  var data = JSON.parse(e.postData.contents);
+  sheet.appendRow([data.timestamp, data.rating, data.comment || '-', data.question, data.answer]);
+  return ContentService.createTextOutput(JSON.stringify({status: 'ok'})).setMimeType(ContentService.MimeType.JSON);
+}</pre>
+      </div>
+
+      <!-- Feedback Table / List -->
+      <div id="feedbackListContainer" class="flex-1 overflow-y-auto border border-stone-200 rounded-xl bg-[#FAF7F0] p-3 space-y-2.5 custom-scrollbar">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ==========================================
+    // 1. PRIMARY KNOWLEDGE BANK (FROM GOOGLE SHEETS)
+    // ==========================================
+    const KB_DATA = [{"idx": 0, "category": "Core Module POS", "subcategory": "All You Can Eat (AYCE) / Menu Setup", "question": "ตั้งค่า All You Can Eat (AYCE) แล้ว แต่เมื่อเลือก AYCE Tier บน POS ไม่พบหมวดหมู่หรือรายการอาหาร ต้องตั้งค่า Representative Item และเมนูอย่างไร?", "answer": "ระบบต้องมี Representative Item อย่างน้อย 1 รายการเพื่อใช้เป็นตัวแทนแพ็กเกจบุฟเฟต์และราคา เช่น “Lunch Buffet – THB 500” หรือ “Buffet 599+” โดย Representative Item ต้องปิดสิทธิ์ [All You Can Eat menu] ส่วนรายการอาหารที่ลูกค้าสั่งผ่าน QR ให้กำหนดแยกใน Included Categories and Items\n\nMenu Enabling ต้องตั้งค่าเป็น 1 Item ต่อ 1 Group/Combination และไม่รองรับการใส่ 2 Items ภายใต้ Category เดียวกันใน Group เดียว", "steps": "1. สร้าง Item สำหรับราคาแพ็กเกจบุฟเฟต์แบบ Single Item เช่น Buffet 599+\n2. ไปที่ Merchant Portal > Menu Setup > Items > เลือก Buffet 599+ > Edit\n3. ปิดสิทธิ์ [All You Can Eat menu] ของ Representative Item\n4. ไปที่ Merchant Portal > Menu Setup > All You Can Eat Menu > Menu > เลือกแพ็กเกจ Buffet 599+ > Edit\n5. ใน Menu Enabling กำหนดแต่ละ Combination/Group เป็น 1 Category + 1 Representative Item ห้ามใส่ 2 Items ใน Category เดียวกัน\n6. ที่แท็บ Included Categories and Items เลือกหมวดหมู่และรายการอาหารที่ลูกค้าสามารถสั่งผ่าน QR Code\n7. บน POS เลือก AYCE Tier แล้วเพิ่ม Representative Item (Buffet 599+) ลงใน Order\n8. กด Confirm จากนั้นสร้าง/พิมพ์ QR Code แล้วทดสอบรายการอีกครั้ง", "keywords": "All You Can Eat, AYCE, Representative Item, Buffet 599+, Menu Tier, Menu Enabling, Included Categories and Items, QR Code, เมนูบุฟเฟต์ไม่แสดง, ตั้งค่าบุฟเฟต์"}, {"idx": 1, "category": "mPOS & Multi POS", "subcategory": "Android Compatibility", "question": "mPOS รองรับ Android ขั้นต่ำเวอร์ชันใด และมีอุปกรณ์ใดที่ไม่รองรับ?", "answer": "mPOS ต้องใช้อุปกรณ์ Android ที่ค่อนข้างใหม่ และไม่รองรับโทรศัพท์ Huawei ในขณะนี้", "steps": "ตรวจสอบรุ่นอุปกรณ์และ Android version กับ Support ก่อนเสนอขายหรือใช้งานจริง", "keywords": "mPOS, Android, minimum spec, Huawei, device compatibility"}, {"idx": 2, "category": "Printer & Hardware", "subcategory": "Receipt / Tax Display", "question": "สามารถแก้ข้อความบนใบเสร็จหรือนำคำว่า Tax ออกได้หรือไม่?", "answer": "ข้อความบางส่วนใน Receipt Template ปรับแต่งไม่ได้ แต่สามารถซ่อนการแสดง Tax Rate ได้จาก Cashier Preferences", "steps": "Advanced Settings > System Preferences > Cashier Preferences > ปิด Show Tax Rate แล้วทดสอบใบเสร็จใหม่", "keywords": "receipt, tax, Show Tax Rate, Cashier Preferences, ใบเสร็จ, ภาษี"}, {"idx": 3, "category": "Payment & Billing", "subcategory": "Tips", "question": "ลูกค้าชำระบัตรเครดิตแล้วต้องการเพิ่ม Tip แยกจากยอดอาหาร ทำได้หรือไม่?", "answer": "หลังบันทึกการชำระเงินแล้ว สามารถกด Tips เพื่อระบุจำนวนเงิน Tip เพิ่มเติมได้", "steps": "ทำรายการชำระเงิน > แตะ Tips > กรอกจำนวน Tip", "keywords": "tip, tips, gratuity, credit card, payment, ทิป"}, {"idx": 4, "category": "General & Organization", "subcategory": "Organization / Menu Cloning", "question": "สามารถ Clone Menu ข้ามประเทศและย้ายร้านเข้ากลุ่มเดียวกันได้หรือไม่?", "answer": "Support สามารถช่วยสร้าง Group ย้ายร้านเข้ากลุ่ม และ Clone Menu ข้ามประเทศได้ หากร้านปลายทางเป็นร้านใหม่และยังไม่มีการตั้งค่าหรือเมนู", "steps": "แจ้ง MID ต้นทางและ MID ปลายทางให้ Support โดยร้านปลายทางต้องว่าง", "keywords": "clone menu, cross country, organization, group, price, currency, คัดลอกเมนู"}, {"idx": 5, "category": "Expedite, KDS & Kiosk", "subcategory": "Barcode / Served Workflow", "question": "ต้องการ Workflow สแกนบาร์โค้ดหลังนำอาหารไปเสิร์ฟ ต้องใช้โมดูลใด?", "answer": "ใช้ Eats365 Expedite Display สำหรับ Workflow ที่พิมพ์ Barcode Ticket และสแกนหลังเสิร์ฟ โดยต้องมี POS และ Expedite แต่ไม่จำเป็นต้องมี KDS", "steps": "สมัคร Expedite Display และตั้งค่าร่วมกับ POS ตามคู่มือ", "keywords": "Expedite Display, barcode, served, food runner, KDS, kitchen workflow"}, {"idx": 6, "category": "mPOS & Multi POS", "subcategory": "SUNMI / Printing", "question": "mPOS ใช้กับอุปกรณ์ SUNMI ที่มีเครื่องพิมพ์ในตัวได้หรือไม่?", "answer": "รุ่นที่ Support ระบุว่ารองรับคือ SUNMI V2s และสามารถพิมพ์ใบสรุปออเดอร์ รวมถึง QR Code จาก mPOS ได้ แต่ไม่สามารถจ่ายตังได้", "steps": "ใช้งาน SUNMI V2s และตั้งค่าการพิมพ์ตามคู่มือ mPOS", "keywords": "SUNMI V2s, mPOS printer, receipt, QR code, เครื่องพิมพ์พกพา"}, {"idx": 7, "category": "Payment & Billing", "subcategory": "Self-Service Kiosk / Thailand", "question": "Self-Service Kiosk ในไทยรองรับ Payment Integration หรือไม่?", "answer": "ปัจจุบัน Support ระบุว่ายังไม่มี Payment Provider Integration Partner ในประเทศไทย ร้านที่ใช้ Kiosk จึงต้องมี Cash on Delivery License เพื่อให้ลูกค้าสั่งที่ Kiosk แล้วไปจ่ายที่แคชเชียร์", "steps": "ขอเปิด Cash on Delivery License > เปิดช่องทางชำระเงินปลายทาง > ทดสอบ Order จาก Kiosk ไปยัง Cashier", "keywords": "kiosk, payment integration Thailand, cash on delivery, COD, self service"}, {"idx": 8, "category": "mPOS & Multi POS", "subcategory": "Order Error / AYCE Flag", "question": "mPOS ขึ้น Error ตอนสั่ง Item เกิดจากอะไรได้บ้าง?", "answer": "กรณีในแชตเกิดจาก Item ถูกเปิดเป็น All You Can Eat Menu Item ทำให้สั่งผ่าน mPOS ไม่ได้ เมื่อปิดการตั้งค่านี้แล้วใช้งานได้", "steps": "Merchant Portal > Menu Setup > Items > เลือก Item > ปิด All You Can Eat Menu Item > ลองสั่งใหม่", "keywords": "mPOS error, AYCE item, All You Can Eat Menu Item, order error"}, {"idx": 9, "category": "Printer & Hardware", "subcategory": "mPOS / Master POS Printing", "question": "สั่งจาก mPOS แล้ว Kitchen Ticket ไม่ออก ต้องตั้งค่าอย่างไร?", "answer": "การพิมพ์จาก mPOS อ้างอิงการตั้งค่าของ Master POS เครื่องพิมพ์ครัวจึงต้อง Pair กับ Main/Master POS", "steps": "1. Pair Kitchen Printer กับ Main POS\n2. Portal > Restaurant Settings > Ordering > Printing > เปิด Dine-in Confirmation Receipt\n3. หากต้องการพิมพ์ซ้ำเมื่อแก้ Order ให้เปิด Print Receipt Order is edited", "keywords": "mPOS printing, Master POS, kitchen printer, dine-in confirmation receipt"}, {"idx": 10, "category": "Payment & Billing", "subcategory": "Branded Online Store / COD", "question": "Branded Online Store เปิดรับ Order โดยไม่มี Online Payment ได้หรือไม่?", "answer": "Branded Web Order ต้องมี Online Payment Integration หรือ Cash on Delivery License เพื่อให้ลูกค้าชำระตอนรับสินค้า", "steps": "เปิด Cash on Delivery License > เปิดการตั้งค่า COD ใน Online Store > ทดสอบ Checkout", "keywords": "online store, branded web, cash on delivery, COD, online payment"}, {"idx": 11, "category": "Reports & Analytics", "subcategory": "Reconciliation Report", "question": "ดูรายงานยอดขายแยกตามวิธีชำระเงินได้จากที่ใด?", "answer": "ใช้ Reconciliation Report เพื่อดูยอดขายที่จัดหมวดหมู่ตาม Payment Method", "steps": "Merchant Portal > Reporting > Operation > Reconciliation Report > เลือกช่วงวันที่และวิธีชำระเงิน", "keywords": "Reconciliation Report, payment method, sales report, รายงานการชำระเงิน"}, {"idx": 12, "category": "Printer & Hardware", "subcategory": "Printer Disconnect / Network", "question": "Printer หลุดจาก POS เป็นระยะ ตรวจ Root Cause จาก Log ได้หรือไม่?", "answer": "Log บอกได้ว่า Printer หลุดจาก POS เมื่อใด แต่ระบุ Root Cause ไม่ได้ แนวทางหลักคือทำ Network ให้เสถียรและใช้ Ethernet กับ iPad หากทำได้", "steps": "1. ทดสอบ Network\n2. กำหนด Static IP ให้ Printer\n3. ใช้ Ethernet กับ iPad หากเป็นไปได้\n4. ปิด Auto-Lock\n5. หลัง iPad ตื่น ให้ปิดและเปิด POS App ใหม่\n6. สลับทดสอบ iPad/Printer เพื่อแยกสาเหตุ", "keywords": "printer disconnect, network, static IP, ethernet, auto-lock, POS log"}, {"idx": 13, "category": "Integration & CRM", "subcategory": "Shift / End Day / FMH Sync", "question": "ร้านมีหลาย POS ต้อง Close Shift และ End Day อย่างไร และอะไร Trigger Sync ไป FMH?", "answer": "หากหลาย POS เปิด Shift ทุกเครื่องต้อง Close Shift แต่ใช้ POS เพียงหนึ่งเครื่องทำ End Day ได้ ส่วน Trigger ที่ FMH ใช้ดึงข้อมูลยังไม่ได้รับการยืนยันจาก Eats365 Support", "steps": "ทุก POS ที่เปิด Shift > Close Shift จากนั้นเลือก 1 POS > End Day", "keywords": "FMH sync, close shift, end day, multiple POS, inventory integration"}, {"idx": 14, "category": "Printer & Hardware", "subcategory": "Kitchen Ticket / Combo", "question": "ตั้งให้ Kitchen Printer พิมพ์แยกหรือรวม Item ใน Ticket ได้อย่างไร", "answer": "เปิด Print Separate Ticket for Each Single Item เพื่อพิมพ์รายการละใบ; หากต้องการรวมหลาย Item ใน Ticket เดียวให้ปิดตัวเลือกนี้ และเปิด Separate Kitchen Ticket ใน Combo Item เมื่อต้องการแยก Combo Option", "steps": "Printing Settings > เลือกเปิด/ปิด Print Separate Ticket for Each Single Item ตามรูปแบบที่ต้องการ > ตั้ง Separate Kitchen Ticket สำหรับ Combo > ทดสอบ Routing", "keywords": "separate ticket,combine items,kitchen ticket,combo item,station,printer routing"}, {"idx": 15, "category": "Reports & Analytics", "subcategory": "Sales by Item / Reporting Period", "question": "ดูว่าแต่ละช่วงเวลาขายเมนูอะไรและเมนูใดขายดีที่สุดได้อย่างไร?", "answer": "ตั้ง Reporting Period ก่อน แล้วใช้ Sales by Item Report พร้อม Filter ตาม Period เพื่อดูรายการที่ขายในช่วงเวลานั้น", "steps": "1. Restaurant Information > ตั้ง Reporting Periods\n2. Reporting > Sales > Sales by Item\n3. Filter ตาม Period ที่ต้องการ", "keywords": "Sales by Item, Reporting Period, popular item, time period, เมนูขายดี"}, {"idx": 16, "category": "General & Organization", "subcategory": "Account Hierarchy", "question": "Organization, Group และ Shop ต่างกันอย่างไร?", "answer": "โครงสร้างคือ Organization > Group > Shop โดย Organization เป็นระดับสูงสุด Group รวมหลายร้านเพื่อบริหารร่วมกัน และ Shop คือสาขารายร้าน", "steps": "กำหนดสิทธิ์ผู้ใช้ตาม Scope ที่ต้องบริหาร: Organization Admin, Group Admin หรือ Shop-level access", "keywords": "organization, group, shop, hierarchy, admin access, merchant portal"}, {"idx": 17, "category": "Core Module POS", "subcategory": "24/7 Operation / End Day", "question": "ตั้งร้านให้เปิด 24 ชั่วโมงได้หรือไม่ และระบบจะ End Day อัตโนมัติหรือไม่?", "answer": "สามารถตั้ง Business Hours เป็น 24 ชั่วโมงได้ แต่ระบบยังต้องให้ Cashier ทำ End of Day ด้วยตนเอง ไม่ได้ตัดวันให้อัตโนมัติ", "steps": "ตั้ง Business Hours เป็น 24/7 และกำหนดเวลา/ผู้รับผิดชอบทำ EOD ประจำวัน", "keywords": "24 hours, 24/7, business hours, end of day, EOD, ร้านเปิดทั้งวัน"}, {"idx": 18, "category": "Integration & CRM", "subcategory": "Dynamic Wi-Fi", "question": "สามารถสร้าง Dynamic Wi-Fi Password แล้วพิมพ์บนใบเสร็จได้หรือไม่?", "answer": "ระบบไม่มีฟังก์ชันสร้าง Dynamic Wi-Fi Password บนใบเสร็จ และ Support ระบุว่าไม่มีทางเลือกผ่าน Integration ในขณะนี้", "steps": "", "keywords": "dynamic WiFi, receipt WiFi password, integration, Starbucks WiFi"}, {"idx": 19, "category": "Core Module POS", "subcategory": "Tier Pricing / Order Remark", "question": "แต่ละ Delivery Platform มีราคาต่างกันและต้องใส่เลข Order ภายนอก ควรตั้งอย่างไร?", "answer": "ใช้ Tier Pricing สำหรับกำหนดราคาตามช่องทาง Delivery และใช้ Order Remark บันทึกเลข Order ของ Platform", "steps": "1. ต้องมี Group-level access เพื่อเปิด Advanced Price by Tier\n2. ตั้ง Tier Pricing ตามช่องทาง\n3. Settings > System Preferences > เปิด Order Remark\n4. กรอกเลข Delivery Order ใน Order Remark", "keywords": "tier pricing, delivery platform, order remark, Grab order number, advanced price by tier"}, {"idx": 20, "category": "Core Module POS", "subcategory": "Role Permissions / Custom Item", "question": "ซ่อนปุ่ม Custom Item ไม่ให้พนักงานใช้งานได้หรือไม่?", "answer": "สามารถปิดสิทธิ์ Add Custom Item ตาม Role เพื่อไม่ให้พนักงานเห็นหรือใช้ฟังก์ชันเพิ่ม Custom Item", "steps": "Settings > Users & Permissions > Role Permissions > Edit > ปิด Add Custom Item", "keywords": "custom item, role permissions, add custom item, ซ่อนเมนู, สิทธิ์พนักงาน"}, {"idx": 21, "category": "Core Module POS", "subcategory": "Customer / Tax Invoice", "question": "ระบบบันทึกข้อมูล Tax Invoice ของลูกค้าประจำไว้ใช้ครั้งต่อไปได้หรือไม่?", "answer": "ปัจจุบันระบบยังไม่สามารถบันทึกรายละเอียด Tax Invoice ของลูกค้าประจำเพื่อนำกลับมาใช้ได้ ต้องกรอกใหม่ทุกครั้ง", "steps": "", "keywords": "tax invoice, customer details, save invoice data, ใบกำกับภาษี"}, {"idx": 22, "category": "General & Organization", "subcategory": "Cloud Hosting", "question": "Eats365 ใช้ Cloud Server ของผู้ให้บริการใด?", "answer": "Support ระบุว่าบริการของ Eats365 Hosting อยู่บน Google Cloud Platform (GCP)", "steps": "", "keywords": "Google Cloud Platform, GCP, cloud server, hosting, data center"}, {"idx": 23, "category": "Core Module POS", "subcategory": "Weight-based Pricing", "question": "ร้านขายอาหารตามน้ำหนัก เช่น หมาล่า คิดราคาเป็นกรัมได้อย่างไร?", "answer": "Support แนะนำให้ตั้ง Pricing Method เป็น Price by Embedded Barcode (Weight) เพื่อคิดราคาตามน้ำหนัก", "steps": "ตั้ง Item Pricing Method เป็น Price by Embedded Barcode (Weight) และใช้อุปกรณ์ชั่ง/Barcode ที่สร้างข้อมูลตามรูปแบบที่รองรับ", "keywords": "price by weight, embedded barcode, scale, malatang, ราคาอาหารตามน้ำหนัก"}, {"idx": 24, "category": "Integration & CRM", "subcategory": "FMH / Multi-branch Setup", "question": "ร้านหลายสาขาเชื่อม Eats365 กับ FMH ต้องใช้ Group ID หรือ Merchant ID?", "answer": "ต้องตั้งค่า Integration แยกแต่ละสาขาโดยใช้ Merchant ID ของแต่ละร้าน ไม่ใช้ Group หรือ Company ID รวมทุกสาขา", "steps": "เชื่อม FMH ทีละ Merchant ID และตรวจ Verify Code ของแต่ละสาขา", "keywords": "FMH integration, Merchant ID, multi branch, verify code, เชื่อมต่อรายสาขา"}, {"idx": 25, "category": "Core Module POS", "subcategory": "Catering Service", "question": "Catering Service ใช้กับบุฟเฟต์ Dine-in หรือ Event Package ได้หรือไม่?", "answer": "Catering Service ใช้ได้เฉพาะ Takeout Order แบบ Pickup และ Delivery ไม่รองรับ Dine-in สามารถรับ Order ผ่าน POS หรือ Branded Web และตั้ง Pre-order Period ได้", "steps": "1. ต้องมี Catering Service License\n2. ตั้ง Catering Items\n3. ตั้ง Catering Settings และ Pre-order Period\n4. รับ Order ผ่าน POS หรือ Branded Web", "keywords": "catering service, preorder, pickup, delivery, dine-in, catering items"}, {"idx": 26, "category": "Core Module POS", "subcategory": "Order Number / Channel Prefix", "question": "กำหนด Prefix ตัวอักษรของ Order Number แยกตามช่องทางได้หรือไม่?", "answer": "ปัจจุบันไม่รองรับการกำหนด Prefix ของ Order Number แยกตามช่องทาง เช่น T-001 สำหรับ Takeaway หรือ D-001 สำหรับ Delivery", "steps": "", "keywords": "order number prefix, takeaway, dine-in, delivery, platform, channel code"}, {"idx": 27, "category": "Core Module POS", "subcategory": "Staff / Clock in-out", "question": "ชื่อพนักงานบน Kitchen Ticket มาจากไหน และลงเวลาอย่างไร", "answer": "ชื่อบน Ticket อ้างอิงพนักงานที่ใช้งาน POS; พนักงานลงเวลาเข้า-ออกงานผ่าน POS ได้", "steps": "ให้พนักงาน Clock in ก่อนเริ่มกะ และ Clock out เมื่อจบกะบน POS", "keywords": "staff,kitchen ticket,clock in,clock out"}, {"idx": 28, "category": "Payment & Billing", "subcategory": "Multi-company", "question": "POS เครื่องเดียวสลับรับชำระระหว่าง 2 บริษัทได้หรือไม่", "answer": "ไม่รองรับการสลับ Company Profile ระหว่างขั้นตอนรับชำระบน POS เดียว", "steps": "แยก POS/บัญชีร้านตามนิติบุคคลหรือ Company Profile", "keywords": "company profile,payment,multi company"}, {"idx": 29, "category": "Printer & Hardware", "subcategory": "QR Ordering", "question": "QR Ordering ไม่พิมพ์ ต้องตรวจสอบอะไร", "answer": "Primary POS ต้อง Online ก่อนจึงจะสร้าง/พิมพ์ QR ได้", "steps": "ตรวจสถานะ Primary POS; หาก Online แล้วยังไม่ได้ ส่ง Merchant ID และเลข Order ให้ Support", "keywords": "QR ordering,primary POS,online,printing"}, {"idx": 30, "category": "Core Module POS", "subcategory": "Tier Pricing", "question": "Bulk Product Tier Pricing เว้นช่องว่างได้หรือไม่", "answer": "ช่องข้อมูลที่กำหนดในไฟล์ Bulk Tier Pricing ต้องไม่เว้นว่าง", "steps": "กรอกค่าทุกช่องตาม Template; หากแยกแพลตฟอร์ม Delivery แนะนำสร้างเมนูแยกและใส่ Prefix", "keywords": "bulk,tier pricing,delivery,template"}, {"idx": 31, "category": "Reports & Analytics", "subcategory": "Menu Action Log", "question": "ตรวจสอบว่าใครแก้ไขเมนูหรือข้อมูลอะไรได้จากที่ไหน", "answer": "ใช้ Menu Action Log เพื่อตรวจประวัติการเปลี่ยนแปลงเมนู", "steps": "เข้า Portal และเปิด Menu Action Log แล้วกรองช่วงเวลา/ผู้ใช้งาน", "keywords": "menu action log,audit,change history"}, {"idx": 32, "category": "Core Module POS", "subcategory": "Bulk Import", "question": "Bulk Import รายการพร้อมรูปภาพต้องเตรียมไฟล์อย่างไร", "answer": "ดาวน์โหลด Template ล่าสุดจาก Bulk Import Single Item; ใส่ชื่อไฟล์รูปในคอลัมน์ Image และ ZIP Excel+รูปไว้ระดับ root", "steps": "Portal > Import Tool > Bulk Import Single Item > Edit Menu > ดาวน์โหลด Template; รูปไม่เกิน 1MB ใช้ .jpg ตัวพิมพ์เล็ก; แปลง PNG/.JPG เป็น .jpg", "keywords": "bulk import,image,jpg,zip,template"}, {"idx": 33, "category": "Core Module POS", "subcategory": "Item / Category", "question": "เปลี่ยน Category ของ Item ที่สร้างแล้วได้หรือไม่", "answer": "ไม่สามารถเปลี่ยน Category ของ Item เดิมหลังสร้างแล้ว ต้อง Copy เป็น Item ใหม่ใน Category ที่ถูกต้อง", "steps": "Menu Setup > Item > Copy to a new item > เลือก Category ใหม่ > เปลี่ยน SKU ให้ไม่ซ้ำ > Save > ตรวจข้อมูล > ปิด/ลบ Item เดิม", "keywords": "item,category,copy item,unique SKU,duplicate SKU"}, {"idx": 34, "category": "Reports & Analytics", "subcategory": "End of Day", "question": "ตั้ง Auto End Day หรือแก้วันที่ EOD ย้อนหลังได้หรือไม่", "answer": "ไม่รองรับ Auto End Day และไม่สามารถแก้ EOD ย้อนหลังได้; ต้องทำ EOD ด้วยตนเอง", "steps": "ทำ EOD ทุกวันหลังเคลียร์ออเดอร์ค้าง ระบบจะแจ้งเตือนก่อน void unpaid orders", "keywords": "EOD,end day,auto end day,ย้อนหลัง"}, {"idx": 35, "category": "Payment & Billing", "subcategory": "Discount Rounding", "question": "เปลี่ยนตำแหน่งการปัดเศษส่วนลดสำหรับประเทศไทยได้หรือไม่", "answer": "การปัดเศษส่วนลดตามรูปแบบประเทศไทยไม่สามารถเปลี่ยนตำแหน่งได้", "steps": "ใช้ค่ามาตรฐานของระบบและตรวจยอดสุทธิในกรณีมีส่วนลด", "keywords": "discount,rounding,Thailand"}, {"idx": 36, "category": "mPOS & Multi POS", "subcategory": "Order Amendment", "question": "ออเดอร์จาก mPOS แก้ไขบน Primary POS ได้หรือไม่", "answer": "แก้ไขได้จาก Primary POS โดยเปิดออเดอร์และกด [to order]", "steps": "ค้นหาออเดอร์บน Primary POS > กด [to order] > แก้ไขและยืนยัน", "keywords": "mPOS,primary POS,to order,edit order"}, {"idx": 37, "category": "mPOS & Multi POS", "subcategory": "Item Visibility", "question": "Item ไม่แสดงบน mPOS หรือ BYOD ต้องเช็กอะไรบ้าง", "answer": "สาเหตุที่ Item ไม่แสดงอาจมาจาก mPOS ยังไม่ Update, Available Date/End Date, Channel Permission หรือเปิด All-You-Can-Eat Menu Permission ทำให้รายการไม่แสดงบน QR Menu", "steps": "mPOS: กด UPDATE หรือ Relaunch; BYOD: เปิด Online Ordering - Web App ที่ Category และ Item; ตรวจ Available Date; หากรายการทั่วไปหายจาก QR ให้ Portal > Menu Setup > Item Permission > ปิด All You Can Eat Menu Permission", "keywords": "mPOS,BYOD,item missing,permission,available date,AYCE,QR menu"}, {"idx": 38, "category": "Core Module POS", "subcategory": "Layout Editor", "question": "ปรับขนาดตัวอักษรและรูปภาพบนหน้าเมนู POS ได้หรือไม่", "answer": "ปรับ Font Size ได้ใน Layout Editor แต่ปรับขนาดรูป/ภาพบน Menu Tile ไม่ได้", "steps": "เปิด Layout Editor แล้วปรับขนาดตัวอักษรตามต้องการ", "keywords": "layout editor,font size,image size,menu tile"}, {"idx": 39, "category": "Core Module POS", "subcategory": "Role Permission", "question": "เปิดหรือปิดปุ่ม Tax ตอน Checkout ได้จากไหน", "answer": "ต้องเปิดทั้งสิทธิ์ Tax at Checkout และ Edit Taxes ใน POS Role จึงจะแก้ภาษีตอน Checkout ได้", "steps": "Settings > Users and Permissions > Role Permission > เปิด Tax at Checkout และ Edit Taxes > ทำ Red Dot Update/Sync", "keywords": "tax,checkout,edit taxes,role permission"}, {"idx": 40, "category": "Payment & Billing", "subcategory": "Role Permission", "question": "ขึ้น Payment Error เพราะอะไร", "answer": "สาเหตุในเคสนี้คือ POS Role ไม่มีสิทธิ์รับชำระเงิน", "steps": "เปิด Payment Permission ให้ Role ที่ใช้งาน แล้ว Sync/เข้าใหม่", "keywords": "payment error,role,permission"}, {"idx": 41, "category": "Payment & Billing", "subcategory": "Void Payment", "question": "Void รายการที่ชำระไปแล้วจากวันก่อนทำได้แค่ไหน", "answer": "แนะนำให้ Void ภายใน 3 วันนับจากวันที่ชำระ และใช้ได้กับ Non-integration payment method", "steps": "เปิดรายการย้อนหลังและทำ Void ตามสิทธิ์ที่กำหนด", "keywords": "void,past order,3 days,non integration"}, {"idx": 42, "category": "Payment & Billing", "subcategory": "Split Payment", "question": "ทำไมออเดอร์แก้ไขไม่ได้หลังเริ่ม Split Payment", "answer": "เมื่อเริ่ม Split Payment ระบบจะล็อกออเดอร์", "steps": "ยกเลิก Split Payment ก่อน > กลับไปแก้ออเดอร์ > เริ่มชำระใหม่", "keywords": "split payment,locked order,amend"}, {"idx": 43, "category": "Core Module POS", "subcategory": "Void / Return", "question": "Void Item, Void Order และ cancel ต่างกันอย่างไร", "answer": "Void Item = ยกเลิกรายการเดียวก่อนชำระ; Cancle Order = ยกเลิกทั้งออเดอร์ก่อนชำระ; Void = ยกเลิกทั้งบิลหลังชำระ", "steps": "เลือกฟังก์ชันตามสถานะก่อนหรือหลัง Payment", "keywords": "void item,void order,return"}, {"idx": 44, "category": "Integration & CRM", "subcategory": "SevenRooms", "question": "ใช้งาน SevenRooms อย่างไรไม่ให้เกิดออเดอร์ซ้ำหรือชื่อลูกค้าหาย", "answer": "ต้อง Seat Guest ใน SevenRooms ก่อน รอ Sync แล้วใช้ออเดอร์ที่ Integration สร้างใน POS", "steps": "SevenRooms > Seat Guest > รอ Sync > เปิดออเดอร์ที่สร้างอัตโนมัติใน POS", "keywords": "SevenRooms,seat guest,duplicate order,sync"}, {"idx": 45, "category": "Reports & Analytics", "subcategory": "Preparation Time", "question": "ดูเวลาการเตรียมอาหารได้จากรายงานไหน", "answer": "ใช้ Item Preparation Time Report; ความแม่นยำดีขึ้นเมื่อใช้ KDS หรือ Expedite", "steps": "เปิด Item Preparation Time Report และกำหนดช่วงเวลาที่ต้องการ", "keywords": "preparation time,KDS,expedite,report"}, {"idx": 46, "category": "Printer & Hardware", "subcategory": "Cancelled Item Ticket", "question": "ให้ครัวพิมพ์ Ticket เมื่อยกเลิกรายการได้อย่างไร", "answer": "เปิด Print Ticket for Cancelled Item", "steps": "Settings > Printing > Ticket Printing > เปิด Print Ticket for Cancelled Item", "keywords": "cancelled item,ticket printing,kitchen"}, {"idx": 47, "category": "Integration & CRM", "subcategory": "Inventory / Procurement", "question": "Eats365 จัดการต้นทุนวัตถุดิบหรือ Procurement ได้หรือไม่", "answer": "POS ไม่รองรับ Procurement/Raw Material Cost โดยตรง; Support ยกตัวอย่าง Integration เช่น MarketMan หรือ FMH", "steps": "ประเมิน Integration ภายนอกและตรวจว่ารองรับประเทศไทยก่อนเริ่มโครงการ", "keywords": "procurement,raw material,cost,MarketMan,FMH"}, {"idx": 48, "category": "Printer & Hardware", "subcategory": "KDS Device", "question": "KDS ใช้ Android Tablet ได้หรือไม่", "answer": "KDS รองรับเฉพาะ iPad; ถ้าต้องการจอใหญ่แนะนำ iPad Pro ส่วน mPOS ใช้ Android Tablet ได้", "steps": "เลือก iPad สำหรับ KDS และทดสอบเครือข่าย/ตำแหน่งติดตั้ง", "keywords": "KDS,iPad Pro,Android,mPOS"}, {"idx": 49, "category": "Reports & Analytics", "subcategory": "Daily Closing Report", "question": "ตั้งรับ Daily Closing Report ทางอีเมลอย่างไร", "answer": "เปิดสิทธิ์ Receive Daily Closing Report ให้ Staff; เลือกส่งหลัง EOD หรือส่งตามเวลาที่ตั้งไว้", "steps": "Portal > Staff > Staff List > Edit > Portal Access > Receive Daily Closing Report", "keywords": "daily closing report,EOD,email,schedule"}, {"idx": 50, "category": "Printer & Hardware", "subcategory": "Device Requirement", "question": "สเปก iPad ที่แนะนำสำหรับ Eats365 คืออะไร", "answer": "แนะนำ iOS 17 ขึ้นไป และพื้นที่ว่างอย่างน้อย 15GB", "steps": "ตรวจ OS และ Storage ก่อนติดตั้ง/อัปเดต", "keywords": "iPad,iOS 17,storage,15GB"}, {"idx": 51, "category": "Core Module POS", "subcategory": "Role Management", "question": "คัดลอก POS Role ไปอีกร้านได้หรือไม่", "answer": "POS Role เป็นรายร้านและไม่รองรับ Clone ข้าม Store", "steps": "สร้าง Role และ Permission ใหม่ด้วยตนเองในแต่ละ Store", "keywords": "POS role,store,clone,permission"}, {"idx": 52, "category": "Payment & Billing", "subcategory": "Tax Setting", "question": "ควรเปลี่ยน VAT Inclusive/Exclusive ตอนไหน", "answer": "ควรเปลี่ยนหลังทำ End Day เพื่อไม่ให้ข้อมูลวันเดียวกันมี Tax Treatment ปะปน", "steps": "ทำ EOD > เปลี่ยน VAT Setting > ทดสอบบิลใหม่", "keywords": "VAT,inclusive,exclusive,EOD"}, {"idx": 53, "category": "Payment & Billing", "subcategory": "Tax Invoice", "question": "เพิ่มชื่อลูกค้าหรือออก Full Tax Invoice ย้อนหลังหลังชำระแล้วได้หรือไม่", "answer": "ยังไม่สามารถแก้ Customer Details ของรายการที่ชำระเสร็จแล้ว จึงออก Full Tax Invoice ย้อนหลังจากบิลเดิมไม่ได้", "steps": "เก็บข้อมูลลูกค้าก่อน Payment และตรวจความถูกต้องก่อนปิดบิล", "keywords": "customer details,full tax invoice,ย้อนหลัง,FR"}, {"idx": 54, "category": "Expedite, KDS & Kiosk", "subcategory": "KDS Recall", "question": "ฟังก์ชัน Recall บน KDS ใช้ทำอะไร", "answer": "ออเดอร์ที่ Complete/Dismiss จะไปอยู่ Recall; ดูรายการที่เสร็จของวันและนำกลับ Active ได้", "steps": "เปิด Recall > เลือกออเดอร์ > Recall/นำกลับ Active", "keywords": "KDS,recall,completed,dismissed"}, {"idx": 55, "category": "Printer & Hardware", "subcategory": "Receipt Template", "question": "พิมพ์ POS ID แยกแต่ละเครื่องบน Receipt ได้หรือไม่", "answer": "รองรับการพิมพ์ POS ID บน Receipt ใน POS App เวอร์ชัน 2.85.2 ขึ้นไป; หากตั้ง POS ID บนอุปกรณ์แล้ว ไม่ต้องตั้งค่าเพิ่มเติมใน Portal", "steps": "ตั้ง POS ID บน iPad/POS > อัปเดต POS App ให้เป็นเวอร์ชันล่าสุด > Test Print Receipt", "keywords": "POS ID,receipt,POS app,2.85.2,no portal setup"}, {"idx": 56, "category": "Printer & Hardware", "subcategory": "Receipt Header", "question": "ให้ Header ใบเสร็จสลับข้อความระหว่าง ABB กับ Full Tax Invoice อัตโนมัติได้หรือไม่", "answer": "ระบบยังไม่สลับ Free Text Header ตามประเภทเอกสารอัตโนมัติ ต้องจัดการด้วยตนเอง", "steps": "ใช้ข้อความกลางที่เหมาะกับทั้งสองแบบ หรือควบคุมขั้นตอนพิมพ์ภายในร้าน", "keywords": "ABB,full tax invoice,header,free text"}, {"idx": 57, "category": "Payment & Billing", "subcategory": "Pay First", "question": "Pay First รวมหลายออเดอร์เป็นบิลเดียวหรือพิมพ์บิลก่อนจ่ายได้หรือไม่", "answer": "Pay First ไม่รองรับรวม Separate Orders เป็นบิลเดียว และไม่มี Print Bill Before Payment", "steps": "หากต้องรวมบิลหรือพิมพ์บิลก่อนชำระ ให้ใช้ Pay Later", "keywords": "pay first,pay later,combine bill,print bill"}, {"idx": 58, "category": "Payment & Billing", "subcategory": "Payment Amendment", "question": "แก้ Payment Method ของรายการข้ามวันได้หรือไม่", "answer": "เปลี่ยนได้เฉพาะภายใน Time Period เดียวกัน; หลัง EOD/ขึ้นวันใหม่ไม่สามารถแก้รายการเก่าได้", "steps": "ตรวจ Payment Method ก่อน EOD และแก้ภายในรอบเดียวกัน", "keywords": "payment method,EOD,time period,ย้อนหลัง"}, {"idx": 59, "category": "Core Module POS", "subcategory": "Price Tier / Custom Rule", "question": "ตั้ง Price Tier ให้ใช้ List Price เป็นค่าเริ่มต้น และเปลี่ยน Delivery Price เองได้อย่างไร", "answer": "สร้าง Custom Rule โดยไม่กำหนด Time หรือ Date เพื่อให้ระบบไม่เลือก Delivery Price อัตโนมัติ และเปลี่ยน Tier เป็น Delivery Price ด้วยตนเองเมื่อต้องการ", "steps": "Portal > Price Tier Rule > สร้าง/แก้ Custom Rule > ไม่กำหนด Time/Date > Save > ทำ Red Dot Update บน POS", "keywords": "price tier,list price,custom rule,delivery price,red dot update"}, {"idx": 60, "category": "mPOS & Multi POS", "subcategory": "Supported Printer Device", "question": "mPOS พิมพ์ Check หรือ QR จากอุปกรณ์ Android รุ่นใดได้บ้าง", "answer": "ฟังก์ชันพิมพ์จาก mPOS รองรับเฉพาะ SUNMI V2s และ iMin Swift 2 Pro; SUNMI V2Pro/Pro2D ไม่อยู่ในรายการรุ่นที่รองรับ", "steps": "ใช้รุ่นที่รองรับ > mPOS > Settings > Printer Setup > Pair Printer > ทดสอบพิมพ์ Receipt/QR", "keywords": "mPOS,SUNMI V2s,V2Pro,Pro2D,iMin Swift 2 Pro,QR printing"}, {"idx": 61, "category": "Reports & Analytics", "subcategory": "Test Data Cutoff", "question": "ล้างหรือซ่อนข้อมูลทดลองก่อน Go-live ต้องทำอย่างไร", "answer": "ต้อง Close Shift และทำ EOD ก่อนเริ่มขายจริง; Support ตั้ง Cut-off เพื่อซ่อนข้อมูลทดลองใน Backend ได้", "steps": "ก่อน Go-live: ปิดออเดอร์ > Close Shift > EOD > แจ้ง Support กำหนด Cut-off > ตรวจ Backend จากออเดอร์แรกหลังเวลาตัด", "keywords": "test data,cutoff,backend,POS,30 days,go live,EOD"}, {"idx": 62, "category": "Reports & Analytics", "subcategory": "Discount Reporting", "question": "Item ที่ลด 100% ยังแสดงในรายงานหรือไม่", "answer": "ยังบันทึกรายการและแสดงในรายงาน โดยมีราคา/ยอดเป็น 0", "steps": "ตรวจรายงานตาม Item และ Discount เพื่อดูจำนวนที่แจกหรือ Comp", "keywords": "100% discount,zero price,report,quantity"}, {"idx": 63, "category": "General & Organization", "subcategory": "Eats365 Biz", "question": "Eats365 Biz App ใช้งานในประเทศไทยได้หรือไม่", "answer": "ปัจจุบัน Biz App ยังไม่เปิดให้ใช้ในประเทศไทย เพราะ Payment Integration ที่ต้องใช้ยังไม่รองรับ", "steps": "ใช้ Merchant Portal/POS สำหรับงานที่เกี่ยวข้อง และติดตาม Availability กับ Support", "keywords": "Eats365 Biz,Thailand,payment integration"}, {"idx": 64, "category": "Integration & CRM", "subcategory": "KDS Integration", "question": "Eats365 KDS เชื่อมต่อกับ Oracle POS ของโรงแรมได้หรือไม่", "answer": "ไม่ได้ ปัจจุบัน Eats365 KDS จับคู่และทำงานได้เฉพาะกับ Eats365 POS", "steps": "หากต้องใช้ KDS ของ Eats365 ต้องใช้งานร่วมกับ Eats365 POS", "keywords": "KDS,Oracle POS,integration,Eats365 POS"}, {"idx": 65, "category": "mPOS & Multi POS", "subcategory": "Void / Cancel Item", "question": "ยกเลิกรายการหรือ Void Transaction ผ่าน mPOS ได้หรือไม่", "answer": "ไม่ได้ ทั้งการ Void Transaction และการยกเลิกเพียงบาง Item ต้องทำบน Primary POS", "steps": "เปิดออเดอร์บน POS > เลือก Void Transaction หรือยกเลิกรายการตามที่ต้องการ", "keywords": "mPOS,void transaction,cancel item,primary POS"}, {"idx": 66, "category": "Payment & Billing", "subcategory": "Payment Amendment", "question": "ทำไมเปลี่ยน Payment Method จาก VISA ไม่ได้หลังชำระ", "answer": "หากบิลมี Surcharge ระบบจะไม่อนุญาตให้เปลี่ยน Payment Method ของบิลนั้น", "steps": "ตรวจสอบ Surcharge ก่อนยืนยันการชำระ และเลือก Tender ให้ถูกต้องตั้งแต่ต้น", "keywords": "payment method,VISA,surcharge,change tender"}, {"idx": 67, "category": "Printer & Hardware", "subcategory": "Printer Compatibility", "question": "เครื่องพิมพ์ Epson TM-T82X ใช้กับ Eats365 POS ได้หรือไม่", "answer": "รองรับ โดย Support ยืนยันว่ามีลูกค้าใช้งาน Epson TM-T82X กับ Eats365 POS", "steps": "ตรวจ Interface/Network และทดสอบ Print Test ก่อนติดตั้งจริง", "keywords": "Epson,TM-T82X,printer,compatibility"}, {"idx": 68, "category": "Printer & Hardware", "subcategory": "Dot Matrix Printer", "question": "เครื่องพิมพ์ Dot Matrix รุ่นใดรองรับ Eats365 POS", "answer": "รุ่นที่ Support ระบุว่ารองรับคือ Epson TM-U220B (ใช้รุ่น E04 ที่ระบุ) และ Star SP747", "steps": "เลือกหนึ่งในรุ่นที่รองรับและตรวจ Interface/การเชื่อมต่อก่อนจัดซื้อ", "keywords": "dot matrix,Epson TM-U220B,E04,Star SP747,carbon copy"}, {"idx": 69, "category": "General & Organization", "subcategory": "Product Information", "question": "หาข้อมูลอัปเดตของ Online Booking, CRM และ Customer Deposit ได้จากไหน", "answer": "ใช้ Eats365 Knowledge Base เป็นแหล่งรายละเอียดฟีเจอร์ แล้วนำข้อมูลมาจัดทำ/แปลเป็นสื่อ Localized สำหรับลูกค้าไทย", "steps": "ค้นหัวข้อใน Eats365 Knowledge Base และใช้ Sales Deck ล่าสุดจาก BD ประกอบ", "keywords": "online booking,CRM,customer deposit,knowledge base,sales deck"}, {"idx": 70, "category": "Reports & Analytics", "subcategory": "Discount Rounding", "question": "ทำไมยอด Discount Report ไม่ตรงกับ Closing Report ในประเทศไทย", "answer": "เกิดจาก Logic การปัดเศษส่วนลดเดิมไม่ครอบคลุมประเทศไทย และทีมได้ปรับ Logic ให้รองรับประเทศไทยแล้ว", "steps": "อัปเดต/Sync ระบบตามปกติ แล้วตรวจยอด Discount Report เทียบ Closing Report อีกครั้ง", "keywords": "discount report,closing report,rounding,Thailand"}, {"idx": 71, "category": "Reports & Analytics", "subcategory": "VAT Reporting", "question": "ดูยอด Net Sales แยก VAT-rated กับ VAT-exempt ได้จากรายงานใด", "answer": "ปัจจุบันระบบไม่มีรายงานที่แยก VAT Order กับ Non-VAT Order โดยตรง; Daily Closing Report มีข้อมูล VAT แต่ไม่สามารถแยกออเดอร์สองกลุ่มตามที่ต้องการได้", "steps": "ใช้ Daily Closing Report เพื่อตรวจ VAT ที่มีอยู่; หากต้องแยก VAT/Non-VAT ต้องจัดทำข้อมูลภายนอกหรือรอฟังก์ชันเพิ่มเติม", "keywords": "net sales,VAT order,non VAT,daily closing report,feature request"}, {"idx": 72, "category": "Core Module POS", "subcategory": "Item Visibility / Role Permission", "question": "ทำไมพนักงานบาง Role ไม่เห็น Item ที่หมดอายุ แต่ Supervisor ยังเห็นได้", "answer": "Item ที่พ้น End Date จะไม่แสดงตามปกติ แต่ Role ที่เปิด Enable Access to All Items และ Show Expired Items ยังมองเห็นได้", "steps": "ตรวจ End Date ของ Item และตรวจ Role Permission; ปิด Show Expired Items หากไม่ต้องการให้เห็น หรือแก้ End Date หากต้องการขายต่อ", "keywords": "expired item,end date,show expired items,role permission,visibility"}, {"idx": 73, "category": "Integration & CRM", "subcategory": "QR Takeaway / Online Payment", "question": "ทำ QR Takeaway ให้ลูกค้าสั่งและชำระเงินออนไลน์ก่อนส่งเข้าครัวได้หรือไม่", "answer": "สร้าง QR จาก Takeout Link เพื่อให้ลูกค้าสั่งได้ แต่การจ่ายออนไลน์ต้องเชื่อม Online Payment Provider; ขณะนี้ยังไม่มี Payment Integration Partner ที่รองรับประเทศไทย", "steps": "สร้าง Takeout Link > นำ Link ไปสร้าง QR Code; หากต้องรับเงินออนไลน์ต้องรอ/ตรวจสอบ Payment Integration ที่รองรับไทย", "keywords": "takeout link,QR ordering,online payment,Thailand,kitchen"}, {"idx": 74, "category": "Core Module POS", "subcategory": "Menu Image Upload", "question": "อัปโหลดรูปเมนูบน iPad แล้วขึ้น Unable to connect to the server ควรทำอย่างไร", "answer": "ให้ปิด POS App อย่างสมบูรณ์ (Kill App) แล้วเปิดใหม่ จากนั้นลองอัปโหลดรูปอีกครั้ง", "steps": "ปิด POS App จาก App Switcher > Relaunch > ลอง Upload Image ใหม่", "keywords": "upload image,unable to connect,server,iPad,relaunch POS"}, {"idx": 75, "category": "Core Module POS", "subcategory": "Organization Access", "question": "Organization Admin เลือกสิทธิ์เข้าถึงร้านค้าได้อย่างไร", "answer": "ผู้ใช้ที่มี Organization Admin Access สามารถเลือก Shop Access ให้ตนเองได้", "steps": "เข้า Organization Admin > เลือก Shop Access ที่ต้องการ > บันทึก > Log out และ Log in ใหม่", "keywords": "organization admin,shop access,all shops,logout,login"}, {"idx": 76, "category": "Core Module POS", "subcategory": "Bulk Import / Excel Macro", "question": "Bulk Add Template ไม่แสดง Modifier Group/Modifier Value ต้องแก้อย่างไร", "answer": "สาเหตุอาจมาจาก Excel บล็อก Macro ของ Template; เมื่อ Unblock ไฟล์แล้ว Dropdown ของ Modifier สามารถทำงานได้", "steps": "ดาวน์โหลด Template ใหม่ > คลิกขวาไฟล์ > Properties > General > Security > เลือก Unblock > Apply > OK > เปิดไฟล์ใหม่ > เลือก Modifier Value ที่อยู่ใน Modifier Group", "keywords": "bulk add template,modifier group,modifier value,Excel,macro,unblock"}, {"idx": 77, "category": "Core Module POS", "subcategory": "Bulk Import / Modifier", "question": "ทำไมค่า Modifier ใน Bulk Template เพิ่มเลขซ้ำต่อท้ายทุกครั้ง", "answer": "สาเหตุที่ค่า Modifier/ตัวเลขเพิ่มซ้ำอาจเกิดจากการ Copy ข้อมูลเก่าลง Template ใหม่ ทำให้ Modifier Value ถูกวางในคอลัมน์ Modifier Group Name", "steps": "ดาวน์โหลด Template ใหม่ > Unblock ไฟล์ถ้าจำเป็น > ห้าม Copy ข้อมูลจากไฟล์เดิม > กรอกใหม่ให้ Modifier Group Name ไม่มี Dropdown และเลือก Modifier Value ในคอลัมน์ที่ถูกต้อง", "keywords": "bulk template,modifier group,modifier value,duplicate number,new template,no copy"}, {"idx": 78, "category": "Printer & Hardware", "subcategory": "Sticker Label Printing", "question": "ตั้งค่าและทดสอบเครื่องพิมพ์ Sticker Label สำหรับติดแก้วอย่างไร", "answer": "ต้องวัดขนาด Label ก่อน ตั้งขนาดใน Label Template เพิ่ม Label Printer และ Test Print จากนั้นเปิด Kitchen Ticket ให้รายการที่ต้องการพิมพ์", "steps": "1. วัดขนาดฉลาก 2. Settings > Printing > Label Template > ตั้งขนาด 3. กด Label Preview 4. Settings > Printer Setup > เพิ่มเครื่อง 5. กด Test 6. เปิด Kitchen Ticket ให้ Item/Printing Setup ที่เกี่ยวข้อง", "keywords": "sticker,label printer,label template,label preview,kitchen ticket"}, {"idx": 79, "category": "Reports & Analytics", "subcategory": "Net Sales / Tax", "question": "Net Sales บน Dashboard รวม VAT หรือไม่", "answer": "ถ้าตั้งภาษีแบบรวมในราคา Net Sales จะรวม VAT; หากตั้ง Tax Exclusion ระบบจะแสดง Tax Amount แยกจาก Net Sales", "steps": "ตรวจ Tax Setting ของร้านก่อนตีความ Net Sales และดู Tax Amount แยกเมื่อใช้ Tax Exclusion", "keywords": "net sales,VAT,tax inclusion,tax exclusion,dashboard"}, {"idx": 80, "category": "Reports & Analytics", "subcategory": "Void / Return Calculation", "question": "Void Order และ Return ถูกนำไปหักจากยอดใดบน Dashboard", "answer": "Support ยืนยันความหมายว่า Void Order คือยกเลิกทั้งออเดอร์ก่อนชำระ และ Return คือยกเลิกทั้งบิลหลังชำระ แต่ยังไม่ได้ระบุสูตรว่าหักจาก Sales หรือ Net Sales ช่องใด", "steps": "ขอ Support ยืนยันสูตร Dashboard และตัวอย่างการคำนวณจาก Sales, Discount, Void, Return ไป Net Sales", "keywords": "void order,return,dashboard,net sales,calculation"}, {"idx": 81, "category": "Reports & Analytics", "subcategory": "Staff Attendance", "question": "ตั้ง Shift Time รายสาขาและให้ระบบแจ้งเตือน Clock in/out ผิดเวลาได้หรือไม่", "answer": "ปัจจุบันไม่มีฟังก์ชันแจ้งเตือนหรือทำเครื่องหมายเมื่อพนักงาน Clock in/out ไม่ตรงเวลาที่กำหนด", "steps": "Export รายงานเวลาแล้วตรวจเทียบ Shift ภายนอกด้วยตนเอง", "keywords": "shift time,clock in,clock out,attendance,alert"}, {"idx": 82, "category": "Core Module POS", "subcategory": "Group Admin Access", "question": "ทำไมบัญชีที่เปลี่ยนเป็น Group Admin จึงไม่แสดงในหน้าร้านรายสาขา", "answer": "เมื่อบัญชีถูกอัปเกรดเป็น Group Admin จะมองเห็นและจัดการได้จาก Group View (All Shops) เท่านั้น ไม่แสดงในหน้ารายสาขาแบบเดิม", "steps": "เข้าสู่ระบบด้วยสิทธิ์ที่เข้าถึง Group View > เปิด All Shops > ตรวจบัญชี Group Admin", "keywords": "group admin,group view,all shops,channel partner,portal access"}, {"idx": 83, "category": "Payment & Billing", "subcategory": "Tax Invoice", "question": "Eats365 สามารถออก Tax Invoice ให้ลูกค้าได้หรือไม่", "answer": "ระบบไม่มีปุ่มสลับ Simple Tax “Tax Invoice (ABB)” เป็น Full Tax “Tax Invoice” โดยตรง ต้องแก้ Receipt Template ด้วยตนเอง และกรอก Company Information ในช่องที่กำหนด ไม่ใช่ Remarks", "steps": "ปรับ Receipt Template สำหรับ Full Tax > ตอน Checkout กรอก Company Name, Address และ VAT Number ในส่วน Company Information > ตรวจ Preview/Print", "keywords": "tax invoice,full tax,simple tax,ABB,receipt template,company information"}, {"idx": 84, "category": "Payment & Billing", "subcategory": "VAT Number / Receipt", "question": "ซ่อน VAT Number บนเอกสารชั่วคราว แต่ยังคำนวณ VAT ตามปกติได้หรือไม่", "answer": "ซ่อน VAT Number บน Receipt ได้โดยปิด VAT No. ใน Restaurant Information และตรวจว่าไม่ได้ใส่ VAT Number ไว้ใน Free Text/Receipt Template; การคำนวณ Tax ยังทำงานหาก Item มี Tax Group", "steps": "ปิด VAT No. ใน Restaurant Information > ลบ VAT Number จาก Free Text/Receipt Template > ตรวจว่า Item ยังผูก Tax Group > Test Print", "keywords": "VAT number,hide VAT,restaurant information,receipt template,tax group"}, {"idx": 85, "category": "Printer & Hardware", "subcategory": "Printer Diagnostics", "question": "Printer หลุดเป็นช่วง ๆ ต้องเก็บข้อมูลและส่ง Diagnostic อย่างไร", "answer": "ต้องเปิด Debug Mode ก่อนเกิดเหตุ เพราะหากปิดไว้ POS จะไม่บันทึก Print/Action Log; เมื่อเกิดเหตุให้ระบุ Order Number หรือวันเวลาและส่ง Diagnostics Data", "steps": "เปิด Debug Mode ระหว่าง Deployment > รอให้เกิดเหตุซ้ำ > จด Order Number/เวลา > POS > Settings > Send Diagnostics Data > แจ้ง Support", "keywords": "printer disconnect,debug mode,diagnostics data,print log,order number"}, {"idx": 86, "category": "Printer & Hardware", "subcategory": "USB Printer", "question": "Eats365 POS ต่อเครื่องพิมพ์ผ่าน USB ได้หรือไม่", "answer": "รองรับการเชื่อมต่อผ่าน USB เฉพาะเครื่องพิมพ์ Star หรือ Epson บางรุ่นที่ Eats365 รองรับ", "steps": "ตรวจสอบ Exact Model กับ Support ก่อนซื้อ แล้วเชื่อมต่อ/ทดสอบตาม Printer Setup", "keywords": "USB printer,Star,Epson,printer compatibility"}, {"idx": 87, "category": "Core Module POS", "subcategory": "Promotion / Free Item", "question": "โปรโมชั่นยอดซื้อขั้นต่ำแล้วแถมสินค้าฟรีตั้งค่าอย่างไร", "answer": "ในคำตอบนี้ Support แนะนำให้พนักงานกด Discount Button เพื่อใช้ส่วนลดด้วยตนเอง ไม่ได้ยืนยันว่าตั้งเป็น Promotion อัตโนมัติได้", "steps": "เมื่อยอดถึงเงื่อนไข ให้เพิ่มสินค้าฟรีในบิลและใช้ Discount Button ลดราคาสินค้านั้นตามนโยบายร้าน", "keywords": "minimum spend,free item,promotion,manual discount"}, {"idx": 88, "category": "Payment & Billing", "subcategory": "Rounding", "question": "ตั้ง Rounding เฉพาะเงินสด โดยให้ช่องทางอื่นคิดทศนิยมเต็มได้อย่างไร", "answer": "เปิด Apply to Cash Only เพื่อให้ Rounding มีผลเฉพาะเงินสด ส่วน Card/QR/Bank Transfer ยังคงยอดทศนิยม 2 ตำแหน่ง; ตัวอย่างการปัดทีละ 0.05 ให้เลือก Round to the Nearest", "steps": "Settings > Rounding Settings > กำหนด Value 0.05 > Method: Round to the Nearest > เปิด Apply to Cash Only", "keywords": "rounding,apply to cash only,0.05,round to nearest,card payment"}, {"idx": 89, "category": "Integration & CRM", "subcategory": "API / Webhook", "question": "ต้องการ API Token, Webhook หรือเชื่อมข้อมูลกับระบบภายนอกควรติดต่อใคร", "answer": "คำขอ API Token หรือ Data Integration ต้องติดต่อ Development Team โดยตรง และ CC Support", "steps": "ส่งรายละเอียด Use Case, Events/Data ที่ต้องการ และ Flow Integration ไปที่ dev.support@eats365.com พร้อม CC support@eats365.com", "keywords": "API token,webhook,data integration,development team"}, {"idx": 90, "category": "Printer & Hardware", "subcategory": "Label Printer Connection", "question": "Label Printer ของ Eats365 รองรับการเชื่อมต่อแบบใด", "answer": "ปัจจุบัน Label Printer รองรับการเชื่อมต่อผ่าน LAN เท่านั้น", "steps": "เชื่อม Label Printer เข้ากับ Network ผ่าน LAN แล้วเพิ่มใน Printer Setup และ Test Print", "keywords": "label printer,LAN,network printer,sticker"}, {"idx": 91, "category": "General & Organization", "subcategory": "Kiosk UI Customization", "question": "ปรับสีและรูปภาพบนหน้า Self-Order Kiosk ให้ตรง Brand ได้หรือไม่", "answer": "สามารถปรับสีและอัปโหลดรูปภาพเพื่อให้สอดคล้องกับ Branding ได้ โดย Layout ปัจจุบันมีลักษณะใกล้เคียง BYOD", "steps": "เตรียม Brand Colors, Banner และภาพอ้างอิง แล้วตั้งค่าธีม/อัปโหลดภาพในส่วน Kiosk ที่รองรับ", "keywords": "self order kiosk,UI,branding,color,image,BYOD"}, {"idx": 92, "category": "General & Organization", "subcategory": "Kiosk Hardware Compatibility", "question": "ติดตั้ง Eats365 Kiosk APK บนเครื่อง Android 13 ของ Third Party ได้หรือไม่", "answer": "ไม่รองรับ Kiosk รุ่นอื่นสำหรับ Self-ordering ควรเสนอรุ่น Kiosk ที่ Eats365 กำหนด; Branded Online Store เปิดผ่าน Browser ได้แต่รับชำระแบบ Online ไม่สามารถเชื่อม EDC แบบ Offline ตาม Flow นี้", "steps": "เสนอ Designated Kiosk Model ของ Eats365; หากใช้ Branded Online Store ให้ตรวจ Online Payment Provider และ Timeline Integration ก่อนเสนอ", "keywords": "kiosk APK,Android 13,third party hardware,designated kiosk,online payment,EDC"}, {"idx": 93, "category": "Printer & Hardware", "subcategory": "Receipt Rounding", "question": "แสดงบรรทัดส่วนต่างจากการปัดเศษบน Receipt ได้อย่างไร", "answer": "เปิดตัวเลือก Print Rounding Difference on Receipt เพื่อให้ใบเสร็จแสดงรายละเอียดส่วนต่างจากการปัดเศษ", "steps": "Settings > Printing > Receipt Template > เปิด Print Rounding Difference on Receipt", "keywords": "receipt,rounding difference,receipt template,printing"}, {"idx": 94, "category": "Integration & CRM", "subcategory": "BYOD License", "question": "QR Ordering/BYOD ไม่ทำงานเพราะ License หมดอายุ ต้องแก้อย่างไร", "answer": "ตรวจสอบอายุ BYOD License; หลังต่ออายุ/ขยาย License ให้ Kill และ Relaunch POS, อัปเดต POS หากมี Version ใหม่ และทดสอบด้วย Table ใหม่", "steps": "ตรวจ License Status > ประสานต่ออายุ/อนุมัติ > Kill POS App > Relaunch > Update POS > Seat New Table > ทดสอบ QR/Printing", "keywords": "BYOD,QR ordering,license expired,relaunch,update POS,new table"}, {"idx": 95, "category": "General & Organization", "subcategory": "License Activation", "question": "ร้านที่ยังไม่มี Valid License ใช้งาน POS/BYOD ได้หรือไม่", "answer": "ยังใช้งานฟังก์ชันที่ต้องมี License ไม่ได้จนกว่าคำขอ License จะได้รับอนุมัติ", "steps": "ตรวจ License Request/Approval Status กับทีม Commercial/ผู้ดูแล แล้ว Activate ก่อนทดสอบระบบ", "keywords": "valid license,pending approval,activation,POS,BYOD"}, {"idx": 96, "category": "Core Module POS", "subcategory": "Bulk Edit / Available Date", "question": "แก้ Available Date ของหลาย Item พร้อมกันได้อย่างไร", "answer": "ดาวน์โหลด Edit Template จาก Portal แก้วันที่ในไฟล์ แล้วอัปโหลดกลับและ Submit", "steps": "Portal > Download Edit Template > แก้ Available Date > Upload > Submit > ตรวจรายการบน POS", "keywords": "available date,bulk edit,edit template,upload"}, {"idx": 97, "category": "Reports & Analytics", "subcategory": "e-Receipt Download", "question": "พิมพ์หรือดาวน์โหลด e-Receipt/Tax Invoice A4 จาก Merchant Portal ได้หรือไม่", "answer": "ฟีเจอร์ดาวน์โหลด e-Receipt ยังอยู่ระหว่างทยอย Deploy โดยเริ่มทดสอบในฮ่องกงก่อน ยังไม่ยืนยันวันเปิดใช้ในไทย", "steps": "ติดตามประกาศจาก Support และใช้วิธีปัจจุบันจนกว่าฟีเจอร์จะเปิดใน Region ไทย", "keywords": "e-receipt,tax invoice,A4,merchant portal,roadmap"}, {"idx": 98, "category": "Reports & Analytics", "subcategory": "Transaction Visibility", "question": "ลบหรือซ่อน Transaction เฉพาะ Tender Type จากฐานข้อมูลได้หรือไม่", "answer": "ไม่สามารถลบหรือซ่อนเฉพาะ Tender Type ได้ ระบบทำได้เพียงตั้ง Cut-off Time เพื่อซ่อน Transaction ทั้งหมดก่อนเวลาที่กำหนด", "steps": "กำหนด Cut-off Time เมื่อจำเป็นต้องซ่อนรายการทดสอบทั้งหมดก่อนช่วงใช้งานจริง", "keywords": "tender type,remove transaction,hide transaction,cut-off time,test transaction"}, {"idx": 99, "category": "General & Organization", "subcategory": "Browser / Cache", "question": "Merchant Portal แสดงสัญลักษณ์สกุลเงินซ้ำใน Chrome ควรแก้อย่างไร", "answer": "หากอุปกรณ์อื่นแสดงปกติ ให้ล้าง Cache และ Browsing Data ใน Chrome แล้ว Login ใหม่", "steps": "Chrome > Clear browsing data > ล้าง Cache/Browsing Data > ปิดและเปิด Browser > Login ใหม่", "keywords": "currency symbol,double symbol,Chrome,cache,browsing data"}, {"idx": 100, "category": "Core Module POS", "subcategory": "Order Confirmation", "question": "ปุ่ม Confirm ไม่แสดงตอนสร้าง Dine-in Order ต้องตั้งค่าอย่างไร", "answer": "ปิด Require Payment when Placing Order เพื่อให้ปุ่ม Confirm แสดง", "steps": "Settings > Restaurant/Order Settings > ปิด Require Payment when Placing Order > ทดสอบสร้าง Order ใหม่", "keywords": "confirm button,require payment,placing order,dine-in"}, {"idx": 101, "category": "Printer & Hardware", "subcategory": "Cash Drawer Trigger", "question": "Cash Drawer จะเปิดอัตโนมัติเมื่อใด และทำไมยังไม่เปิดหลัง Confirm Order", "answer": "Cash Drawer จะเปิดอัตโนมัติเมื่อ Order ถูกชำระด้วยเงินสด ไม่ได้เปิดเพียงเพราะ Confirm Order", "steps": "เลือก Cash Tender และชำระให้เสร็จ > ตรวจว่า Drawer เชื่อมกับ Printer/ตั้งค่าถูกต้อง > ทดสอบอีกครั้ง", "keywords": "cash drawer,cash payment,confirm order,drawer trigger"}, {"idx": 102, "category": "Printer & Hardware", "subcategory": "Takeout Confirmation Receipt", "question": "ปิดการพิมพ์ Takeout Confirmation Receipt หลัง Confirm Order ได้อย่างไร", "answer": "ปิด Print Takeout Confirmation Receipt เพื่อไม่ให้พิมพ์ Ticket ตอน Confirm Takeaway Order", "steps": "Settings > Printing > ปิด Print Takeout Confirmation Receipt > ทดสอบ Takeaway Order ใหม่", "keywords": "takeout confirmation receipt,printing,takeaway,confirm order"}, {"idx": 103, "category": "Core Module POS", "subcategory": "POS Role / Void Permission", "question": "กำหนดสิทธิ์ Void Order หรือ Cancel Item และบังคับใส่เหตุผลได้อย่างไร", "answer": "กำหนดสิทธิ์ Void Order และ Cancel Item ใน POS Role; ใช้ตัวเลือก Require Reason เมื่อต้องการให้ระบุเหตุผลทุกครั้ง", "steps": "Portal > Staff/POS Role > เปิดสิทธิ์ Void/Cancel ตามบทบาท > เปิด Require Reason > ทดสอบด้วยบัญชีพนักงาน", "keywords": "void order,cancel item,POS role,permission,reason"}, {"idx": 104, "category": "mPOS & Multi POS", "subcategory": "mPOS Receipt Printing", "question": "ไม่ต้องการให้ Order Confirmation Ticket จาก mPOS พิมพ์ที่ Cashier Printer ต้องตั้งค่าอย่างไร", "answer": "ปิดตัวเลือกพิมพ์ Receipt หลัง Order ถูกแก้ไขใน Receipt Setting แล้วทดสอบจาก mPOS", "steps": "Settings > Restaurant Settings > Printing > Receipt Setting > ปิด Receipt after order is edited > สร้าง Order จาก mPOS ทดสอบ", "keywords": "mPOS,confirmation ticket,cashier printer,receipt after order edited"}, {"idx": 105, "category": "mPOS & Multi POS", "subcategory": "Menu Image", "question": "mPOS แสดงรูปเมนูระดับ Item ได้หรือไม่", "answer": "ปัจจุบัน mPOS แสดงได้เฉพาะ Category ส่วนรูปของแต่ละ Item ยังไม่รองรับ", "steps": "จัด Category ให้ค้นหาง่ายและใช้ชื่อ Item ที่ชัดเจนบน mPOS", "keywords": "mPOS,menu photo,item image,category"}, {"idx": 106, "category": "Printer & Hardware", "subcategory": "Ticket Content", "question": "ซ่อนชื่อ Combo Item บน Ticket และเลขที่วงกลมบน Ticket หมายถึงอะไร", "answer": "ตัวเลขที่วงกลมคือ Order Number; หากต้องการซ่อนชื่อ Combo Item ให้ปิด Print Combo Item Name", "steps": "Restaurant Settings > Printing > Ticket Setting > ปิด Print Combo Item Name > Test Print", "keywords": "order number,combo item name,ticket setting,printing"}, {"idx": 107, "category": "Core Module POS", "subcategory": "Bulk Import / Product Name", "question": "แก้ชื่อเมนูหลายภาษาแบบ Bulk และแก้ปัญหา Submit Template ไม่ได้อย่างไร", "answer": "ใช้ Portal > Import Tools > Bulk Import for Product Name; ดาวน์โหลด Template ใหม่ แก้ด้วย Microsoft Excel โดยไม่เปลี่ยนคอลัมน์ที่เข้ารหัส แล้วอัปโหลดกลับ", "steps": "ดาวน์โหลด Template ใหม่ > เปิดใน Excel > แก้เฉพาะช่องที่อนุญาต > ห้ามแก้ Column C ที่เข้ารหัส > Upload/Submit", "keywords": "translation,product name,bulk import,Excel,encrypted column,Google Sheets"}, {"idx": 108, "category": "Printer & Hardware", "subcategory": "Kitchen Station Routing", "question": "กำหนด Item เดียวให้พิมพ์คนละ Kitchen Station ตาม Order Type ได้หรือไม่", "answer": "ไม่ได้ Item หนึ่งรายการกำหนดได้เพียง Kitchen Station เดียว และ Order Ticket จะพิมพ์ทุกรายการใน Order ไม่สามารถกรองตาม Station", "steps": "กำหนด Station ของ Item ใน Menu/Printer Setup และเปิด Kitchen Ticket ที่ Printer ที่ต้องการ", "keywords": "kitchen station,order type,order ticket,printer routing,item assignment"}, {"idx": 109, "category": "Payment & Billing", "subcategory": "Void Bill", "question": "ยกเลิก Transaction ทดสอบที่ชำระแล้วทำอย่างไร", "answer": "เปิด Bill แล้วเลือก Payment ที่มุมขวาบน จากนั้นเลือก Void Bill", "steps": "เปิดรายการ Transaction/Bill > Payment > Void Bill > ยืนยันตามสิทธิ์ผู้ใช้", "keywords": "test transaction,void bill,payment,cancel transaction"}, {"idx": 110, "category": "Printer & Hardware", "subcategory": "Till Control", "question": "เปิด Till Control เพื่อให้ Cash Drawer ทำงานตอนเริ่มวัน/เปิดกะได้อย่างไร", "answer": "เปิด Till Control ใน Printer Setup เพื่อให้ระบบควบคุม Cash Drawer ตาม Flow ของกะ", "steps": "POS Settings > Printer Setup > เปิด Till Control > ตรวจการเชื่อมต่อ Drawer > ทดสอบ Open Shift", "keywords": "till control,cash drawer,open shift,printer setup"}, {"idx": 111, "category": "Core Module POS", "subcategory": "Modifier", "question": "Shared Modifier ต่างจาก Modifier Template อย่างไร", "answer": "Shared Modifier เชื่อมใช้ร่วมหลาย Item และแก้จาก Modifier Preset แล้วอัปเดตทุก Item ที่ใช้; Modifier Template เมื่อนำเข้า Item แล้วจะกลายเป็น Modifier ปกติ แก้แยกได้ และการแก้ Template ภายหลังไม่ย้อนอัปเดต Item เดิม", "steps": "ใช้ Shared Modifier เมื่ออยากควบคุมส่วนกลาง; ใช้ Modifier Template เมื่อต้องการต้นแบบที่แต่ละ Item ปรับต่อได้", "keywords": "shared modifier,modifier template,modifier preset,menu item"}, {"idx": 112, "category": "Core Module POS", "subcategory": "Modifier Import", "question": "Modifier ที่นำเข้าจาก Excel ไม่แสดงใน Modifier Preset/Master ต้องทำอย่างไร", "answer": "Modifier ที่สร้างผ่าน Excel จะไม่ Sync ไปหน้า Modifier Preset อัตโนมัติ หลัง Import ให้เปิด Item แล้ว Save Modifier เป็น Modifier Template", "steps": "Portal > Menu Setup > Item > Edit > Modifier > Save as Modifier Template > ตรวจใน Modifier Master", "keywords": "modifier,Excel import,modifier preset,modifier master,save template"}, {"idx": 113, "category": "Printer & Hardware", "subcategory": "Close Shift / Report", "question": "ปิดกะแล้ว Cash Drawer ไม่เปิดและ Report ไม่พิมพ์ ต้องตรวจอะไร", "answer": "ยังไม่มีคำตอบยืนยันจาก Support ใน Export นี้", "steps": "รอ Support ตรวจ Video/Configuration; เก็บเวลาเกิดเหตุ เปิด Debug Mode และส่ง Diagnostics พร้อมตรวจ Printer Setup/Till Control", "keywords": "close shift,cash drawer,shift report,printer,diagnostics"}, {"idx": 114, "category": "Payment & Billing", "subcategory": "QR Code on Receipt", "question": "ตั้งให้ Payment QR แสดงบน Bill/Pre-receipt แต่ซ่อนบน Official Receipt ได้หรือไม่", "answer": "ยังไม่มีคำตอบยืนยันจาก Support ใน Export นี้", "steps": "รอ Support ระบุว่า Template ของ Bill และ Official Receipt แยกเงื่อนไข QR ได้หรือไม่ ก่อนนำไปตั้งค่าจริง", "keywords": "payment QR,bill,pre-receipt,official receipt,hide QR"}, {"idx": 115, "category": "Reports & Analytics", "subcategory": "Shift Summary", "question": "ตั้งให้ Shift Summary Report พิมพ์อัตโนมัติหลัง Close Shift ได้หรือไม่", "answer": "ยังไม่มีคำตอบยืนยันจาก Support ใน Export นี้", "steps": "รอ Support ยืนยันตัวเลือก Auto Print และตำแหน่งตั้งค่าที่ถูกต้อง", "keywords": "shift summary,auto print,close shift,report"}, {"idx": 116, "category": "Core Module POS", "subcategory": "Kiosk / Display Language", "question": "Kiosk Module และ POS ของ Eats365 รองรับการแสดงผลภาษาภาษารัสเซียหรือไม่", "answer": "ปัจจุบัน Kiosk และ POS ของ Eats365 รองรับเฉพาะภาษาแสดงผลตามมาตรฐานที่ระบบกำหนดไว้เท่านั้น ยังไม่รองรับภาษารัสเซีย", "steps": "ปัจจุบันยังไม่มีเมนูให้ผู้ใช้งานเพิ่มภาษาแสดงผลเองได้ หากต้องการภาษาใหม่ ต้องประสานงานทีม Technical เพื่อประเมินความเป็นไปได้", "keywords": "Kiosk, POS, Russian Language, Display Language, ภาษาแสดงผล, ภาษารัสเซีย"}, {"idx": 117, "category": "Reports & Analytics", "subcategory": "Sales Summary / Daily Closing Report", "question": "เมื่อ Export รายงานจาก Sales Summary Report แล้วไม่แสดงยอดภาษี (Tax/VAT) จะดูข้อมูลยอดขายที่รวมภาษีได้อย่างไร", "answer": "ให้ดูหรือ Export จากรายงาน Daily Closing Report แทน เนื่องจากใน Daily Closing Report จะมียอดภาษี (Tax Amount) รวมอยู่ด้วย", "steps": "เข้าไปที่ระบบรายงาน (Reports) > เลือก Daily Closing Report เพื่อดูและ Export ข้อมูลยอดขายที่มีการคำนวณและแสดงยอดภาษี", "keywords": "Sales Summary Report, Daily Closing Report, Tax, VAT, Export Report, ภาษี"}, {"idx": 118, "category": "Reports & Analytics", "subcategory": "Void & Returns Reports", "question": "ความแตกต่างระหว่าง Void Items Report, Void Report และ Returns Report คืออะไร และรายงานแต่ละประเภทใช้สำหรับกรณีใด", "answer": "1. Void Items Report: บันทึกการยกเลิกเฉพาะบางรายการ (Single Item) ออกจากออเดอร์ก่อนชำระเงิน\n2. Void Report: บันทึกการยกเลิกทั้งออเดอร์ (Entire Order) ก่อนชำระเงิน\n3. Returns Report: บันทึกการยกเลิก/คืนเงินทั้งบิล (Entire Bill) หลังจากชำระเงินเรียบร้อยแล้ว", "steps": "เข้าไปที่ระบบ Reports เพื่อตรวจสอบรายงานตามประเภทของการยกเลิกที่เกิดขึ้น", "keywords": "Void Items Report, Void Report, Returns Report, Cancel Order, Refund, ยกเลิกออเดอร์, คืนบิล"}, {"idx": 119, "category": "Core Module POS", "subcategory": "Order Status / Kitchen Workflow", "question": "สถานะออเดอร์ใน POS แต่ละสถานะมีความหมายอย่างไร และสามารถอัปเดตสถานะเป็น \"Served\" (เสิร์ฟแล้ว) ต่อรายการอาหารได้หรือไม่", "answer": "1. Receive: ออเดอร์ถูกส่งและรับเข้าระบบผ่าน POS แล้ว\n2. Processing: พิมพ์ Kitchen Ticket แล้ว และออเดอร์กำลังอยู่ระหว่างการปรุงในครัว\n3. Complete: ระบบจะอัปเดตสถานะเป็น Complete ให้อัตโนมัติหลังจากทำ End Day Closing (ปิดวัน) เรียบร้อยแล้ว\n4. ระบบ Eats365 ปัจจุบันยังไม่มีฟังก์ชันสำหรับอัปเดตหรือแสดงสถานะ \"Served\" (เสิร์ฟแล้ว) รายการอาหาร และแม้ว่าจะใช้งาน KDS หรือ Expedite Display ก็จะไม่แสดงหรือเปลี่ยนสถานะเป็น Served ใน Order List", "steps": "สถานะออเดอร์เป็นการทำงานอัตโนมัติตามกระบวนการของระบบ (System Default) ปัจจุบันยังไม่มีการตั้งค่าให้เปลี่ยนสถานะเป็น Served ได้", "keywords": "Order Status, Processing, Complete, Receive, Served, KDS, Expedite Display, End Day Closing"}, {"idx": 120, "category": "Printer & Hardware", "subcategory": "Printer Setup / Order Ticket", "question": "ต้องการปิดการพิมพ์ใบสรุปออเดอร์หัวบิล (Top Ticket / Order Ticket) ของครัว สามารถตั้งค่าได้อย่างไร และตั้งค่าที่ใด", "answer": "สามารถปิดได้โดยไปที่แอป POS บน iPad แล้วเข้าไปที่ Settings > Printer Setup > เลือกเครื่องพิมพ์ที่ต้องการ > เลือกปิด (Disable) ตัวเลือก \"Order Ticket\" โดยการตั้งค่านี้สามารถทำได้บนเครื่อง POS เท่านั้น", "steps": "เข้าแอป POS (iPad) > Settings > Printer Setup > เลือกเครื่องพิมพ์ที่ต้องการ > ปิดการใช้งาน (Disable) Order Ticket", "keywords": "Printer Setup, Order Ticket, Top Ticket, Disable Order Ticket, ครัว, พิมพ์หัวบิล"}, {"idx": 121, "category": "Printer & Hardware", "subcategory": "Ticket Format / Layout", "question": "สามารถปรับย้ายตำแหน่งจำนวนรายการ (Quantity) และเวลามาแสดงด้านหน้าชื่อเมนูบนใบ Order Ticket ได้หรือไม่", "answer": "ไม่สามารถทำได้ ค่าเริ่มต้นของระบบ (Default) จะแสดงจำนวนรายการ (Quantity) อยู่ทางด้านขวาของชื่อเมนู และปัจจุบันยังไม่มีรูปแบบ Template ที่รองรับการสลับจำนวนมาไว้ด้านหน้าชื่อเมนู", "steps": "เป็นข้อจำกัดการจัดวางของระบบ (System Default Layout) ไม่สามารถปรับแต่งตำแหน่งฟิลด์ได้", "keywords": "Order Ticket, Quantity Position, Ticket Template, Layout, ย้ายตำแหน่งจำนวน, ปรับแต่งตั๋ว"}, {"idx": 122, "category": "Printer & Hardware", "subcategory": "Kitchen Ticket / Ticket Numbering", "question": "ฟังก์ชันแสดงเลขลำดับใบ Ticket บนเครื่องพิมพ์ครัวทำงานอย่างไร และแสดงผลในรูปแบบใด", "answer": "เป็นฟังก์ชันสำหรับแสดงลำดับของใบพิมพ์ในกรณีที่ออเดอร์นั้นมีการพิมพ์ออกเป็นหลายใบ โดยระบบจะพิมพ์ระบุเลขหน้า เช่น หากมี 3 ใบ จะแสดงเป็น (1/3), (2/3), และ (3/3) ตามลำดับ เพื่อให้ในครัวตรวจสอบได้ง่ายว่าได้รับใบพิมพ์ครบทุกใบ", "steps": "เปิดใช้งานตัวเลือกการแสดงเลขลำดับใบพิมพ์ในการตั้งค่า Printer Setup ของเครื่องพิมพ์ครัวที่ต้องการ", "keywords": "Ticket Setting, Printer Setup, Ticket Numbering, ลำดับใบพิมพ์, ครัว, Kitchen Ticket"}, {"idx": 123, "category": "Reports & Analytics", "subcategory": "Daily Closing Report / End of Day", "question": "ทำไมร้านค้าไม่ได้รับรายงานปิดสิ้นวัน (End of Day Report) และสามารถกดทำ End of Day (Perform End of Day) ย้อนหลังได้หรือไม่", "answer": "หากร้านค้าไม่ได้กดทำ End of Day บนเครื่อง POS ระบบจะไม่ส่งรายงานปิดสิ้นวันให้ผู้ใช้ และไม่สามารถกดทำ End of Day ย้อนหลังได้", "steps": "กดทำ End of Day บนเครื่อง POS ตามรอบวันปกติเพื่อให้ระบบส่งรายงาน หากต้องการดูข้อมูลย้อนหลังของวันที่ไม่ได้ปิดสิ้นวัน ให้ไปที่เมนู POS Daily Closing Report > เลือก Print Daily Closing Report > กรองข้อมูลด้วย Date Range หรือ Time Period แล้วกด Export Excel", "keywords": "End of Day, EOD, Daily Closing Report, ปิดสิ้นวัน, ย้อนหลัง, Backdate"}, {"idx": 124, "category": "Reports & Analytics", "subcategory": "Daily Closing Report / Export Excel", "question": "ต้องการดึงและ Export รายงานปิดสิ้นวัน (Daily Closing Report / EOD) ย้อนหลังสำหรับช่วงวันที่ไม่ได้กดทำ End of Day บน POS ต้องทำอย่างไร", "answer": "สามารถดึงข้อมูลย้อนหลังได้ที่เมนู POS Daily Closing Report โดยเลือกกรองตามช่วงเวลา (Time Period) หรือช่วงวันที่ (Date Range) แล้วกด Export เป็นไฟล์ Excel ได้ แม้ในวันนั้นร้านจะไม่ได้กดปิดสิ้นวันก็ตาม", "steps": "1. ไปที่เมนู POS Daily Closing Report 2. เลือก Print Daily Closing Report 3. เลือกตัวกรอง Time Period (กรณีระบุ Start Day และ End Day เพื่อรวมข้อมูลทุกวันเป็นรายงานเดียว) หรือเลือก Date Range (กรณีกรองตามช่วงวันที่ต้องการดู) 4. กด Export Excel", "keywords": "Daily Closing Report, EOD, Export Excel, Date Range, Time Period, รายงานย้อนหลัง"}, {"idx": 125, "category": "Payment & Billing", "subcategory": "Cash Card / Gift Card & Settlement", "question": "ระบบรองรับการขาย Cash Card และรับชำระด้วย QR Payment โดยคำนวณค่า GP/Commission แยกตามร้านค้าและโอนเงิน (Settlement) คืนให้ร้านค้าแบบ T+1 อัตโนมัติหรือไม่", "answer": "ระบบไม่รองรับรูปแบบการคำนวณ GP และ Settlement แบบ T+1 ตามที่ถาม แต่มีฟีเจอร์ Gift Card (ต้องซื้อ License เพิ่มเติม) สำหรับให้ POS ขายบัตร Gift Card เพื่อให้ลูกค้านำไปใช้ชำระเงินในครั้งถัดไปได้", "steps": "หากต้องการใช้งานระบบบัตรของขวัญ/บัตรเติมเงิน ให้เปิดใช้งานฟีเจอร์ Gift Card (มีค่า License เพิ่มเติม) และตั้งค่าตามคู่มือการสร้างและจัดการ Gift Card", "keywords": "Cash Card, Gift Card, QR Payment, GP, Commission, Settlement, T+1"}, {"idx": 126, "category": "Core Module POS", "subcategory": "Discount / Promotion Setup", "question": "สามารถตั้งค่าอัตรา GP (Commission) แตกต่างกันตามรายการเมนูเฉพาะช่วงโปรโมชันได้หรือไม่ (เช่น GP ปกติของร้าน 30% แต่เมนู A ช่วงโปรโมชันคิด GP 5%)", "answer": "ระบบไม่มีการตั้งค่า GP แยกรายเมนูโดยตรง แต่สามารถใช้วิธีตั้งค่าส่วนลด (Discount) สำหรับเมนูที่ต้องการในวันที่กำหนดแทนได้", "steps": "ตั้งค่าส่วนลด (Discount) โดยผูกกับรายการเมนูที่ต้องการ (Specific Menu Items) และกำหนดช่วงวันที่ (Specific Dates) ที่จัดโปรโมชัน", "keywords": "GP, Commission, Menu Item, Promotion, Discount, ส่วนลดรายเมนู"}, {"idx": 127, "category": "Integration & CRM", "subcategory": "ERP Integration / API", "question": "Eats365 มี API สำหรับเชื่อมต่อ (Integrate) กับระบบ ERP หรือไม่", "answer": "รองรับ Eats365 มี API สำหรับเชื่อมต่อกับระบบ ERP", "steps": "ติดต่อทีม Eats365 เพื่อขอรายละเอียดเอกสาร API และการเปิดสิทธิ์เชื่อมต่อกับระบบ ERP", "keywords": "ERP, API, Integration, เชื่อมต่อระบบ"}, {"idx": 128, "category": "Core Module POS", "subcategory": "Menu Display / App Troubleshooting", "question": "เข้าสู่ระบบแอป Eats365 POS ด้วยบัญชีที่มีสิทธิ์ระดับ Manager แล้วไม่แสดงรายการเมนูในแอป ต้องแก้ไขอย่างไร", "answer": "ให้เปลี่ยนรูปแบบเวลาของอุปกรณ์เป็นแบบ 24 ชั่วโมง (24-hour format) แล้วรีสตาร์ตแอป POS หากยังไม่แสดงผลให้ลบแอปแล้วติดตั้งใหม่ (Reinstall) โดยผู้ใช้งานยืนยันว่าหลังดำเนินการและเข้าใช้งานบน iPad เมนูกลับมาแสดงผลตามปกติ", "steps": "1. ปิดแอป (Kill App) แล้วเข้าสู่ระบบใหม่ 2. ตั้งค่ารูปแบบเวลาของอุปกรณ์ (Time Format) เป็นแบบ 24 ชั่วโมง (24-hour format) แล้วเปิดแอป POS ใหม่ 3. หากยังไม่หาย ให้ลบแอปพลิเคชันแล้วติดตั้งใหม่ (Reinstall) และตรวจสอบการซิงค์ข้อมูลบน iPad", "keywords": "Menu Missing, ไม่เห็นเมนู, 24-hour format, MacBook, iPad, Reinstall, POS App"}, {"idx": 129, "category": "Core Module POS", "subcategory": "Menu Template / License", "question": "ทำไมร้านค้าไม่สามารถเข้าใช้งานฟังก์ชัน Menu Template บน Merchant Portal ได้ และฟีเจอร์นี้รวมอยู่ในแพ็กเกจมาตรฐาน (Standard Package) หรือไม่", "answer": "ร้านค้าไม่สามารถใช้งานได้เนื่องจากยังไม่ได้เปิดใช้งานโมดูล Menu Template โดยโมดูลนี้ไม่ได้รวมอยู่ในแพ็กเกจมาตรฐาน (Standard Package) ต้องซื้อ License เพิ่มเติม", "steps": "ติดต่อสั่งซื้อ Menu Template License เพิ่มเติม และให้ระบบเปิดใช้งานโมดูล Menu Template ให้กับร้านค้าที่ต้องการใช้", "keywords": "Menu Template, Merchant Portal, License, Standard Package, เทมเพลตเมนู"}, {"idx": 130, "category": "Core Module POS", "subcategory": "Menu Management / Bulk Import & Clone", "question": "สามารถ Export รายการเมนูจากสาขาหนึ่งไป Import เข้าอีกสาขาหนึ่ง หรือเลือก Clone เฉพาะบางหมวดหมู่/บางเมนูข้ามสาขาได้หรือไม่ และควรเพิ่มเมนูจำนวนมากอย่างไร", "answer": "ไม่สามารถนำไฟล์ที่ Export จากสาขา A ไป Import เข้าสาขา B โดยตรงได้ เนื่องจากแต่ละสาขามี Item Code เฉพาะของตนเอง และฟีเจอร์ Menu Template ไม่รองรับการเลือก Clone เฉพาะบางเมนู (หาก Clone จะเป็นการเขียนทับเมนูทั้งหมดของสาขาปลายทาง) การเพิ่มเมนูทำได้ 2 วิธีคือใช้ไฟล์ Import Tool ของสาขานั้น หรือเพิ่มด้วยตนเองผ่าน Merchant Portal", "steps": "หากต้องการเพิ่มเมนูเฉพาะบางส่วนในสาขาปลายทางโดยไม่ทับเมนูเดิม ให้ใช้เครื่องมือ Import Tool (กรอกข้อมูลลงไฟล์เทมเพลตนำเข้าสำหรับสาขานั้น) หรือสร้างรายการเมนูผ่าน Merchant Portal โดยตรง", "keywords": "Bulk Menu Import, Export Menu, Clone Menu, Menu Template, ข้ามสาขา, Item Code"}, {"idx": 131, "category": "Core Module POS", "subcategory": "QR Ordering / Static QR Code", "question": "หากร้านค้าต้องการใช้งาน Static QR Code สำหรับสแกนสั่งอาหาร ต้องเปิดใช้งานอย่างไร", "answer": "สามารถแจ้งทีม Eats365 Support พร้อมระบุรหัสร้านค้า (Merchant ID) และชื่อร้าน เพื่อให้ทีม Support เปิดใช้งาน Static QR Code บนระบบ Portal ให้ได้", "steps": "แจ้งรหัสร้านค้าและชื่อร้านค้าให้ทีม Eats365 Support ดำเนินการเปิดฟีเจอร์ Static QR บนระบบหลังบ้าน (Portal)", "keywords": "Static QR Code, QR Ordering, Enable Static QR, Portal"}, {"idx": 132, "category": "Core Module POS", "subcategory": "QR Ordering / Category Availability", "question": "เมื่อสแกน QR Code สั่งอาหารแล้วไม่แสดงรายการเมนู ต้องตรวจสอบและตั้งค่าที่ส่วนใด", "answer": "ต้องตรวจสอบการตั้งค่าวันและเวลาที่เปิดจำหน่ายของหมวดหมู่เมนู (Category Availability) ให้ครอบคลุมวันปัจจุบันที่สแกนใช้งาน", "steps": "เข้าไปตั้งค่าหมวดหมู่เมนู (Categories) แล้วปรับตารางวันและเวลาที่พร้อมจำหน่าย (Availability) ให้เปิดใช้งานตรงกับวันที่ต้องการแสดงผล", "keywords": "Scan QR, ไม่แสดงเมนู, Category Availability, วันเปิดขาย, QR Menu"}, {"idx": 133, "category": "Reports & Analytics", "subcategory": "Reconciliation Report / Payment Type Filter", "question": "ใน Merchant Portal สามารถกรองหรือดูรายการธุรกรรมแยกตามประเภทการชำระเงิน (เช่น เงินสด บัตรเครดิต หรือ QR) ใน Transaction Report ได้หรือไม่", "answer": "หากต้องการกรองหรือดูข้อมูลธุรกรรมแยกตามประเภทการชำระเงิน แนะนำให้ดูที่รายงาน Reconciliation Report บน Merchant Portal แทน Transaction Report", "steps": "เข้าไปที่ Merchant Portal > เมนู Reporting > เลือก Reconciliation Report เพื่อตรวจสอบและกรองยอดตามประเภทการชำระเงิน", "keywords": "Transaction Report, Reconciliation Report, Payment Type, ช่องทางการชำระเงิน, Merchant Portal"}, {"idx": 134, "category": "Core Module POS", "subcategory": "Hold & Fire / Course Management", "question": "เมื่อคีย์อาหารทุกคอร์ส (Starter, Main Course, Dessert) ของโต๊ะเดียวกันพร้อมกัน พนักงานสามารถกด Fire เพียงครั้งเดียวเพื่อปล่อยรายการ Main Course ทั้งหมดของโต๊ะนั้นเข้าครัวพร้อมกันได้หรือไม่", "answer": "รองรับ ระบบมีฟีเจอร์มาตรฐานสำหรับ Hold & Fire ที่ช่วยให้สามารถพักรายการอาหารและกดสั่งปล่อย (Fire) รายการอาหารพร้อมกันได้", "steps": "พักรายการอาหาร (Hold) ตอนรับออร์เดอร์ และกดปุ่ม Fire เพื่อปล่อยรายการอาหารของคอร์สหรือโต๊ะที่ต้องการส่งเข้าครัวพร้อมกันตามขั้นตอนในวิดีโอสาธิตของ Support", "keywords": "Hold and Fire, Hold, Fire, Course, ส่งอาหารพร้อมกัน, พักบิล"}, {"idx": 135, "category": "Payment & Billing", "subcategory": "Custom Tender / Owner Consumption", "question": "หากต้องการบันทึกรายการอาหารที่เจ้าของร้านรับประทานเอง (Owner Consumption) แยกต่างหากเพื่อตรวจสอบย้อนหลังได้ง่าย โดยที่ระบบยังคงตัดสต็อกตามปกติ ต้องตั้งค่าอย่างไร", "answer": "สามารถสร้างช่องทางการชำระเงินแบบกำหนดเอง (Custom Tender) ชื่อ \"Owner Consumption\" สำหรับใช้ปิดบิลรายการดังกล่าว เพื่อให้แยกติดตามยอดได้ง่ายและระบบยังคงบันทึกการขายเพื่อตัดสต็อกตามปกติ", "steps": "ไปที่การตั้งค่า Payment/Tender > สร้าง Custom Tender ใหม่ชื่อ \"Owner Consumption\" > เมื่อมีรายการของเจ้าของร้าน ให้คีย์ออร์เดอร์ตามปกติแล้วเลือกชำระเงินปิดบิลด้วย Tender \"Owner Consumption\"", "keywords": "Owner Consumption, Custom Tender, ตัดสต็อก, ปิดบิลเจ้าของร้าน"}, {"idx": 136, "category": "Core Module POS", "subcategory": "Discount Permission / Role Access", "question": "สามารถตั้งค่าส่วนลดที่อนุญาตให้เฉพาะระดับผู้จัดการ (Manager) เป็นผู้กดให้ส่วนลดได้เท่านั้น ต้องตั้งค่าอย่างไร", "answer": "รองรับ โดยสร้างส่วนลดภายใต้หมวดหมู่ เช่น \"Merchant Discount (Member)\" แล้วตั้งค่าเปิดสิทธิ์ (Permission) การใช้ส่วนลดนั้นเฉพาะให้กับบทบาท (POS Role) ของ Manager เท่านั้น", "steps": "1. สร้างส่วนลดภายใต้ประเภท เช่น \"Merchant Discount (Member)\" 2. ไปที่การตั้งค่าสิทธิ์พนักงาน (POS Role / Permissions) 3. เปิดสิทธิ์ \"Merchant Discount (Member)\" เฉพาะ Role ของ Manager เท่านั้น", "keywords": "Manager Discount, Merchant Discount, Permission, POS Role, สิทธิ์ส่วนลดผู้จัดการ"}, {"idx": 137, "category": "Core Module POS", "subcategory": "Staff Clock-in/out & Time Sheet", "question": "ระบบ Eats365 POS รองรับการลงเวลาเข้า-ออกงานของพนักงาน (Staff Clock-in/out) และการจัดการตารางเวลาทำงาน (Time Sheet) หรือไม่", "answer": "รองรับ พนักงานสามารถกด Clock-in และ Clock-out บนเครื่อง Eats365 POS ได้โดยตรง และผู้ดูแลสามารถจัดการข้อมูลเวลาทำงานผ่านระบบ Manage Staff Time Sheet", "steps": "ดำเนินการลงเวลาเข้า-ออกงานบนหน้าจอ POS และตรวจสอบหรือจัดการข้อมูลในเมนู Time Sheet ตามคู่มือของ Eats365", "keywords": "Clock-in, Clock-out, Time Sheet, ลงเวลาทำงาน, พนักงาน"}, {"idx": 138, "category": "Core Module POS", "subcategory": "License Management / BYOD License", "question": "หากต้องการตรวจสอบสถานะของ BYOD License บนระบบ ต้องดูที่เมนูใด และสามารถขอต่ออายุชั่วคราว (Temporary Extension) เพื่อไม่ให้ร้านค้าสะดุดระหว่างใช้งานได้หรือไม่", "answer": "สามารถตรวจสอบรายการ BYOD License ได้ภายใต้หัวข้อ Restaurant Licenses และสามารถแจ้งทีม Eats365 Support เพื่อขอขยายวันหมดอายุชั่วคราว (Temporary Extension) ให้กับร้านค้าได้", "steps": "1. เข้าไปตรวจสอบสถานะ BYOD License ได้ที่เมนู Restaurant Licenses 2. หากใกล้หมดอายุและต้องการต่ออายุชั่วคราว ให้แจ้งรหัสร้านค้ากับทีม Support เพื่อดำเนินการขยายเวลาให้", "keywords": "BYOD License, Restaurant Licenses, Temporary Extension, ต่ออายุ License"}, {"idx": 139, "category": "Core Module POS", "subcategory": "Menu Setup / Default Hold Course", "question": "สามารถตั้งค่ารายการเมนูให้เข้าสู่สถานะพักรายการ (Hold) เป็นค่าเริ่มต้น (Default) แทนการส่งเข้าครัวทันที (Instant) ได้หรือไม่", "answer": "สามารถทำได้ โดยตั้งค่า Course ของรายการเมนู (Item's Course) ให้เป็นสถานะ Hold", "steps": "เข้าไปที่การตั้งค่ารายการเมนู (Item Settings) > กำหนดค่าในช่อง Course ของเมนูนั้นให้เป็น Hold", "keywords": "Default Hold, Instant, Item Course, Hold and Fire, ตั้งค่าเมนู Hold"}, {"idx": 140, "category": "Core Module POS", "subcategory": "Receipt Configuration / Tax ID", "question": "หากกรอกเลขประจำตัวผู้เสียภาษี (Tax ID) ในข้อมูลร้านค้าแล้ว เลข Tax ID จะแสดงบนใบเสร็จ (Receipt) โดยอัตโนมัติหรือไม่", "answer": "เมื่อเปิดใช้งาน (Enable) การแสดงผล Tax ID และอัปเดตการเปลี่ยนแปลง (Sync/Update) บนเครื่อง POS เรียบร้อยแล้ว เลข Tax ID จะถูกพิมพ์ลงบนใบเสร็จโดยอัตโนมัติ", "steps": "1. กรอกเลข Tax ID และเปิดใช้งาน (Enable) การแสดง Tax ID ในตั้งค่าร้านค้า/ใบเสร็จ 2. กดอัปเดตข้อมูล (Update/Sync) บนเครื่อง POS เพื่อให้ค่าใหม่มีผลตอนพิมพ์ใบเสร็จ", "keywords": "Tax ID, Receipt, เลขประจำตัวผู้เสียภาษี, ใบเสร็จ, Restaurant Information"}, {"idx": 141, "category": "Core Module POS", "subcategory": "Tax Setup / Edit Tax at Checkout", "question": "เปิดตั้งค่า Edit Tax / Edit Tax at Checkout แล้ว แต่ทำไมปุ่มเปิด-ปิดภาษี (Tax Switch On/Off) จึงยังไม่แสดงตอนคิดเงิน", "answer": "สาเหตุเกิดจากยังไม่ได้ผูกกลุ่มภาษี (Tax Group) เข้ากับรายการสินค้า/เมนู (Items) จึงทำให้ตัวเลือกเปิด-ปิดภาษีไม่แสดงผล", "steps": "1. เปิดใช้งาน Edit Tax / Edit Tax at Checkout 2. ไปที่การตั้งค่า Tax Group หรือรายการเมนู แล้วผูก Tax Group เข้ากับรายการเมนู (Items) ที่เกี่ยวข้อง 3. อัปเดตข้อมูลบน POS แล้วทดสอบหน้าชำระเงินอีกครั้ง", "keywords": "Edit Tax, Edit Tax at Checkout, Tax Switch, Tax Group, ปุ่มเปิดปิดภาษี"}, {"idx": 142, "category": "Core Module POS", "subcategory": "Discount Setup / Receipt Name", "question": "เมื่อสร้างส่วนลดร้านค้า (Merchant Discount) ในช่อง Receipt Name ควรกรอกข้อมูลอย่างไร และสามารถตั้งให้เหมือนกับชื่อส่วนลด (Discount Name) ได้หรือไม่", "answer": "สามารถกรอกชื่อส่วนลดที่ต้องการให้แสดงบนใบเสร็จได้เลย และสามารถตั้งชื่อในช่อง Receipt Name ให้เหมือนกับชื่อส่วนลด (Discount Name) ได้โดยไม่มีปัญหา", "steps": "ในหน้าสร้างหรือแก้ไข Merchant Discount ให้กรอกชื่อที่ต้องการแสดงบนใบเสร็จลงในช่อง Receipt Name (สามารถใช้ชื่อเดียวกับ Discount Name ได้) แล้วกดบันทึก", "keywords": "Merchant Discount, Receipt Name, Discount Name, ชื่อส่วนลดบนใบเสร็จ"}, {"idx": 143, "category": "Core Module POS", "subcategory": "ความรู้ทั่วไป", "question": "ล้างหรือซ่อนข้อมูล / Clear Sales Data ทดลองก่อน Go-live ต้องทำอย่างไร", "answer": "ต้อง Close Shift และทำ EOD ก่อนเริ่มขายจริง; Support ตั้ง Cutoff เพื่อซ่อนข้อมูลทดลองได้ถึง EOD ล่าสุด", "steps": "", "keywords": ""}, {"idx": 144, "category": "Core Module POS", "subcategory": "ความรู้ทั่วไป", "question": "Auto (Rule Based) ใน Price Tier คืออะไร", "answer": "ตัวเลือก Auto (Rule Based) ลบไม่ได้ (ไม่สามารถปิดหรือเอาออกได้); จะดึงจาก Rule ที่เราได้ทำการตั้งค่าไว้สำหรับ Price Tier นั้นๆ (Rule จะเอาเวลาที่ตั้งไว้ว่าใช้งาน Price Tier นั้น ที่ช่วงเวลาไหน และ apply ให้กับหน้า POS หลักที่กำลังจะสั่งของ Based on ช่วงเวลาทันที)", "steps": "", "keywords": ""}, {"idx": 145, "category": "Core Module POS", "subcategory": "การ Setting", "question": "วิธีการ set ให้ ตั๋วเมนู ออกทีละเมนูใน 1 ใบ ที่ปริ้นที่ครัว ( ในกรณีที่ 1 โต๊ะ สั่งหลายเมนู)", "answer": "ตั้งค่า Merchant portal >> Restaurant setting >> Pringting >> Ticket printing >> เปิด toggle  \"Print Separate Ticket for Each Single Item\"", "steps": "", "keywords": ""}, {"idx": 146, "category": "Core Module POS", "subcategory": "การ Setting", "question": "วิธีการ set ให้ ตั๋วเมนู ออกทีละเมนูใน 1 ใบ ที่ปริ้นตามแต่ละ station ที่ต้องเตรียมมาประกอบร่างกัน (ในกรณีที่เป็นเมนู Combo ประกอบร่างกัน จากหลายๆ station)", "answer": "In Eats365 POS:\n1. Log in to the Eats365 POS.\n2. Settings at the top left.\n3. tap Printing >>> Ticket Printing.\n4. Turn on the option for \"Print Separate Ticket for Each Single Item\". This will ensure that single items from the same kitchen station are printed separately.\n\nIn Merchant Portal:\n1. Merchant Portal.\n2. Restaurant Settings >> Printing.\n3. Ticket Printing tab.\n4. Enable the option for \"Print Separate Ticket for Each Single Item\".", "steps": "", "keywords": ""}, {"idx": 147, "category": "Core Module POS", "subcategory": "ความรู้ทั่วไป", "question": "การ sync กับ Food Market Hub ทำงานอย่างไร", "answer": "Sync ทุกๆชั่วโมง ** ไม่ได้ขึ้นอยู่กับว่าต้องปิด shift หรือ end of day", "steps": "", "keywords": ""}, {"idx": 148, "category": "Core Module POS", "subcategory": "การ Setting", "question": "การ key Order จาก Delivery Platform ต่างๆทำอย่างไร", "answer": "ระบบจะให้ตั้ง Tier Pricing สำรหับแต่ละ Platform ไว้ก่อนได้เลย แล้วเวลาออเดอร์จาก platform นั้นๆเข้า จะให้เลือก Pricing ที่ตั้งไว้ก่อนของ Platform นั้นๆ และคีย์ออเดอร์ปกติโดยให้เลือกช่องทางการชำระ ตาม Platform ที่ออเดอร์เข้ามา", "steps": "", "keywords": ""}, {"idx": 149, "category": "Core Module POS", "subcategory": "ความรู้ทั่วไป", "question": "Pay out - Pay in", "answer": "Pay out  / จ่ายเงินออก = เวลาใช้ pitty cash ออกไป เช่น หยิบไปจ่ายน้ำแข็ง\nPay in + / จ่ายเงิน + = เติมเงินเข้ามาในลิ้นชัก\nDrop - / ลดลง = ย้ายเงินไปเก็บที่อื่น\npurchase - / การซื้อ - = ใช้ไปซื้ออะไรที่เป็น asset ให้กับร้าน ซื้อม้วนกระดาษปริ้นเตอร์", "steps": "", "keywords": ""}, {"idx": 150, "category": "Core Module POS", "subcategory": "ความรู้ทั่วไป, การ Setting", "question": "สามารถออกใบกำกับภาษีเต็มรูป ได้แบบเดียว", "answer": "1. การออกใบกำกับภาษีขณะทำการชำระเงิน (At Checkout) POS\n• ในหน้าจอรายการสั่งซื้อ (Checkout) ก่อนกดชำระเงิน ให้เลือกปุ่ม Tax Invoice หรือ Customer Tax Profile\n• กรอกข้อมูลภาษีของลูกค้าให้ครบถ้วน ได้แก่ เลขประจำตัวผู้เสียภาษี/เลขบัตรประชาชน 13 หลัก, ชื่อบุคคล/ชื่อบริษัท, ที่อยู่ และสาขา (สำนักงานใหญ่ หรือ รหัสสาขา)\n• กด Save หรือ Confirm เพื่อบันทึกข้อมูล\n• ดำเนินการชำระเงินตามปกติ ระบบจะสั่งพิมพ์ใบกำกับภาษีเต็มรูปแบบออกมาพร้อมใบเสร็จทันที", "steps": "", "keywords": ""}, {"idx": 151, "category": "Core Module POS", "subcategory": "ความรู้ทั่วไป", "question": "เมือสร้างเมนูแล้ว (item) จะไม่สามารถเปลี่ยน Category ของสินค้าตัวนั้นได้", "answer": "ต้องทำการ Clone (สร้างใหม่) แล้วลบตัวเก่า", "steps": "", "keywords": ""}, {"idx": 152, "category": "Core Module POS", "subcategory": "การ Setting", "question": "***** การ Set up tier pricing สำหรับ delivery ช่องทางอื่นๆ ต้องใช้ custom rule ไม่อิง period ใดใดเลย **** เพราะไม่อย่างนั้น ระบบจะดึงเวลา มาเป็นสำหรับคีย์ออเดอร์สินค้าในช่องทางปกติด้วย", "answer": "เคสไดม่อน share", "steps": "", "keywords": ""}, {"idx": 153, "category": "Expedite, KDS & Kiosk", "subcategory": "ความรู้ทั่วไป", "question": "มีระบบที่ ตั๋ว ออกจากครัว เพื่อให้พนักงาน check ว่าเมนูนี้ได้เสริฟเรียบร้อยแล้ว", "answer": "ของEAT365 จะเรียกว่าเป็น module เสริมค่ะ Expedite module \n\nระบบเดิมของลูกค้า ครัวต้องปริ้นตั๋วบาร์โค้ด ➡️ เด็กเสิร์ฟถือไปส่ง ➡️ แล้วเอาตั๋วมาสแกนที่เครื่อง... ซึ่งเสี่ยงต่อการกระดาษหาย เครื่องยิงบาร์โค้ดพัง และสิ้นเปลืองค่ากระดาษ\n\nแต่ถ้าเปลี่ยนมาใช้ Eats365 Expedite Display ทุกอย่างจะเปลี่ยนเป็นระบบ Touch Screen 100% ไร้กระดาษ ครัวเสร็จระบบเด้งมาบอก คนรันอาหารตรวจเช็กแล้วใช้นิ้วแตะเคลียร์บนหน้าจอ (หรือบนแอปมือถือพนักงาน) ได้ทันที ข้อมูลตัดเรียลไทม์ แม่นยำกว่า ประหยัดต้นทุน และทันสมัยกว่าระบบสแกนบาร์โค้ดแบบเดิม", "steps": "", "keywords": ""}, {"idx": 154, "category": "Expedite, KDS & Kiosk", "subcategory": "ความรู้ทั่วไป", "question": "เมื่อรับออเดอร์จากลูกค้าแล้ว กดส่งเข้าครัว \nครัวจะเห็นออเดอร์จากอุปกรณ์ใด\n\nเมื่อครัวส่งอาหารมาพร้อมเสริฟ เชคเกอร์จะทราบได้อย่างไรว่าออเดอนี้คือของโต้ะไหน ก่อนจะมีการติ๊กเสริฟ", "answer": "1. เมื่อพนักงานกดสั่งอาหารและส่งเข้าครัว (Send to Kitchen) ออเดอร์จะถูกส่งไปยังอุปกรณ์ฝั่งครัวตามที่ร้านค้าได้ตั้งค่าเอาไว้ ได้แก่:\n\n1.1 Kitchen Display System (KDS): หน้าจอแสดงผลในครัว (ส่วนใหญ่ใช้ iPad) โดยออเดอร์จะแยกไปปรากฏตามสเตชันอาหารที่เกี่ยวข้องโดยอัตโนมัติ เช่น สเตชันของทอด สเตชันเครื่องดื่ม หรือสเตชันเบเกอรี่\n\n1.2. Kitchen Printer: เครื่องพิมพ์ใบงานในครัว (สำหรับร้านที่ต้องการพิมพ์ตั๋วอาหารเป็นกระดาษควบคู่ไปด้วย หรือร้านที่ยังใช้ระบบกระดาษในครัว)\n\n2. เชคเกอร์จะทราบได้อย่างไรว่าออเดอร์นี้คือของโต๊ะไหน ก่อนจะมีการติ๊กเสิร์ฟ?\nบนหน้าจอของ Eats365 Expedite Display จะทำหน้าที่เป็นศูนย์กลางรวบรวมสถานะอาหารจากทุกสเตชันในครัวมาไว้ที่จุดเดียว เพื่อให้เชคเกอร์ (Expediter) บริหารจัดการได้ง่าย โดยเชคเกอร์จะทราบเลขโต๊ะได้อย่างชัดเจนจากระบบดังนี้ครับ:\n\n2.1 การแสดงเลขโต๊ะบนหัวตั๋ว (Order Card Header): บนหน้าจอ Expedite Display ออเดอร์จะถูกจัดเรียงเป็น \"การ์ดตั๋วอาหารดิจิทัล\" ซึ่งใน แถบส่วนบนสุดของตั๋วแต่ละใบ จะระบุ หมายเลขโต๊ะ (Table Number) เช่น Table 04 หรือ T12 พร้อมประเภทการบริการ (เช่น Dine-in, Takeout) และหมายเลขออเดอร์ไว้อย่างชัดเจนเสมอ\n\n2.2 ระบบเช็กสถานะอาหารรายเมนู (Item-by-Item Status): เมื่อพ่อครัวทำอาหารจานนั้นเสร็จแล้วกด \"Bump\" (ยืนยันว่าทำเสร็จ) จากจอ KDS ในครัว รายการอาหารนั้นบนจอ Expedite Display ของเชคเกอร์จะเปลี่ยนสถานะเป็น \"Ready\" (พร้อมเสิร์ฟ) ทันที (หน้าจอจะเปลี่ยนสีไฮไลต์ หรือมีเครื่องหมายถูกขึ้นสีเขียว)\n\n2.3 กระบวนการตรวจสอบก่อนเสิร์ฟ: เมื่ออาหารจากครัวมาถึงจุดส่งอาหาร เชคเกอร์เพียงแค่มองดูหน้าจอ Expedite Display เพื่อจับคู่เมนูอาหารที่เสร็จแล้วกับ หมายเลขโต๊ะที่ปรากฏอยู่บนหัวตั๋วนั้นๆ เมื่อตรวจสอบความถูกต้องและจัดจานเรียบร้อยแล้ว เชคเกอร์จึงจะกดติ๊กเสิร์ฟ (Bump) บนจอ Expedite Display เพื่อตัดออเดอร์นั้นออกจากหน้าจอไปครับ\n\nสรุป: เชคเกอร์สามารถรู้เลขโต๊ะได้ทันทีจากการดู หมายเลขโต๊ะที่แสดงอยู่บนหัวตั๋วออเดอร์ดิจิทัลบนหน้าจอ Expedite Display โดยระบบจะผูกข้อมูลเมนูอาหารและเลขโต๊ะไว้ด้วยกันอย่างแม่นยำตั้งแต่ตอนรับออเดอร์แล้วครับ", "steps": "", "keywords": ""}, {"idx": 155, "category": "Expedite, KDS & Kiosk", "subcategory": "ความรู้ทั่วไป", "question": "หากระบบคือ touch screen แปลว่าทางต้องใช้อุปกรณ์แบบใดบ้างในแต่ละจุดบริการ \nต้องใช้ computer pc ที่เป็น touchscreen หรือ pos เฉพาะตัว", "answer": "อุปกรณ์หน้าจอสัมผัส (Touchscreen) ทั้งหมดที่ใช้ในร้าน จะใช้ Apple iPad เป็นหลัก\n\n1. จุดแคชเชียร์ / รับออเดอร์หน้าร้าน (POS Station) : ใช้รับออเดอร์หน้าร้าน, พิมพ์ใบเสร็จ, รับชำระเงิน และส่งคำสั่งซื้อกระจายไปในครัว\n\n• iPad (แนะนำหน้าจอ 10.2\" ขึ้นไป)\n\n• ขาตั้ง iPad (iPad Stand)\n\n• เครื่องพิมพ์ใบเสร็จ (Receipt Printer)\n\n• ลิ้นชักเก็บเงิน (Cash Drawer)\n\n2. จุดในครัว (Kitchen Station) : แสดงรายการอาหารที่ต้องทำแยกตามสเตชัน พ่อครัวสามารถกด Bump (ทำเสร็จ) เพื่อส่งสัญญาณไปจุดเชคเกอร์\n\n• iPad (สำหรับระบบไร้กระดาษ) (KDS module เสริม)\n\n• เครื่องพิมพ์ในครัว (Kitchen Printer)\n\n(สามารถเลือกใช้ร่วมกันหรืออย่างใดอย่างหนึ่งได้)\n\n3. จุดเชคเกอร์ / ตรวจสอบอาหาร (Expediter Station) : รวมออเดอร์ที่เสร็จจากทุกครัวมาไว้ที่จุดเดียว ให้เชคเกอร์ตรวจสอบความถูกต้อง ตรวจเลขโต๊ะ และกดติ๊กเสิร์ฟ\n\n• iPad (แนะนำหน้าจอใหญ่เพื่อให้เห็นชัด)\n\n• ขาตั้งหรือตัวยึด iPad", "steps": "", "keywords": ""}, {"idx": 156, "category": "Payment & Billing", "subcategory": "ความรู้ทั่วไป", "question": "จะจัดการ stock ที่ถูก viod บิล ตีคืนเข้าครัวอย่างไร ? POS ไม่ได้ตัดยอดนั้น แต่มีการตีเป็น waste ในฝั่ง stock", "answer": "วิธีที่ 1: เปลี่ยนจากกด \"Void\" เป็นการกด \"ส่วนลด 100% ของเมนูที่ต้องการตีคืน (เหตุผล: complain หรือ ตีคืน)\nวิธีนี้แก้ปัญหาที่ต้นเหตุโดยใช้เงื่อนไขของระบบให้เป็นประโยชน์ แทนที่จะลบรายการนั้นทิ้งไปเลย ให้เปลี่ยนสถานะใน POS\n\nวิธีปฏิบัติ: เมื่อทำเมนูผิด/ลูกค้าขอยกเลิกหลังจากทำแล้ว ห้ามกด Void ลบรายการ แต่ให้ทำ \"ส่วนลด 100% (100% Discount)\" \n\n- การตัดสต็อกใน FMH: เนื่องจากเมนูนี้ยังมีตัวตนอยู่ในบิล (แค่ราคาเป็น 0) ระบบ POS จะยังคงส่งข้อมูลจำนวนเมนู (Quantity = 1) ไปที่ FMH ทำให้ FMH สามารถตัดสต็อกวัตถุดิบตาม Recipe ได้ตามปกติ\n\nข้อดี: สต็อกตัดอัตโนมัติ ไม่ต้องคีย์มือเพิ่ม, แทรกยอด Waste ได้จากรายงานส่วนลดของ POS\n\nข้อควรระวัง: ต้องคุยกับฝ่ายบัญชี/การเงินล่วงหน้า เพราะยอดขายรวม (Gross Sale) จะสูงขึ้น แต่จะถูกหักออกด้วยส่วนลด (Discount) ทำให้ยอดขายสุทธิ (Net Sale) ตรงกับความเป็นจริง\n\nวิธีที่ 2: Track จาก Variance Report (ทำรายสัปดาห์ / รายเดือน)\nใช้ข้อมูล Variance Report ที่มีอยู่ ใน ระบบ FMH แล้วมาเป็นตัวตรวจจับ\n\nวิธีปฏิบัติ: ปล่อยให้ระบบ Void ไปตามปกติ ซึ่งจะทำให้เกิด \"ส่วนต่าง (Variance)\" ในรายงานตอนสิ้นสัปดาห์หรือสิ้นเดือน (สต็อกจริงจะน้อยกว่าสต็อกในระบบ เพราะระบบไม่ได้ตัดสต็อกตอน Void)\n\nวิธีตรวจสอบ: นำยอด Variance ของวัตถุดิบแต่ละตัว มา Reconcile (กระทบยอด) กับ POS Void Report\n\nตัวอย่าง: สต็อกเนื้อหมูหายไป (Variance) 5 กิโลกรัม เมื่อไปดู Void Report พบว่ามีการยกเลิกเมนูสเต็กหมูไป 20 จาน (คิดเป็นเนื้อหมู 4 กิโลกรัม) แสดงว่า 4 กิโลกรัมนั้นคือ Waste ที่แท้จริง ส่วนอีก 1 กิโลกรัมที่เหลือคือสูญหายจริง/ตักเกิน\n\nการบันทึก: ทำการ Stock Adjustment (ปรับปรุงสต็อก) ใน FMH สิ้นเดือน โดยระบุหมายเหตุว่า \"ปรับยอดตามรายงาน Void และ Variance\"", "steps": "", "keywords": ""}, {"idx": 157, "category": "Printer & Hardware", "subcategory": "ความรู้ทั่วไป", "question": "อุปกรณ์โครงข่าย (Network) ที่จำเป็น (ขาดไม่ได้)", "answer": "1. Wi-Fi Router ประสิทธิภาพสูง: แนะนำมาตรฐาน Wi-Fi 5 (802.11 ac) ขึ้นไป เพื่อความเสถียรในการส่งข้อมูล\n\n2. iPad Ethernet Adapter (แนะนำ): สำหรับจุดที่ตั้งอยู่กับที่ เช่น แคชเชียร์ การต่อสาย LAN เข้า iPad โดยตรงผ่านอะแดปเตอร์จะช่วยลดปัญหาคลื่นกวนและทำให้ระบบนิ่งที่สุดครับ\n\n3. สาย LAN (Network Cables): เพื่อเชื่อมต่อเราเตอร์ไปยังเครื่องพิมพ์และตัวแปลงสัญญาณของ iPad\n\n💡 ข้อแนะนำเพิ่มเติมจากศูนย์ช่วยเหลือ: ตัวแอปพลิเคชันของ Eats365 รองรับตั้งแต่ iPadOS 13.0 ขึ้นไป ดังนั้นคุณสามารถใช้ iPad รุ่นมาตรฐาน (เช่น iPad Gen 9 หรือ Gen 10) หรือ iPad Air ก็เพียงพอต่อการใช้งานในร้านอาหารแล้วครับ ไม่จำเป็นต้องใช้รุ่น Pro ตัวท็อปให้เปลืองงบประมาณครับ", "steps": "", "keywords": ""}, {"idx": 158, "category": "Printer & Hardware", "subcategory": "ความรู้ทั่วไป", "question": "Printer ส่งเสียงทุกครั้งเวลาที่มีการพิมพ์ เสียงดัง ลูกค้ารำคาญ วิธีปิดเสียง", "answer": "การปิดเสียงเครื่องปริ้นเตอร์ XPrinter C300H \n\n- ให้คว่ำเครื่องลง\n- เปิดฝาเล็กๆใต้เครื่อง\n- จะมีสวิตซ์ 8 ตัว / ให้ปิดตัวที่ 2 ให้เป็น OFF Position\n- ปิดเปิดเครื่องใหม่", "steps": "", "keywords": ""}, {"idx": 159, "category": "Printer & Hardware", "subcategory": "การ Setting", "question": "Setting ปิดไม่ให้ใบเสร็จ ปริ้นออกมาทุกครั้งที่มี", "answer": "ไปที่ POS >> Printing\nปิด toggle พิมพ์ใบเสร็จยืนยันการทานที่ร้าน , พิมพ์ใบเสร็จยืนยันการซื้อกลับบ้าน , พิมพ์ใบเสร็จหลังจากออร์เดอร์ถูกแก้ไข", "steps": "", "keywords": ""}, {"idx": 160, "category": "Reports & Analytics", "subcategory": "Reports", "question": "รายงาน sale by ช่องทางการชำระเงิน", "answer": "Merchant portal >> Reporting >> Operation >> Reconcillation report", "steps": "", "keywords": ""}, {"idx": 161, "category": "Reports & Analytics", "subcategory": "Reports", "question": "รายงานเมนุขายดีตามช่วงเวลา เช่น 08.00-10.30 ขายอะไรดีบ้าง เพื่อจะได้วางแผนจำนวนคนทำงานแต่ละแผนก", "answer": "Merchant portal >> Reporting >> Sales >> Sales by item >> เลือกช่วงเวลา Time Period", "steps": "", "keywords": ""}, {"idx": 162, "category": "Reports & Analytics", "subcategory": "Reports", "question": "รายงานการขายเมนูต่างๆ เมนูอะไรขายได้เท่าไรบ้าง แสดงผลเป็นจำนวนออเดอร์ และยอดขายกี่บาท ของเมนูนั้นๆ เพื่อจะได้ทำการถอดเมนู หากขายไม่ดี", "answer": "Merchant portal >> Reporting >> Sales >> Sales by item >> Sales by Item (Table View)", "steps": "", "keywords": ""}, {"idx": 163, "category": "mPOS & Multi POS", "subcategory": "ความรู้ทั่วไป", "question": "รองรับ device ไหนบ้าง", "answer": "IOS and Andriod \n- support Sunmi device : SUNMI V2s.", "steps": "", "keywords": ""}, {"idx": 164, "category": "mPOS & Multi POS", "subcategory": "ความรู้ทั่วไป", "question": "เครื่อง mPOS รองรับกี่ user", "answer": "1 เครื่อง สำหรับ 1 Device 1 Licence แต่จำนวน user ที่ใช้ในเครื่องไม่จำกัด", "steps": "", "keywords": ""}, {"idx": 165, "category": "mPOS & Multi POS", "subcategory": "ความรู้ทั่วไป", "question": "การจดทะเบียน POS หากว่าลูกค้าซื้อ 1 lisence Merchant ID แต่ซื้อ multi pos / mPOS ด้วย ให้ลูกค้าจดทะเบียนกับสรรพกร 1 POS ID", "answer": "**** ถ้าลูกค้าดันไปจดทะเบียน POS ID ตามจำนวน เครื่อง นั่นแสดงว่าผิดจ้า ควรจะต้องให้ลูกค้า จด POS ID main หลัก สำหรับการซื้อ Lisence 1 ร้านเท่านั้น Terminal รับยอดขายไม่รับเป็น POS", "steps": "", "keywords": ""}, {"idx": 166, "category": "mPOS & Multi POS", "subcategory": "ความรู้ทั่วไป", "question": "mPOS(Andriod) ที่ใช้ Funtion Printing ในตัวได้ ไม่ได้ทำได้ทุกรุ่น แม้ว่าอุปกรณ์จะเป็น Andriod และมี Printer ติดก้ตาม", "answer": "เครื่อง mPOS ที่รองรับการ print จะมีแค่ 2 รุ่นเท่านั้น *21-08-26*\n\n- SUNMI: V2s\n- iMin: Swift 2 Pro", "steps": "", "keywords": ""}];
+
+    // ==========================================
+    // 2. SECONDARY KNOWLEDGE BASE (FROM OFFICIAL EATS365 SUPPORT)
+    // ==========================================
+    const OFFICIAL_EATS365_KB = [{"topic": "วิธีสร้างและจัดการ Sales Categories (หมวดหมู่การขายสำหรับรายงานบัญชี)", "keywords": "sales categories sales category หมวดหมู่การขาย สร้าง sales categories ตั้งค่า sales categories แยกหมวดหมู่ยอดขาย food beverage alcohol", "answer": "Sales Categories (หมวดหมู่การขาย) ใน Eats365 ใช้สำหรับจัดกลุ่มรายการอาหารเพื่อดูสรุปยอดขายแยกตามหมวดหมู่ทางบัญชีในรายงาน (เช่น Food, Beverage, Alcohol, Merchandise) โดยแยกอิสระจาก Menu Category ที่แสดงบนหน้าจอสั่งอาหาร", "steps": "1. เข้าสู่ระบบ **Merchant Portal** (หลังบ้าน)\n2. ไปที่เมนูด้านซ้ายเลือก **Menu Setup** > เลือก **Sales Categories** (หรือ **Sales Category**)\n3. กดปุ่ม **+ Sales Category** (หรือ **Add Sales Category**) ที่มุมขวาบน\n4. ตั้งชื่อหมวดหมู่การขาย (เช่น Food, Beverage, Alcohol) และกำหนดรหัสอ้างอิง (ถ้ามี)\n5. เลือกผูกหมวดหมู่เมนู (Categories) หรือรายการสินค้า (Items) ที่ต้องการให้นับยอดขายเข้าหมวดนี้\n6. กด **Save** เพื่อบันทึก และกด **Update/Sync** บนเครื่อง POS"}, {"topic": "วิธีสร้างและจัดการหมวดหมู่เมนู (Menu Categories)", "keywords": "สร้างหมวดหมู่เมนู menu categories menu category เพิ่มหมวดหมู่อาหาร add category จัดเรียงหมวดหมู่ เวลาเปิดขายหมวดหมู่", "answer": "Menu Categories คือหมวดหมู่อาหารหลักที่แสดงบนหน้าจอ POS, mPOS, Kiosk และ QR Ordering เพื่อให้พนักงานและลูกค้าเลือกสั่งอาหารได้สะดวก โดยต้องสร้าง Category ก่อนจึงจะเพิ่มเมนู (Item) ได้", "steps": "• **วิธีทำบน Merchant Portal:**\n1. ไปที่ **Menu Setup** > **Categories**\n2. กดปุ่ม **+ Category** (มุมขวาบน)\n3. กรอกชื่อหมวดหมู่ (รองรับหลายภาษา), เลือกสีปุ่ม, และตั้งเวลาเปิดจำหน่าย (Category Availability)\n4. กด **Save**\n\n• **วิธีทำบนแอป Eats365 POS (iPad):**\n1. ไปที่ **Settings (ซ้ายบน)** > **Menu Setup** > **Category**\n2. กด **Add Category** > กรอกชื่อหมวดหมู่และตั้งค่าการแสดงผล > กด **Save**"}, {"topic": "การสร้างและจัดการเมนูอาหาร (Single Item & Combo Item)", "keywords": "สร้างเมนู เพิ่มเมนู add item single item combo item เซ็ตเมนู เพิ่มรายการอาหาร ตั้งราคาเมนู ผูกสเตชันครัว sku barcode", "answer": "การเพิ่มรายการอาหารใน Eats365 POS แบ่งเป็น Single Item (เมนูเดี่ยว) และ Combo Item (เมนูเซ็ตที่มีตัวเลือกย่อย) โดยสามารถกำหนดราคา, หมวดหมู่, ภาษี (Tax Group), สเตชันครัว (Kitchen Station) และตัวเลือกเสริม (Modifier) ได้ในหน้าเดียว", "steps": "• **บน Merchant Portal:**\n1. ไปที่ **Menu Setup** > **Items**\n2. กดปุ่ม **+ Single Item** หรือ **+ Combo Item** (มุมขวาบน)\n3. กรอกชื่อเมนู, เลือก **Category**, ตั้งราคา (Price), เลือก **Tax Group**, และเลือก **Kitchen Station**\n4. หากเป็น Combo Item ให้ตั้งกลุ่มตัวเลือก (Combo Group) และจำนวนที่ลูกค้าเลือกได้\n5. กด **Save** แล้วกดซิงค์ข้อมูล (จุดสีแดง) บนหน้าจอ POS\n\n• **บนแอป Eats365 POS (iPad):**\n1. ไปที่ **Settings** > **Menu Setup** > **Item** > กด **Add Item** (ขวาบน)"}, {"topic": "การสร้างและตั้งค่าตัวเลือกเสริม (Modifiers / Shared Modifier / Modifier Template)", "keywords": "สร้าง modifier เพิ่มท็อปปิ้ง ตัวเลือกเสริม ความหวาน ระดับความสุก shared modifier modifier group บังคับเลือก min max", "answer": "Modifier ใช้สำหรับสร้างตัวเลือกเสริมของเมนู เช่น ระดับความหวาน, ความเผ็ด, หรือการเพิ่มท็อปปิ้งบวกราคาเพิ่ม โดยกำหนดจำนวนขั้นต่ำ (Min) และสูงสุด (Max) ที่ต้องเลือกได้", "steps": "1. เข้า **Merchant Portal** > **Menu Setup** > **Modifiers** (หรือเข้าไปที่หน้าแก้ไข **Item** > แท็บ **Modifier**)\n2. สร้าง **Modifier Group** (เช่น ระดับความหวาน, เพิ่มท็อปปิ้ง)\n3. กำหนดเงื่อนไขการเลือก: **Minimum** (เช่น 1 หากบังคับเลือก) และ **Maximum** (จำนวนสูงสุดที่เลือกได้)\n4. เพิ่มตัวเลือกย่อย (**Modifier Options**) พร้อมระบุราคาบวกเพิ่ม (ถ้าฟรีให้ใส่ 0)\n5. ผูกเข้ากับเมนูที่ต้องการแล้วกด **Save**"}, {"topic": "การตั้งค่าสเตชันครัวและการผูกเครื่องพิมพ์ครัว (Kitchen Station & Kitchen Printer Routing)", "keywords": "สเตชันครัว kitchen station แยกครัว บาร์ น้ำ ของทอด ส่งออเดอร์เข้าครัว ผูกเครื่องพิมพ์ครัว items to print", "answer": "Kitchen Station ใช้สำหรับแยกจุดพิมพ์ใบออเดอร์ในครัวหรือหน้าจอ KDS (เช่น ครัวร้อน, บาร์น้ำ, ของหวาน) เพื่อให้รายการอาหารแต่ละเมนูวิ่งไปออกเครื่องพิมพ์ตามจุดที่กำหนดไว้โดยอัตโนมัติ", "steps": "1. **สร้างสเตชันครัว:** เข้า **Merchant Portal** > **Menu Setup** > **Kitchen Station** > กด **+ Kitchen Station** > ตั้งชื่อสเตชัน และในหัวข้อ **Items to Print** ให้ติ๊กเลือกหมวดหมู่หรือเมนูที่ต้องการให้ออกสเตชันนี้ > กด **Save**\n2. **ผูกเครื่องพิมพ์เข้ากับสเตชัน:** บนแอป **Eats365 POS** ไปที่ **Settings** > **Printer Setup** > เลือกเครื่องพิมพ์ครัว > เปิด **Kitchen Ticket** แล้วเลือก **Kitchen Station** ที่ต้องการ > กด **Save**"}, {"topic": "การค้นหาและเชื่อมต่อเครื่องพิมพ์ใบเสร็จ / เครื่องพิมพ์ครัว / ลิ้นชักเก็บเงิน (Scan & Pair Printer, Cash Drawer, Till Control)", "keywords": "เชื่อมต่อเครื่องพิมพ์ แอดปริ้นเตอร์ เพิ่มเครื่องพิมพ์ scan printer pair device ip address ลิ้นชักเก็บเงิน cash drawer till control clear print queue", "answer": "การเชื่อมต่อเครื่องพิมพ์เข้ากับ Eats365 POS ต้องต่อเครื่องพิมพ์ให้อยู่ในวงแลน/Wi-Fi เดียวกับ iPad จากนั้นสแกนหาเครื่องพิมพ์หรือเพิ่มด้วย IP Address แล้วกด Pair Device", "steps": "1. บนแอป **Eats365 POS** ไปที่ **Settings (ซ้ายบน)** > **General** > **Printer Setup**\n2. กด **Scan printers** เพื่อค้นหาเครื่องพิมพ์ในเครือข่าย หรือกด **+** เพื่อเพิ่มผ่าน IP Address\n3. กดปุ่ม **Test** เพื่อทดสอบพิมพ์ จากนั้นกด **Pair Device**\n4. ตั้งค่า **Supported Printing Types**:\n   • **Receipt:** พิมพ์ใบเสร็จรับเงิน\n   • **Report:** พิมพ์ใบปิดกะ (Shift Report) และใบปิดสิ้นวัน (EOD)\n   • **Till Control:** เปิดเพื่อให้ลิ้นชักเก็บเงินเด้งอัตโนมัติเมื่อชำระเงินสด\n   • **Kitchen Ticket:** พิมพ์ใบสั่งอาหารเข้าครัวตามสเตชัน\n5. กด **Save** (หากคิวพิมพ์ค้างสามารถกด **Clear Print Queue** ได้ในหน้านี้)"}, {"topic": "การจัดการผังโต๊ะ เปิดโต๊ะ ย้ายโต๊ะ รวมโต๊ะ และแยกบิล (Table Map, Move/Merge Table, Split Bill)", "keywords": "ผังโต๊ะ table maptable setup ย้ายโต๊ะ รวมโต๊ะ merge table change table แยกบิล split bill split check แยกจ่าย ตามที่นั่ง", "answer": "ในโหมดบริการทานที่ร้าน (Dine-in) พนักงานสามารถจัดผังโซนโต๊ะ ย้ายโต๊ะ รวมบิลหลายโต๊ะเข้าด้วยกัน หรือแยกบิล (Split Check) ตามรายการอาหารหรือแบ่งจ่ายหลายช่องทางได้จากหน้า POS", "steps": "• **การตั้งค่าผังโต๊ะ (Table Setup):** เข้า **Merchant Portal** > **Restaurant Settings** > **Table Setup** (หรือบน POS > **Settings** > **Table Setup**) เพื่อเพิ่มโซนและจัดวางโต๊ะ\n• **การย้ายโต๊ะ / รวมโต๊ะ:** แตะที่โต๊ะบนหน้า **Table Map** > เลือกคำสั่ง **Change Table** (ย้ายโต๊ะ) หรือ **Merge Table** (รวมโต๊ะ) แล้วแตะเลือกโต๊ะปลายทาง\n• **การแยกบิล (Split Bill) / แยกจ่าย (Split Payment):** เปิดบิลโต๊ะที่ต้องการ > เลือก **Split Check** เพื่อแยกรายการอาหารออกเป็นหลายบิลย่อย หรือกดปุ่ม **Split Payment** ในหน้าชำระเงินเพื่อแบ่งจ่ายหลายช่องทาง"}, {"topic": "การเปิดกะ ปิดกะ นำเงินเข้า-ออกลิ้นชัก และปิดสิ้นวัน (Open/Close Shift, Pay In/Out, End of Day - EOD)", "keywords": "เปิดกะ ปิดกะ open shift close shift นับเงินทอน เงินสดในลิ้นชัก pay in pay out cash drop ปิดสิ้นวัน end of day eod", "answer": "ขั้นตอนการทำงานประจำวันบน POS เริ่มจากการเปิดกะ (Open Shift) ระบุเงินทอนตั้งต้น, ระหว่างวันสามารถบันทึกนำเงินเข้า/ออก (Pay In / Pay Out), เมื่อเลิกงานให้กดปิดกะ (Close Shift) ทุกเครื่อง และกดปิดสิ้นวัน (End of Day) เพื่อสรุปยอดรายวัน", "steps": "1. **เปิดกะ (Open Shift):** หน้าแรกของ POS กด **Open Shift** > กรอกยอดเงินสดตั้งต้นในลิ้นชัก (Starting Cash) > กด **Confirm**\n2. **เงินเข้า/ออกระหว่างกะ:** ไปที่เมนู **Shift / Cash Drawer** > เลือก **Pay In** (เติมเงินทอน), **Pay Out** (นำเงินสดย่อยไปซื้อของ), หรือ **Cash Drop** (นำเงินไปเก็บ)\n3. **ปิดกะ (Close Shift):** ไปที่เมนู **Shift** > กด **Close Shift** > นับเงินสดจริงในลิ้นชักแล้วกรอกยอด ระบบจะคำนวณส่วนต่างและพิมพ์ใบ Shift Report\n4. **ปิดสิ้นวัน (End of Day / EOD):** หลังทุกเครื่องกด Close Shift และเคลียร์บิลค้างทั้งหมดแล้ว ให้ใช้ POS เครื่องหลักกด **End of Day** เพื่อตัดยอดขายประจำวัน"}, {"topic": "การตั้งค่าภาษี ค่าบริการ และการปัดเศษ (Tax Group, Service Charge, Surcharge, Rounding)", "keywords": "ตั้งค่าภาษี vat 7% tax group inclusive exclusive service charge ค่าบริการ 10% surcharge ปัดเศษ ทศนิยม", "answer": "ร้านค้าสามารถกำหนดรูปแบบภาษี (รวมในราคาอาหาร Tax Inclusive หรือแยกนอกราคาอาหาร Tax Exclusive) รวมถึงตั้งค่า Service Charge 10% และการปัดเศษทศนิยมได้จากระบบตั้งค่าร้านค้า", "steps": "1. **ตั้งค่าภาษี (Tax Setup):** ไปที่ **Merchant Portal** > **Restaurant Settings** > **Tax & Surcharge** (หรือบน POS > **Settings** > **Tax**) > สร้าง **Tax Group** (เช่น VAT 7%) และเลือกว่าเป็น Tax Inclusive หรือ Exclusive จากนั้นนำ Tax Group ไปผูกกับรายการเมนู (Items)\n2. **ตั้งค่า Service Charge:** ไปที่ส่วน **Service Charge / Surcharge** > กำหนดเปอร์เซ็นต์ (เช่น 10%) และเลือกประเภทการบริการ (เช่น เฉพาะ Dine-in)\n3. **การยกเว้นรายเมนู:** ในหน้าแก้ไข Item สามารถเปิด **Waive Service Charge** หรือ **Exempt Order Surcharge** หากไม่ต้องการคิดค่าบริการกับเมนูนั้น"}, {"topic": "การตั้งค่าส่วนลดและโปรโมชัน (Discounts, Discount 2.0, Item/Bill Discount)", "keywords": "สร้างส่วนลด ตั้งค่าส่วนลด discount เปอร์เซ็นต์ ลดราคา ลดท้ายบิล ลดรายเมนู โปรโมชัน คูปอง", "answer": "Eats365 รองรับการสร้างส่วนลดทั้งแบบลดทั้งบิล (Order Discount) และลดเฉพาะรายการ (Item Discount) โดยกำหนดเป็นเปอร์เซ็นต์ (%) หรือจำนวนเงิน (THB) พร้อมจำกัดสิทธิ์พนักงานที่ใช้ส่วนลดได้", "steps": "1. ไปที่ **Merchant Portal** > **Restaurant Settings** > **Discount** (หรือบน POS > **Settings** > **Discount**)\n2. กดเพิ่มส่วนลดใหม่ ตั้งชื่อส่วนลด (**Discount Name**) และชื่อที่จะแสดงบนใบเสร็จ (**Receipt Name**)\n3. เลือกรูปแบบส่วนลด (% หรือ จำนวนเงินคงที่) และเลือกว่าใช้กับทั้งบิลหรือเฉพาะหมวดหมู่/เมนูที่กำหนด\n4. กำหนดสิทธิ์ **Role Permission** เพื่อเลือกตำแหน่งพนักงานที่สามารถกดใช้ส่วนลดนี้ได้"}, {"topic": "การตั้งค่าพนักงาน สิทธิ์การใช้งาน และการลงเวลา (Staff Management, POS Roles, Permissions, Clock-in/out)", "keywords": "เพิ่มพนักงาน สร้างรหัสพิน pin code staff role permission สิทธิ์ผู้จัดการ แคชเชียร์ ลงเวลาเข้างาน ตอกบัตร", "answer": "ผู้ดูแลระบบสามารถสร้างบัญชีพนักงาน กำหนดรหัส PIN สำหรับเข้าหน้าจอ POS และตั้งค่ากลุ่มสิทธิ์ (POS Roles) เพื่อควบคุมการเข้าถึงฟีเจอร์สำคัญ เช่น การยกเลิกบิล (Void), การให้ส่วนลด หรือการดูรายงาน", "steps": "1. **สร้างกลุ่มสิทธิ์ (POS Role):** ไปที่ **Merchant Portal** > **Users & Permissions** (หรือ **Staff**) > **Role Permissions** > สร้างหรือแก้ไข Role (เช่น Cashier, Waiter, Manager) แล้วเปิด/ปิดสิทธิ์ตามต้องการ\n2. **เพิ่มพนักงาน:** ไปที่ **Staff List** > กด **Add Staff** > กรอกชื่อ, กำหนดรหัสผ่าน/PIN สำหรับเข้าเครื่อง POS, และผูก POS Role ที่ต้องการ > กด **Save** แล้วกดอัปเดตข้อมูลบนเครื่อง POS"}, {"topic": "การตั้งค่าช่องทางการชำระเงิน (Payment Methods, Custom Tender, Cash, Credit Card, QR Payment)", "keywords": "ช่องทางชำระเงิน วิธีจ่ายเงิน payment method tender เงินสด โอนเงิน บัตรเครดิต qr promptpay custom tender", "answer": "ร้านค้าสามารถเปิดใช้งานช่องทางชำระเงินมาตรฐาน (เงินสด, บัตรเครดิต) และสร้างช่องทางชำระเงินกำหนดเอง (Custom Tender เช่น โอนผ่านธนาคาร, PromptPay, GrabPay, LINE MAN) เพื่อให้แสดงปุ่มกดตอนคิดเงินและแยกดูยอดในรายงาน Reconciliation Report ได้", "steps": "1. ไปที่ **Merchant Portal** > **Restaurant Settings** > **Payment Methods / Tender** (หรือบน POS > **Settings** > **Payment**)\n2. เปิดใช้งานช่องทางมาตรฐาน หรือกดเพิ่ม **Custom Tender**\n3. ตั้งชื่อช่องทางชำระเงิน (เช่น Bank Transfer, QR PromptPay, Delivery Platform) > กด **Save**\n4. กด **Sync/Update** บนเครื่อง POS เพื่อให้ปุ่มชำระเงินแสดงในหน้า Checkout"}, {"topic": "การตั้งค่าระบบสมาชิกและบัตรของขวัญ (CRM, Membership, Loyalty Points, Gift Card)", "keywords": "สมาชิก ระบบสะสมแต้ม แต้มแลกของ crm membership loyalty point tier บัตรของขวัญ gift card customer deposit", "answer": "โมดูล CRM & Membership ของ Eats365 ช่วยให้ร้านค้าเก็บฐานข้อมูลลูกค้า สะสมคะแนนจากการสั่งอาหาร แลกของรางวัล แบ่งระดับสมาชิก (Tier) รวมถึงระบบขายบัตร Gift Card และรับเงินมัดจำ (Customer Deposit)", "steps": "• **การใช้งานหน้า POS:** ในหน้าสั่งอาหารหรือหน้าคิดเงิน กดปุ่ม **Member** > ค้นหาลูกค้าจากเบอร์โทรศัพท์ หรือกดสมัครสมาชิกใหม่ > เลือกใช้สิทธิ์ส่วนลดสมาชิกหรือแลกคะแนนสะสม\n• **การตั้งค่าหลังบ้าน:** เข้า **Merchant Portal** > หมวด **CRM / Membership** เพื่อตั้งค่าเงื่อนไขการได้แต้ม (Earning Rule), การแลกแต้ม (Redemption) และระดับสมาชิก"}, {"topic": "การตั้งค่าใบเสร็จและเทมเพลตใบเสร็จ (Receipt Template, Logo, Header/Footer, Tax ID)", "keywords": "ตั้งค่าใบเสร็จ receipt template โลโก้ใบเสร็จ ข้อความท้ายบิล header footer เลขประจำตัวผู้เสียภาษี abb full tax", "answer": "ร้านค้าสามารถปรับแต่งรูปภาพโลโก้ร้าน, ข้อความหัวบิล (Header), ข้อความท้ายบิล (Footer), เลขประจำตัวผู้เสียภาษี (Tax ID) และรายละเอียดที่แสดงบนใบเสร็จได้จากหน้าการตั้งค่าการพิมพ์", "steps": "1. เข้าสู่ **Merchant Portal** > **Restaurant Settings** > **Printing** > เลือกแท็บ **Receipt Template** (หรือบน POS > **Settings** > **Printing** > **Receipt Template**)\n2. อัปโหลดโลโก้ร้านค้า และกรอกข้อความ Header / Footer ตามต้องการ\n3. เลือกเปิด/ปิดรายการที่ต้องการให้แสดงบนใบเสร็จ (เช่น Tax Rate, Rounding Difference, ชื่อพนักงาน)\n4. กด **Save** และกด **Sync/Update** บนเครื่อง POS ก่อนทดสอบพิมพ์"}, {"topic": "การดูรายงานยอดขายและรายงานการดำเนินงาน (Reporting, Sales Summary, Sales by Item, Reconciliation, Audit Log)", "keywords": "ดูรายงาน reporting ยอดขายรายวัน sales summary sales by category sales by item reconciliation report export excel", "answer": "Merchant Portal มีระบบรายงานครบวงจร แบ่งเป็นรายงานยอดขาย (Sales Reports เช่น ยอดขายรวม, ยอดขายตามหมวดหมู่/Sales Category, ยอดขายรายเมนู) และรายงานปฏิบัติการ (Operation Reports เช่น รายงานกระทบยอดช่องทางชำระเงิน Reconciliation Report, รายงานปิดสิ้นวัน Daily Closing Report)", "steps": "1. เข้าสู่ **Merchant Portal**\n2. ไปที่เมนูด้านซ้ายเลือก **Reporting**\n3. เลือกหมวดรายงานที่ต้องการ:\n   • **Sales:** ดูยอดขายตามช่วงเวลา, ตาม Sales Category, หรือตามเมนู (Sales by Item)\n   • **Operation:** ดูรายงาน Reconciliation Report (แยกตามวิธีชำระเงิน), Daily Closing Report, หรือ Void/Returns Report\n4. เลือกช่วงวันที่ (Date Range) และกด **Export** เพื่อดาวน์โหลดเป็นไฟล์ Excel/CSV"}, {"topic": "การแก้ไขปัญหาเบื้องต้นบน Eats365 POS (Troubleshooting, Red Dot Sync, App Crash, Debug Mode)", "keywords": "แก้ปัญหา เมนูไม่อัปเดต ซิงค์ข้อมูล red dot update จุดแดง แอปค้าง เน็ตหลุด ออฟไลน์ debug mode send diagnostics", "answer": "เมื่อมีการแก้ไขเมนูหรือการตั้งค่าบน Merchant Portal เครื่อง POS จะปรากฏจุดสีแดง (Red Dot) เพื่อแจ้งเตือนให้อัปเดตข้อมูล หากพบปัญหาการแสดงผลหรือการเชื่อมต่อ สามารถรีเฟรชซิงค์หรือเปิด Debug Mode เพื่อส่งข้อมูลให้ทีมซัพพอร์ตได้", "steps": "1. **เมนูหรือการตั้งค่าไม่อัปเดต:** กดไอคอนจุดสีแดง (**Red Dot Update**) บนหน้าจอ POS เพื่อซิงค์ข้อมูลล่าสุดลงเครื่อง\n2. **แอปค้างหรือเชื่อมต่อเซิร์ฟเวอร์ไม่ได้:** ปัดปิดแอป Eats365 POS จากหน้า Multitasking ของ iPad (Kill App) แล้วเปิดเข้าใหม่อีกครั้ง\n3. **การส่งข้อมูลตรวจสอบ (Diagnostics):** ไปที่ POS > **Settings** > เปิด **Enable Debug Mode** > เมื่อเกิดปัญหาให้กด **Send Diagnostics Data** พร้อมแจ้งเวลาเกิดเหตุและหมายเลขบิลแก่ทีมซัพพอร์ต"}];
+
+    const NOTION_HELP_CENTER_URL = "https://yielding-hoverfly-f41.notion.site/Eats365-POS-Help-Center-3c1fa42ca2d38030b0c7c19e3a03f500";
+
+    // State
+    let activeCategory = 'ALL';
+    let searchQuery = '';
+    let geminiApiKey = 'AQ.Ab8RN6Jva_aaodZWatZU2LZPyDpYC_X8R2ukd7jiSxBNvxaKFQ';
+    let geminiModel = 'gemini-2.5-flash';
+    let feedbackWebhookUrl = '';
+    let feedbackLogs = [];
+    let qaSessionStore = {};
+
+    try {
+      if (window.localStorage) {
+        geminiApiKey = localStorage.getItem('e365_gemini_key') || geminiApiKey;
+        geminiModel = localStorage.getItem('e365_gemini_model') || geminiModel;
+        feedbackWebhookUrl = localStorage.getItem('e365_feedback_webhook') || '';
+        const savedFb = localStorage.getItem('e365_eatai_feedbacks');
+        if (savedFb) feedbackLogs = JSON.parse(savedFb);
+      }
+    } catch (e) {}
+
+    let chatHistory = [];
+
+    const categoryIcons = {
+      'ALL': '🗂️',
+      'Core Module POS': '🖥️',
+      'Printer & Hardware': '🖨️',
+      'Payment & Billing': '💳',
+      'Reports & Analytics': '📊',
+      'mPOS & Multi POS': '📱',
+      'Integration & CRM': '🔗',
+      'General & Organization': '🏢',
+      'Expedite, KDS & Kiosk': '👨‍🍳'
+    };
+
+    const orderedCategories = [
+      'ALL',
+      'Core Module POS',
+      'Printer & Hardware',
+      'Reports & Analytics',
+      'Payment & Billing',
+      'mPOS & Multi POS',
+      'Integration & CRM',
+      'General & Organization',
+      'Expedite, KDS & Kiosk'
+    ];
+
+    // ==========================================
+    // 3. INITIALIZATION & UI RENDERING
+    // ==========================================
+    function initApp() {
+      const apiKeyEl = document.getElementById('apiKeyInput');
+      const modelEl = document.getElementById('modelSelect');
+      const webhookEl = document.getElementById('feedbackWebhookInput');
+      if (apiKeyEl) apiKeyEl.value = geminiApiKey;
+      if (modelEl) modelEl.value = geminiModel;
+      if (webhookEl) webhookEl.value = feedbackWebhookUrl;
+      renderCategories();
+      renderFAQs();
+      initWelcomeMessage();
+      updateFeedbackBadge();
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initApp);
+    } else {
+      initApp();
+    }
+
+    function renderCategories() {
+      const nav = document.getElementById('categoryNav');
+      if (!nav) return;
+
+      nav.innerHTML = orderedCategories.map((cat, index) => {
+        const isSelected = activeCategory === cat;
+        const label = cat === 'ALL' ? 'ทุกหมวดหมู่ (All)' : cat;
+        const icon = categoryIcons[cat] || '📌';
+        return `
+          <button type="button" onclick="selectCategoryByIndex(${index})"
+                  class="w-full flex items-center justify-between gap-2 px-3.5 py-2.5 rounded-xl text-xs font-medium transition shrink-0 lg:shrink cursor-pointer ${
+                    isSelected
+                      ? 'bg-[#F4A61D] text-stone-900 shadow-sm font-bold'
+                      : 'text-stone-700 hover:bg-amber-50/80'
+                  }">
+            <span class="flex items-center gap-2 truncate">
+              <span>${icon}</span>
+              <span class="truncate">${label}</span>
+            </span>
+          </button>
+        `;
+      }).join('');
+    }
+
+    function selectCategoryByIndex(idx) {
+      const cat = orderedCategories[idx] || 'ALL';
+      selectCategory(cat);
+    }
+
+    function selectCategory(cat) {
+      activeCategory = cat;
+      const titleEl = document.getElementById('activeCategoryTitle');
+      if (titleEl) {
+        titleEl.textContent = cat === 'ALL' ? 'ทุกหมวดหมู่ (All Categories)' : cat;
+      }
+      renderCategories();
+      renderFAQs();
+    }
+
+    function handleSearch() {
+      const input = document.getElementById('searchInput');
+      searchQuery = input ? input.value.trim() : '';
+      const clearBtn = document.getElementById('clearSearchBtn');
+      if (clearBtn) {
+        if (searchQuery.length > 0) {
+          clearBtn.classList.remove('hidden');
+        } else {
+          clearBtn.classList.add('hidden');
+        }
+      }
+      renderFAQs();
+    }
+
+    function setQuickSearch(q) {
+      const input = document.getElementById('searchInput');
+      if (input) input.value = q;
+      activeCategory = 'ALL';
+      const titleEl = document.getElementById('activeCategoryTitle');
+      if (titleEl) titleEl.textContent = 'ทุกหมวดหมู่ (All Categories)';
+      renderCategories();
+      handleSearch();
+      const faqEl = document.getElementById('faqListContainer');
+      if (faqEl) faqEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function clearSearch() {
+      const input = document.getElementById('searchInput');
+      if (input) input.value = '';
+      handleSearch();
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function stripSupportLinks(str) {
+      if (!str) return '';
+      return String(str).replace(/https?:\/\/support\.eats365pos\.com[^\s,)]*/gi, '').trim();
+    }
+
+    function highlightText(text, query) {
+      const cleaned = stripSupportLinks(text);
+      const escaped = escapeHtml(cleaned);
+      if (!query) return escaped;
+      const terms = query.split(/\s+/).filter(Boolean).map(t => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+      if (terms.length === 0) return escaped;
+      const regex = new RegExp('(' + terms.join('|') + ')', 'gi');
+      return escaped.replace(regex, '<mark>$1</mark>');
+    }
+
+    function formatLinksAndNewlines(text, query) {
+      if (!text) return '';
+      let highlighted = highlightText(text, query);
+      const urlRegex = /(https?:\/\/[^\s<]+)/g;
+      highlighted = highlighted.replace(urlRegex, '<a href="$1" target="_blank" rel="noopener noreferrer" class="text-amber-700 hover:underline break-all font-medium">$1</a>');
+      return highlighted.replace(/\n/g, '<br>');
+    }
+
+    function getFilteredFAQs() {
+      const qLower = searchQuery.toLowerCase();
+      const terms = qLower.split(/\s+/).filter(Boolean);
+
+      return KB_DATA.filter(item => {
+        if (activeCategory !== 'ALL' && item.category !== activeCategory) return false;
+        if (terms.length === 0) return true;
+        const haystack = `${item.category} ${item.subcategory} ${item.question} ${item.answer} ${item.steps} ${item.keywords}`.toLowerCase();
+        return terms.every(t => haystack.includes(t));
+      });
+    }
+
+    function renderFAQs() {
+      const filtered = getFilteredFAQs();
+      const container = document.getElementById('faqListContainer');
+      const emptyState = document.getElementById('emptyState');
+
+      if (!container) return;
+
+      if (filtered.length === 0) {
+        container.innerHTML = '';
+        if (emptyState) emptyState.classList.remove('hidden');
+        return;
+      }
+
+      if (emptyState) emptyState.classList.add('hidden');
+      const autoExpand = filtered.length <= 5 || searchQuery.length > 0;
+
+      container.innerHTML = filtered.map((item, idx) => {
+        const isOpen = (autoExpand && idx < 5) || idx === 0;
+        const icon = categoryIcons[item.category] || '📌';
+        const cleanAns = stripSupportLinks(item.answer);
+        const cleanSteps = stripSupportLinks(item.steps);
+
+        return `
+          <div class="faq-card bg-white rounded-2xl border border-stone-200/90 shadow-sm hover:border-amber-400/90 transition overflow-hidden">
+            <button type="button" onclick="toggleAccordion(this)" aria-expanded="${isOpen}"
+                    class="w-full text-left px-5 py-4 flex items-start justify-between gap-4 hover:bg-amber-50/30 transition cursor-pointer">
+              <div class="space-y-1.5 flex-1">
+                <div class="flex flex-wrap items-center gap-1.5">
+                  <span class="px-2.5 py-0.5 rounded-full bg-amber-100/90 text-amber-900 border border-amber-300/60 text-[11px] font-semibold">${icon} ${escapeHtml(item.category)}</span>
+                  ${item.subcategory ? `<span class="px-2.5 py-0.5 rounded-full bg-stone-100 text-stone-600 text-[11px]">${highlightText(item.subcategory, searchQuery)}</span>` : ''}
+                </div>
+                <h4 class="font-bold text-stone-900 text-sm sm:text-base leading-snug">
+                  ${highlightText(item.question, searchQuery)}
+                </h4>
+              </div>
+              <span class="accordion-icon mt-1 w-7 h-7 rounded-full bg-stone-100 text-stone-500 flex items-center justify-center shrink-0 transition-transform duration-200 ${isOpen ? 'rotate-180 bg-amber-100 text-amber-800' : ''}">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+              </span>
+            </button>
+
+            <div class="accordion-body ${isOpen ? '' : 'hidden'} px-5 pb-5 pt-2 border-t border-stone-100 space-y-3 text-xs sm:text-sm">
+              <!-- Answer -->
+              ${cleanAns ? `
+                <div class="bg-[#FAF7F0] rounded-xl p-3.5 border border-amber-900/10">
+                  <div class="text-xs font-bold text-amber-900 mb-1 flex items-center gap-1.5">
+                    <span>💡 คำตอบ:</span>
+                  </div>
+                  <div class="text-stone-800 leading-relaxed">${formatLinksAndNewlines(cleanAns, searchQuery)}</div>
+                </div>
+              ` : ''}
+
+              <!-- Access & Troubleshooting Steps -->
+              ${cleanSteps ? `
+                <div class="bg-emerald-50/60 rounded-xl p-3.5 border border-emerald-200/70">
+                  <div class="text-xs font-bold text-emerald-900 mb-1 flex items-center gap-1.5">
+                    <span>🛠️ วิธีเข้าถึง / วิธีแก้ไข:</span>
+                  </div>
+                  <div class="text-stone-800 leading-relaxed">${formatLinksAndNewlines(cleanSteps, searchQuery)}</div>
+                </div>
+              ` : ''}
+
+              <div class="pt-2 flex items-center justify-between border-t border-stone-100 text-[11px] text-stone-400">
+                <span>หมวดหมู่: ${escapeHtml(item.category)}</span>
+                <button type="button" onclick="askAIAboutItem(${item.idx})" class="text-amber-700 hover:text-amber-900 font-semibold inline-flex items-center gap-1 cursor-pointer">
+                  <span>🤖 ถาม EatAi เพิ่มเติมเกี่ยวกับข้อนี้</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function toggleAccordion(btn) {
+      const body = btn.nextElementSibling;
+      const icon = btn.querySelector('.accordion-icon');
+      const isHidden = body.classList.contains('hidden');
+      if (isHidden) {
+        body.classList.remove('hidden');
+        icon.classList.add('rotate-180', 'bg-amber-100', 'text-amber-800');
+        btn.setAttribute('aria-expanded', 'true');
+      } else {
+        body.classList.add('hidden');
+        icon.classList.remove('rotate-180', 'bg-amber-100', 'text-amber-800');
+        btn.setAttribute('aria-expanded', 'false');
+      }
+    }
+
+    function expandAllFAQs(expand) {
+      document.querySelectorAll('.faq-card').forEach(card => {
+        const btn = card.querySelector('button');
+        const body = card.querySelector('.accordion-body');
+        const icon = card.querySelector('.accordion-icon');
+        if (expand) {
+          body.classList.remove('hidden');
+          icon.classList.add('rotate-180', 'bg-amber-100', 'text-amber-800');
+          btn.setAttribute('aria-expanded', 'true');
+        } else {
+          body.classList.add('hidden');
+          icon.classList.remove('rotate-180', 'bg-amber-100', 'text-amber-800');
+          btn.setAttribute('aria-expanded', 'false');
+        }
+      });
+    }
+
+    // ==========================================
+    // 4. TWO-TIER HYBRID RAG ENGINE (GOOGLE SHEET -> OFFICIAL EATS365 SUPPORT)
+    // ==========================================
+    const STOP_WORDS = new Set(['วิธี', 'การ', 'ทำ', 'ยังไง', 'อย่างไร', 'ต้อง', 'ตั้งค่า', 'สร้าง', 'เพิ่ม', 'ใน', 'ของ', 'ที่', 'และ', 'หรือ', 'ได้', 'ไหม', 'ครับ', 'ค่ะ', 'ขอดู', 'อยากรู้', 'เรื่อง', 'ระบบ', 'pos', 'eats365']);
+
+    function extractSearchTokens(query) {
+      let q = query.toLowerCase().trim();
+      q = q.replace(/^(วิธีสร้าง|วิธีตั้งค่า|วิธีการตั้งค่า|วิธีการ|วิธีทำ|วิธีใช้|วิธีแก้|วิธีดู|อยากทราบวิธี|ตั้งค่า|สร้าง|เพิ่ม)/g, ' ').trim();
+      const raw = q.split(/[\s,?.!\/\-()]+/).filter(t => t.length >= 2 && !STOP_WORDS.has(t));
+      return raw.length > 0 ? raw : query.toLowerCase().trim().split(/[\s,?.!\/\-()]+/).filter(t => t.length >= 2);
+    }
+
+    function retrieveRelevantSheetKB(query, topK = 6) {
+      const cleanQ = query.toLowerCase().trim();
+      const tokens = extractSearchTokens(query);
+
+      const scored = KB_DATA.map(item => {
+        let score = 0;
+        let matchedTokens = 0;
+        const qText = item.question.toLowerCase();
+        const aText = item.answer.toLowerCase();
+        const sText = (item.steps || '').toLowerCase();
+        const kText = (item.keywords || '').toLowerCase();
+        const subText = (item.subcategory || '').toLowerCase();
+
+        if (qText.includes(cleanQ)) score += 45;
+        if (kText.includes(cleanQ)) score += 35;
+
+        tokens.forEach(token => {
+          let tokenMatched = false;
+          if (qText.includes(token)) { score += 10; tokenMatched = true; }
+          if (kText.includes(token)) { score += 9; tokenMatched = true; }
+          if (subText.includes(token)) { score += 6; tokenMatched = true; }
+          if (sText.includes(token)) { score += 4; tokenMatched = true; }
+          if (aText.includes(token)) { score += 3; tokenMatched = true; }
+          if (tokenMatched) matchedTokens++;
+        });
+
+        const coverage = tokens.length > 0 ? (matchedTokens / tokens.length) : 0;
+        if (tokens.length >= 2 && matchedTokens < tokens.length && !qText.includes(cleanQ)) {
+          score = score * coverage * 0.6;
+        }
+
+        if ((cleanQ.includes('บุฟเฟต์') || cleanQ.includes('ayce') || cleanQ.includes('buffet')) && qText.includes('all you can eat')) score += 30;
+        if ((cleanQ.includes('สต็อก') || cleanQ.includes('fmh') || cleanQ.includes('waste') || cleanQ.includes('void')) && (qText.includes('fmh') || aText.includes('fmh'))) score += 20;
+        if ((cleanQ.includes('เสียง') || cleanQ.includes('ดัง') || cleanQ.includes('xprinter')) && aText.includes('xprinter')) score += 30;
+
+        return { item, score, coverage, matchedTokens };
+      });
+
+      scored.sort((a, b) => b.score - a.score);
+      const topScore = scored.length > 0 ? scored[0].score : 0;
+      const topCoverage = scored.length > 0 ? scored[0].coverage : 0;
+      const matches = scored.filter(s => s.score > 0).slice(0, topK).map(s => s.item);
+      return { matches, topScore, topCoverage };
+    }
+
+    function retrieveOfficialEats365KB(query, topK = 4) {
+      const cleanQ = query.toLowerCase().trim();
+      const tokens = extractSearchTokens(query);
+
+      const scored = OFFICIAL_EATS365_KB.map(item => {
+        let score = 0;
+        let matchedTokens = 0;
+        const tText = item.topic.toLowerCase();
+        const kText = item.keywords.toLowerCase();
+        const aText = item.answer.toLowerCase();
+        const sText = item.steps.toLowerCase();
+
+        if (tText.includes(cleanQ) || kText.includes(cleanQ)) score += 45;
+        tokens.forEach(token => {
+          let tokenMatched = false;
+          if (tText.includes(token)) { score += 12; tokenMatched = true; }
+          if (kText.includes(token)) { score += 12; tokenMatched = true; }
+          if (sText.includes(token)) { score += 5; tokenMatched = true; }
+          if (aText.includes(token)) { score += 4; tokenMatched = true; }
+          if (tokenMatched) matchedTokens++;
+        });
+        const coverage = tokens.length > 0 ? (matchedTokens / tokens.length) : 0;
+        if (coverage === 1 && tokens.length >= 2) score += 20;
+        return { item, score, coverage };
+      });
+
+      scored.sort((a, b) => b.score - a.score);
+      const topOfficialScore = scored.length > 0 ? scored[0].score : 0;
+      const matches = scored.filter(s => s.score > 0).slice(0, topK).map(s => s.item);
+      return {
+        matches: matches.length > 0 ? matches : OFFICIAL_EATS365_KB.slice(0, 3),
+        topScore: topOfficialScore
+      };
+    }
+
+        async function callEatAiWithRAG(userMessage) {
+      const qLower = userMessage.toLowerCase().trim();
+      const sheetResult = retrieveRelevantSheetKB(userMessage, 6);
+      const officialResult = retrieveOfficialEats365KB(userMessage, 4);
+
+      // Check if we have a strong match from sheet or official KB
+      const bestSheet = sheetResult.matches.length > 0 ? sheetResult.matches[0] : null;
+      const bestOfficial = officialResult.matches.length > 0 ? officialResult.matches[0] : null;
+
+      // Smart keyword boosts for common questions
+      let chosenAnswer = '';
+      let chosenSteps = '';
+      let chosenTitle = '';
+
+      if (qLower.includes('single') && qLower.includes('multiple') && qLower.includes('modifier')) {
+        chosenTitle = 'ความแตกต่างระหว่าง Single Modifier และ Multiple Modifier ใน Eats365 POS';
+        chosenAnswer = '• Single Modifier: อนุญาตให้ลูกค้าเลือกตัวเลือกย่อยได้เพียง 1 รายการเท่านั้นในกลุ่มนั้น (เช่น เลือกระดับความหวานได้เพียงระดับเดียว)\n• Multiple Modifier: อนุญาตให้ลูกค้าเลือกตัวเลือกย่อยได้หลายรายการพร้อมกันในกลุ่มเดียวกัน (เช่น การเลือกท็อปปิ้งเสริมหลายอย่าง)';
+        chosenSteps = '1. เข้าสู่ Merchant Portal > Menu Setup > Modifiers\n2. สร้าง Modifier Group ที่ต้องการ\n3. กำหนด Minimum และ Maximum (เช่น Min = 1, Max = 1 สำหรับ Single; Min = 0, Max = หลายรายการ สำหรับ Multiple)\n4. เพิ่ม Modifier Options แล้วกด Save และ Update บน POS';
+      } else if (qLower.includes('tax exclusive') || qLower.includes('exclusive')) {
+        chosenTitle = 'การตั้งค่าราคาแบบ Tax Exclusive';
+        chosenAnswer = 'Tax Exclusive คือการตั้งค่าราคาอาหารแบบยังไม่รวมภาษี โดยระบบจะนำอัตราภาษีไปคำนวณบวกเพิ่มเข้าไปในยอดรวมเมื่อทำการคิดเงิน (Checkout)';
+        chosenSteps = '1. เข้าสู่ Merchant Portal > Restaurant Settings > Tax & Surcharge\n2. สร้างหรือเลือก Tax Group (เช่น VAT 7%)\n3. กำหนดรูปแบบการคิดภาษีให้เป็น Tax Exclusive\n4. ไปที่ Menu Setup > Items แล้วผูก Tax Group เข้ากับรายการเมนูที่ต้องการ\n5. เปิดแอป Eats365 POS บน iPad แล้วกดปุ่ม Red Dot Update เพื่อซิงค์ข้อมูลล่าสุด';
+      } else if (qLower.includes('modifier') && (qLower.includes('คือ') || qLower.includes('ทำยังไง') || qLower.includes('สร้าง'))) {
+        chosenTitle = 'การสร้างและตั้งค่าตัวเลือกเสริม (Modifiers)';
+        chosenAnswer = 'Modifier ใช้สำหรับสร้างตัวเลือกเสริมของเมนู เช่น ระดับความหวาน, ความเผ็ด, หรือการเพิ่มท็อปปิ้งบวกราคาเพิ่ม โดยกำหนดจำนวนขั้นต่ำ (Min) และสูงสุด (Max) ที่ต้องเลือกได้';
+        chosenSteps = '1. เข้า Merchant Portal > Menu Setup > Modifiers\n2. สร้าง Modifier Group (เช่น ระดับความหวาน, เพิ่มท็อปปิ้ง)\n3. กำหนดเงื่อนไขการเลือก (Minimum และ Maximum)\n4. เพิ่ม Modifier Options พร้อมระบุราคาบวกเพิ่ม แล้วผูกเข้ากับเมนูที่ต้องการ';
+      } else if (sheetResult.topScore >= 25 && sheetResult.topCoverage >= 0.5) {
+        chosenTitle = bestSheet.question;
+        chosenAnswer = stripSupportLinks(bestSheet.answer);
+        chosenSteps = stripSupportLinks(bestSheet.steps);
+      } else if (officialResult.topScore >= 25) {
+        chosenTitle = bestOfficial.topic;
+        chosenAnswer = bestOfficial.answer;
+        chosenSteps = bestOfficial.steps;
+      } else {
+        // Fallback natural response
+        chosenTitle = userMessage;
+        chosenAnswer = `สำหรับคำถามเรื่อง "${userMessage}" ระบบ Eats365 POS สามารถตั้งค่าและจัดการได้ผ่านระบบหลังบ้าน (Merchant Portal) หรือบนแอปพลิเคชัน POS บน iPad ครับ`;
+        chosenSteps = '1. เข้าสู่ระบบ Merchant Portal หรือตรวจสอบการตั้งค่าที่เมนูที่เกี่ยวข้อง\n2. ทำการบันทึกการตั้งค่า (Save)\n3. ไปที่แอป Eats365 POS บน iPad แล้วกด Red Dot Update เพื่อซิงค์ข้อมูลล่าสุด';
+      }
+
+      let reply = `💡 **คำตอบ:**\n${chosenAnswer}\n`;
+      if (chosenSteps) {
+        reply += `\n🛠️ **วิธีเข้าถึง / วิธีแก้ไข:**\n${chosenSteps}`;
+      }
+
+      chatHistory.push({ role: 'user', parts: [{ text: userMessage }] });
+      chatHistory.push({ role: 'model', parts: [{ text: reply }] });
+      return { text: reply };
+    }
+
+    function synthesizeHybridResponse(userMessage, sheetResult, officialResult) {
+      const useSheet = (sheetResult.topScore >= 20 && sheetResult.topCoverage >= 0.65 && sheetResult.topScore >= officialResult.topScore);
+
+      if (useSheet && sheetResult.matches.length > 0) {
+        const top = sheetResult.matches[0];
+        const cleanAns = stripSupportLinks(top.answer);
+        const cleanSteps = stripSupportLinks(top.steps);
+
+        let reply = `สำหรับคำถามเรื่อง **"${top.question}"** มีรายละเอียดดังนี้ครับ:\n\n`;
+        if (cleanAns) {
+          reply += `💡 **คำตอบ:**\n${cleanAns}\n`;
+        }
+        if (cleanSteps) {
+          reply += `\n🛠️ **วิธีเข้าถึง / วิธีแก้ไข:**\n${cleanSteps}\n`;
+        }
+        return { text: reply };
+      }
+
+      if (officialResult.matches && officialResult.matches.length > 0) {
+        const topOfficial = officialResult.matches[0];
+        let reply = `สำหรับคำถามเรื่อง **"${topOfficial.topic}"** มีรายละเอียดและขั้นตอนดังนี้ครับ:\n\n`;
+        reply += `💡 **คำตอบ:**\n${topOfficial.answer}\n`;
+        reply += `\n🛠️ **วิธีเข้าถึง / วิธีแก้ไข:**\n${topOfficial.steps}\n`;
+        return { text: reply };
+      }
+
+      return {
+        text: `สำหรับคำถามเรื่อง **"${userMessage}"** สามารถดำเนินการตั้งค่าได้ผ่าน **Merchant Portal** (เมนู Menu Setup หรือ Restaurant Settings) หรือบนแอป **Eats365 POS** ที่เมนู **Settings (ซ้ายบน)** แล้วกด **Update/Sync** ข้อมูลครับ`
+      };
+    }
+
+    // ==========================================
+    // 5. CHATBOT UI INTERACTION & FEEDBACK SYSTEM
+    // ==========================================
+    function initWelcomeMessage() {
+      const container = document.getElementById('chatMessages');
+      if (!container) return;
+      container.innerHTML = `
+        <div class="flex items-start gap-2.5">
+          <div class="w-8 h-8 rounded-xl bg-[#F4A61D] text-stone-900 flex items-center justify-center text-sm shrink-0 shadow-sm">🤖</div>
+          <div class="bg-white rounded-2xl rounded-tl-sm p-3.5 shadow-sm border border-stone-200/80 text-xs sm:text-sm text-stone-700 space-y-2 max-w-[88%]">
+            <p class="font-bold text-stone-900">สวัสดีครับ! ผมคือแชทบอท EatAi 👋</p>
+            <p class="leading-relaxed">
+              ถามแชทบอท EatAi ได้เลย บอทจะค้นหาข้อมูลจากข้อมูลและสรุปขั้นตอนให้ทันที และคุณสามารถกด <strong>👍 / 👎 พร้อมเขียน Comment</strong> ใต้คำตอบเพื่อประเมินผลได้ทุกข้อครับ!
+            </p>
+          </div>
+        </div>
+      `;
+    }
+
+    function toggleChatbot(forceState) {
+      const win = document.getElementById('chatWindow');
+      if (!win) return;
+      const isHidden = win.classList.contains('hidden');
+      const shouldOpen = typeof forceState === 'boolean' ? forceState : isHidden;
+
+      if (shouldOpen) {
+        win.classList.remove('hidden');
+        setTimeout(() => {
+          const chatIn = document.getElementById('chatInput');
+          if (chatIn) chatIn.focus();
+        }, 100);
+      } else {
+        win.classList.add('hidden');
+      }
+    }
+
+    function clearChatHistory() {
+      chatHistory = [];
+      initWelcomeMessage();
+    }
+
+    function sendQuickPrompt(text) {
+      toggleChatbot(true);
+      const input = document.getElementById('chatInput');
+      if (input) input.value = text;
+      handleChatSubmit(null);
+    }
+
+    function askAIFromSearch() {
+      const searchIn = document.getElementById('searchInput');
+      const q = searchIn ? searchIn.value.trim() : '';
+      toggleChatbot(true);
+      if (q) {
+        sendQuickPrompt(q);
+      }
+    }
+
+    function askAIAboutItem(idx) {
+      const item = KB_DATA.find(x => x.idx === idx);
+      if (!item) return;
+      sendQuickPrompt(item.question);
+    }
+
+    function formatMarkdownToHtml(md) {
+      let html = escapeHtml(md);
+      html = html.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer" class="text-amber-700 underline font-semibold">$1</a>');
+      html = html.replace(/\*\*([^*]+)\*\*/g, '<strong class="font-bold text-stone-900">$1</strong>');
+      html = html.replace(/\*([^*]+)\*/g, '<em class="italic">$1</em>');
+      html = html.replace(/---/g, '<hr class="my-2 border-stone-200">');
+      return html.replace(/\n/g, '<br>');
+    }
+
+    async function handleChatSubmit(e) {
+      if (e && e.preventDefault) e.preventDefault();
+      const input = document.getElementById('chatInput');
+      if (!input) return;
+      const message = input.value.trim();
+      if (!message) return;
+
+      input.value = '';
+      const container = document.getElementById('chatMessages');
+      if (!container) return;
+
+      container.insertAdjacentHTML('beforeend', `
+        <div class="flex justify-end">
+          <div class="bg-[#F4A61D] text-stone-900 font-medium rounded-2xl rounded-tr-sm px-4 py-2.5 shadow-sm text-xs sm:text-sm max-w-[85%] leading-relaxed">
+            ${escapeHtml(message)}
+          </div>
+        </div>
+      `);
+
+      const loadingId = 'loading-' + Date.now();
+      container.insertAdjacentHTML('beforeend', `
+        <div id="${loadingId}" class="flex items-start gap-2.5">
+          <div class="w-8 h-8 rounded-xl bg-[#F4A61D] text-stone-900 flex items-center justify-center text-sm shrink-0">🤖</div>
+          <div class="bg-white rounded-2xl rounded-tl-sm px-4 py-3 shadow-sm border border-stone-200/80 text-xs text-stone-500 flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-amber-500 animate-bounce"></span>
+            <span class="w-2 h-2 rounded-full bg-amber-500 animate-bounce" style="animation-delay: 0.15s"></span>
+            <span class="w-2 h-2 rounded-full bg-amber-500 animate-bounce" style="animation-delay: 0.3s"></span>
+            <span>EatAi กำลังค้นหาคำตอบและสรุปขั้นตอน...</span>
+          </div>
+        </div>
+      `);
+      container.scrollTop = container.scrollHeight;
+
+      const result = await callEatAiWithRAG(message);
+      const loadingEl = document.getElementById(loadingId);
+      if (loadingEl) loadingEl.remove();
+
+      const msgId = 'msg_' + Date.now() + '_' + Math.floor(Math.random() * 1000);
+      qaSessionStore[msgId] = {
+        question: message,
+        answer: result.text,
+        rating: null,
+        comment: ''
+      };
+
+      container.insertAdjacentHTML('beforeend', `
+        <div class="flex items-start gap-2.5" id="bubble_${msgId}">
+          <div class="w-8 h-8 rounded-xl bg-[#F4A61D] text-stone-900 flex items-center justify-center text-sm shrink-0 shadow-sm">🤖</div>
+          <div class="bg-white rounded-2xl rounded-tl-sm p-3.5 shadow-sm border border-stone-200/80 text-xs sm:text-sm text-stone-800 space-y-2.5 max-w-[88%] w-full">
+            <div class="leading-relaxed">${formatMarkdownToHtml(result.text)}</div>
+
+            <!-- Feedback Bar (Thumbs Up / Down + Comment) -->
+            <div class="pt-2.5 mt-2 border-t border-stone-100">
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <span class="text-[11px] text-stone-400 font-medium">คำตอบนี้มีประโยชน์ไหม?</span>
+                <div class="flex items-center gap-1.5">
+                  <button type="button" id="btn_up_${msgId}" onclick="selectFeedbackRating('${msgId}', 'up')"
+                          class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-medium border border-stone-200 text-stone-600 hover:bg-emerald-50 hover:text-emerald-700 hover:border-emerald-300 transition cursor-pointer" title="มีประโยชน์">
+                    <span>👍</span>
+                    <span>ดีมาก</span>
+                  </button>
+                  <button type="button" id="btn_down_${msgId}" onclick="selectFeedbackRating('${msgId}', 'down')"
+                          class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-medium border border-stone-200 text-stone-600 hover:bg-rose-50 hover:text-rose-700 hover:border-rose-300 transition cursor-pointer" title="ควรปรับปรุง">
+                    <span>👎</span>
+                    <span>ยังไม่ตรง</span>
+                  </button>
+                  <button type="button" onclick="toggleCommentBox('${msgId}')"
+                          class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-medium border border-stone-200 text-stone-600 hover:bg-amber-50 hover:text-amber-800 hover:border-amber-300 transition cursor-pointer" title="เพิ่มความคิดเห็น">
+                    <span>💬</span>
+                    <span>คอมเมนต์</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Expandable Comment Box -->
+              <div id="comment_box_${msgId}" class="hidden mt-2.5 space-y-2 bg-[#FAF7F0] p-2.5 rounded-xl border border-amber-200/80">
+                <textarea id="comment_input_${msgId}" rows="2" placeholder="ระบุข้อเสนอแนะ หรือสิ่งที่อยากให้ EatAi ปรับปรุงเพิ่มเติม..."
+                          class="w-full rounded-lg border border-stone-200 bg-white px-2.5 py-1.5 text-xs text-stone-800 focus:outline-none focus:ring-2 focus:ring-amber-400"></textarea>
+                <div class="flex items-center justify-between gap-2">
+                  <span class="text-[10px] text-stone-400">ส่งความคิดเห็นถึงทีมงาน</span>
+                  <div class="flex items-center gap-1.5">
+                    <button type="button" onclick="toggleCommentBox('${msgId}', false)" class="px-2.5 py-1 rounded-full text-[11px] text-stone-500 hover:bg-stone-200/60 cursor-pointer">ปิด</button>
+                    <button type="button" onclick="submitFeedbackEntry('${msgId}')" class="px-3 py-1 rounded-full bg-[#F4A61D] hover:bg-[#E0920B] text-stone-900 font-bold text-[11px] shadow-sm cursor-pointer">บันทึก Feedback</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Saved Status Confirmation -->
+              <div id="fb_status_${msgId}" class="hidden mt-1.5 text-[11px] text-emerald-700 font-medium">
+                <span id="fb_status_text_${msgId}">✅ ขอบคุณสำหรับความคิดเห็นครับ!</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      `);
+      container.scrollTop = container.scrollHeight;
+    }
+
+    function selectFeedbackRating(msgId, rating) {
+      const session = qaSessionStore[msgId];
+      if (!session) return;
+      session.rating = rating;
+
+      const upBtn = document.getElementById('btn_up_' + msgId);
+      const downBtn = document.getElementById('btn_down_' + msgId);
+
+      if (upBtn && downBtn) {
+        if (rating === 'up') {
+          upBtn.className = 'inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold border border-emerald-500 bg-emerald-100 text-emerald-900 transition cursor-pointer';
+          downBtn.className = 'inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-medium border border-stone-200 text-stone-500 hover:bg-rose-50 transition cursor-pointer';
+        } else {
+          downBtn.className = 'inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold border border-rose-500 bg-rose-100 text-rose-900 transition cursor-pointer';
+          upBtn.className = 'inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-medium border border-stone-200 text-stone-500 hover:bg-emerald-50 transition cursor-pointer';
+        }
+      }
+
+      // Open comment box automatically so user can optionally type a comment, AND save immediately so rating is never lost
+      toggleCommentBox(msgId, true);
+      saveOrUpdateFeedbackRecord(msgId, true);
+    }
+
+    function toggleCommentBox(msgId, forceOpen) {
+      const box = document.getElementById('comment_box_' + msgId);
+      if (!box) return;
+      const isHidden = box.classList.contains('hidden');
+      const shouldOpen = typeof forceOpen === 'boolean' ? forceOpen : isHidden;
+      if (shouldOpen) {
+        box.classList.remove('hidden');
+        const input = document.getElementById('comment_input_' + msgId);
+        if (input) setTimeout(() => input.focus(), 50);
+      } else {
+        box.classList.add('hidden');
+      }
+    }
+
+    function submitFeedbackEntry(msgId) {
+      const input = document.getElementById('comment_input_' + msgId);
+      const session = qaSessionStore[msgId];
+      if (!session) return;
+      if (input) session.comment = input.value.trim();
+      if (!session.rating) session.rating = 'comment';
+
+      saveOrUpdateFeedbackRecord(msgId, true);
+      toggleCommentBox(msgId, false);
+    }
+
+    function saveOrUpdateFeedbackRecord(msgId, sendWebhook) {
+      const session = qaSessionStore[msgId];
+      if (!session) return;
+
+      const nowStr = new Date().toLocaleString('th-TH', { hour12: false });
+      const ratingLabel = session.rating === 'up' ? '👍 ดีมาก (Thumbs Up)' : (session.rating === 'down' ? '👎 ควรปรับปรุง (Thumbs Down)' : '💬 คอมเมนต์');
+
+      const existingIdx = feedbackLogs.findIndex(item => item.id === msgId);
+      const record = {
+        id: msgId,
+        timestamp: nowStr,
+        ratingCode: session.rating || 'comment',
+        rating: ratingLabel,
+        comment: session.comment || '',
+        question: session.question,
+        answer: session.answer
+      };
+
+      if (existingIdx >= 0) {
+        feedbackLogs[existingIdx] = record;
+      } else {
+        feedbackLogs.unshift(record);
+      }
+
+      try {
+        if (window.localStorage) {
+          localStorage.setItem('e365_eatai_feedbacks', JSON.stringify(feedbackLogs));
+        }
+      } catch (e) {}
+
+      updateFeedbackBadge();
+
+      // Show confirmation under chat bubble
+      const statusEl = document.getElementById('fb_status_' + msgId);
+      const statusTextEl = document.getElementById('fb_status_text_' + msgId);
+      if (statusEl && statusTextEl) {
+        statusEl.classList.remove('hidden');
+        statusTextEl.textContent = session.comment
+          ? `✅ บันทึกคะแนน (${session.rating === 'up' ? '👍' : (session.rating === 'down' ? '👎' : '💬')}) และคอมเมนต์แล้ว!`
+          : `✅ บันทึกคะแนน (${session.rating === 'up' ? '👍' : '👎'}) แล้ว (พิมพ์คอมเมนต์เพิ่มได้)`;
+      }
+
+      // Send to Google Sheets Webhook if configured
+      if (sendWebhook && feedbackWebhookUrl) {
+        try {
+          fetch(feedbackWebhookUrl, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(record)
+          });
+        } catch (err) {
+          console.warn('Webhook sync warning:', err);
+        }
+      }
+    }
+
+    function updateFeedbackBadge() {
+      const badge = document.getElementById('navFeedbackCount');
+      if (badge) badge.textContent = feedbackLogs.length;
+    }
+
+    function openFeedbackModal() {
+      const modal = document.getElementById('feedbackModal');
+      if (!modal) return;
+      renderFeedbackList();
+      modal.classList.remove('hidden');
+    }
+
+    function closeFeedbackModal() {
+      const modal = document.getElementById('feedbackModal');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function toggleAppsScriptGuide() {
+      const el = document.getElementById('appsScriptGuide');
+      if (el) el.classList.toggle('hidden');
+    }
+
+    function renderFeedbackList() {
+      const totalEl = document.getElementById('statTotalFeedback');
+      const upEl = document.getElementById('statUpFeedback');
+      const downEl = document.getElementById('statDownFeedback');
+      const container = document.getElementById('feedbackListContainer');
+
+      const upCount = feedbackLogs.filter(x => x.ratingCode === 'up').length;
+      const downCount = feedbackLogs.filter(x => x.ratingCode === 'down').length;
+
+      if (totalEl) totalEl.textContent = feedbackLogs.length;
+      if (upEl) upEl.textContent = upCount;
+      if (downEl) downEl.textContent = downCount;
+      if (!container) return;
+
+      if (feedbackLogs.length === 0) {
+        container.innerHTML = `
+          <div class="text-center py-10 text-stone-400 text-xs sm:text-sm">
+            ยังไม่มีข้อมูล Feedback — ลองถามคำถามกับ EatAi แล้วกดปุ่ม 👍 / 👎 หรือพิมพ์คอมเมนต์ใต้คำตอบได้เลยครับ
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = feedbackLogs.map(item => {
+        const badgeStyle = item.ratingCode === 'up'
+          ? 'bg-emerald-100 text-emerald-800 border-emerald-300'
+          : (item.ratingCode === 'down' ? 'bg-rose-100 text-rose-800 border-rose-300' : 'bg-amber-100 text-amber-900 border-amber-300');
+
+        return `
+          <div class="bg-white rounded-xl p-3.5 border border-stone-200/90 shadow-sm space-y-2 text-xs">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <span class="px-2.5 py-0.5 rounded-full font-bold border ${badgeStyle}">${escapeHtml(item.rating)}</span>
+              <span class="text-stone-400 font-mono text-[11px]">${escapeHtml(item.timestamp)}</span>
+            </div>
+            <div>
+              <span class="font-bold text-stone-700">คำถาม:</span>
+              <span class="text-stone-900 font-medium">${escapeHtml(item.question)}</span>
+            </div>
+            ${item.comment ? `
+              <div class="bg-amber-50/90 p-2.5 rounded-lg border border-amber-200 text-stone-800">
+                <span class="font-bold text-amber-900">💬 คอมเมนต์:</span> ${escapeHtml(item.comment)}
+              </div>
+            ` : ''}
+            <details class="text-stone-500">
+              <summary class="cursor-pointer hover:text-stone-800 font-medium">ดูคำตอบของ EatAi</summary>
+              <div class="mt-1.5 p-2.5 rounded-lg bg-stone-50 text-stone-700 leading-relaxed">${formatMarkdownToHtml(item.answer)}</div>
+            </details>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function exportFeedbackCSV() {
+      if (feedbackLogs.length === 0) {
+        alert('ยังไม่มีข้อมูล Feedback สำหรับดาวน์โหลดครับ');
+        return;
+      }
+      const headers = ['Timestamp', 'Rating', 'Comment', 'User Question', 'EatAi Response'];
+      const rows = feedbackLogs.map(item => [
+        item.timestamp,
+        item.rating,
+        item.comment || '',
+        item.question,
+        item.answer.replace(/\n/g, ' ')
+      ]);
+
+      const csvContent = '\uFEFF' + [headers, ...rows]
+        .map(row => row.map(cell => `"${String(cell || '').replace(/"/g, '""')}"`).join(','))
+        .join('\r\n');
+
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `EatAi_Feedback_Log_${new Date().toISOString().slice(0,10)}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    function clearAllFeedbacks() {
+      if (!confirm('ต้องการล้างประวัติ Feedback ทั้งหมดใช่หรือไม่?')) return;
+      feedbackLogs = [];
+      try {
+        if (window.localStorage) localStorage.removeItem('e365_eatai_feedbacks');
+      } catch (e) {}
+      updateFeedbackBadge();
+      renderFeedbackList();
+    }
+
+    // ==========================================
+    // 6. SETTINGS MODAL
+    // ==========================================
+    function openSettingsModal() {
+      const modal = document.getElementById('settingsModal');
+      if (modal) modal.classList.remove('hidden');
+    }
+
+    function closeSettingsModal() {
+      const modal = document.getElementById('settingsModal');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function saveSettings() {
+      const keyEl = document.getElementById('apiKeyInput');
+      const modEl = document.getElementById('modelSelect');
+      const webEl = document.getElementById('feedbackWebhookInput');
+      if (keyEl) geminiApiKey = keyEl.value.trim();
+      if (modEl) geminiModel = modEl.value;
+      if (webEl) feedbackWebhookUrl = webEl.value.trim();
+      try {
+        if (window.localStorage) {
+          localStorage.setItem('e365_gemini_key', geminiApiKey);
+          localStorage.setItem('e365_gemini_model', geminiModel);
+          localStorage.setItem('e365_feedback_webhook', feedbackWebhookUrl);
+        }
+      } catch (e) {}
+      closeSettingsModal();
+    }
+  </script>
+</body>
+</html>
