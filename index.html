@@ -864,28 +864,35 @@
       };
     }
 
-       async function callEatAiWithRAG(userMessage) {
-      // 1. รวมข้อมูลจากทั้ง 2 Source หลัก (KB_DATA และ OFFICIAL_EATS365_KB) เป็นบริบทให้ AI อ่านเอง
-      const allSheetData = KB_DATA.map((it, idx) => `[Q&A ข้อที่ ${idx+1}] หมวดหมู่: ${it.category} | คำถาม: ${it.question}\nคำตอบ: ${it.answer}\nวิธีแก้: ${it.steps || '-'}`).join('\n\n');
-      const allOfficialData = OFFICIAL_EATS365_KB.map((it, idx) => `[คู่มือทางการ ข้อที่ ${idx+1}] เรื่อง: ${it.topic}\nคำตอบ: ${it.answer}\nวิธีแก้: ${it.steps}`).join('\n\n');
+           async function callEatAiWithRAG(userMessage) {
+      // 1. ค้นหาเฉพาะข้อมูลที่เกี่ยวข้องที่สุดจากทั้ง 2 Source มาก่อน (ไม่ยัดทั้งหมดเพื่อป้องกัน AI สับสน)
+      const sheetResult = retrieveRelevantSheetKB(userMessage, 4);
+      const officialResult = retrieveOfficialEats365KB(userMessage, 3);
 
-      // 2. สร้าง System Prompt ให้ Gemini AI ทำหน้าที่อ่านและสังเคราะห์คำตอบจากทั้ง 2 Source โดยตรง
+      const sheetContext = sheetResult.matches.map((it, idx) => 
+        `[Q&A ข้อที่ ${idx+1}] หมวดหมู่: ${it.category} | คำถาม: ${it.question}\nคำตอบ: ${it.answer}\nวิธีแก้: ${it.steps || '-'}`
+      ).join('\n\n');
+
+      const officialContext = officialResult.matches.map((it, idx) => 
+        `[คู่มือทางการ ข้อที่ ${idx+1}] เรื่อง: ${it.topic}\nคำตอบ: ${it.answer}\nวิธีแก้: ${it.steps}`
+      ).join('\n\n');
+
+      // 2. ส่งเฉพาะข้อมูลที่เกี่ยวข้องเข้าไปให้ Gemini AI สรุปอย่างแม่นยำ
       const systemPrompt = `คุณคือ "EatAi" ผู้ช่วยอัจฉริยะผู้เชี่ยวชาญระบบร้านอาหาร Eats365 POS และ Food Market Hub (FMH)
-หน้าที่ของคุณคืออ่านคำถาม แล้วใช้ข้อมูลอ้างอิงจากทั้ง "2 Source หลัก" ด้านล่างนี้ในการวิเคราะห์ ค้นหาข้อมูลที่ตรงที่สุด และสรุปคำตอบให้ตรงประเด็น เป็นธรรมชาติ และเข้าใจง่ายที่สุด
+หน้าที่ของคุณคืออ่านคำถาม และใช้ข้อมูลอ้างอิงที่คัดมาให้ด้านล่างนี้ในการสรุปคำตอบให้ตรงประเด็น ครบถ้วน และเข้าใจง่ายที่สุด
 
-=== Source ที่ 1: Q&A Knowledge Bank (เคสจากทีม Support) ===
-${allSheetData}
-
-=== Source ที่ 2: Official Support Knowledge Base (คู่มือทางการ Eats365) ===
-${allOfficialData}
-==================================================
+=== ข้อมูลอ้างอิงที่เกี่ยวข้องกับคำถาม ===
+${sheetContext || 'ไม่พบในชีต'}
+---
+${officialContext || 'ไม่พบในคู่มือทางการ'}
+=========================================
 
 กฎการตอบ (บังคับ):
-1. ค้นหาและดึงข้อมูลจาก Source ทั้งสองข้อที่เกี่ยวข้องกับคำถามของผู้ใช้มาตอบให้ถูกต้องที่สุด ห้ามตอบแบบเดาเอง
+1. สรุปคำตอบให้ครอบคลุมสิ่งที่ผู้ใช้ถามโดยอิงจากข้อมูลอ้างอิงด้านบน ห้ามตอบหลุดไปประเด็นอื่น
 2. แบ่งรูปแบบคำตอบให้ชัดเจนด้วย:
    - 💡 **คำตอบ:** [สรุปประเด็นหลัก]
    - 🛠️ **วิธีเข้าถึง / วิธีแก้ไข:** [อธิบายเป็นขั้นตอน 1, 2, 3 ที่สามารถทำตามบน Merchant Portal หรือแอป POS ได้ทันที]
-3. ห้ามแสดงรหัส KB ID หรือแหล่งอ้างอิงในข้อความคำตอบ ให้แสดงเฉพาะเนื้อหาคำตอบและวิธีแก้ไขเท่านั้น`;
+3. ห้ามแสดงรหัส KB ID หรือแหล่งอ้างอิงในข้อความคำตอบ`;
 
       const key = geminiApiKey.trim();
       const vertexEndpoint = `https://aiplatform.googleapis.com/v1/publishers/google/models/${geminiModel}:generateContent?key=${encodeURIComponent(key)}`;
@@ -928,6 +935,16 @@ ${allOfficialData}
           console.warn('AI API call warning:', err);
         }
       }
+
+      // Fallback กรณีเรียก API ไม่สำเร็จ
+      if (sheetResult.matches.length > 0) {
+        const top = sheetResult.matches[0];
+        return { text: `💡 **คำตอบ:**\n${top.answer}\n\n🛠️ **วิธีเข้าถึง / วิธีแก้ไข:**\n${top.steps || '-'}` };
+      }
+
+      return { text: `💡 **คำตอบ:**\nสำหรับคำถามเรื่อง "${userMessage}" สามารถตรวจสอบการตั้งค่าได้ผ่าน **Merchant Portal** หรือแอป **Eats365 POS** ครับ` };
+    }
+
 
       // Fallback ถ้าเรียก API ไม่สำเร็จ ค้นหาจากชีตโดยตรง
       const sheetResult = retrieveRelevantSheetKB(userMessage, 1);
