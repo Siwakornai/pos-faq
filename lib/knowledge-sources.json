@@ -1,0 +1,86 @@
+[
+  {
+    "source": "notion",
+    "title": "เชื่อมต่อเครื่องพิมพ์กับ Eats365 POS",
+    "url": "https://yielding-hoverfly-f41.notion.site/p/Scan-and-Pair-Printer-3c1fa42ca2d380d0b474c234cecf9854",
+    "keywords": "เครื่องพิมพ์ ปริ้น ปริ๊น printer pair scan network ip buzzer เสียง",
+    "text": "ก่อนจับคู่ ให้เปิดเครื่องพิมพ์รุ่นที่รองรับและเชื่อมต่อกับเครือข่ายเดียวกับ POS บน iPad เปิด Settings, General, Printer Setup แล้วแตะ Scan printers หากไม่พบ ให้เพิ่มด้วยตนเองโดยเลือกประเภท ระบุชื่อและ IP Address กด Test แล้วกด Pair Device สำหรับเครื่องพิมพ์ฉลาก ให้ตั้งขนาดฉลากก่อนจับคู่ สามารถเพิ่มจาก Merchant Portal 2.0 ใน Restaurant Settings, Printer List ได้เช่นกัน"
+  },
+  {
+    "source": "notion",
+    "title": "ตั้งค่าการพิมพ์ Kitchen Ticket",
+    "url": "https://yielding-hoverfly-f41.notion.site/Kitchen-Ticket-3c2fa42ca2d38046b62ee2147f3a1098",
+    "keywords": "ตั๋วครัว ครัว พิมพ์ ยกเลิก ย้ายโต๊ะ combo kitchen ticket",
+    "text": "บน POS เปิด Settings, Printing, Ticket Printing ปรับตัวเลือกแล้วบันทึก บน Merchant Portal 2.0 ใช้ Restaurant Settings, Printing, Ticket Settings สามารถกำหนดให้พิมพ์เมื่อยกเลิกรายการ แสดงชื่อชุด Combo และพิมพ์ตั๋วใหม่พร้อมเลขโต๊ะหลังย้ายโต๊ะ ตัวเลือกหลังย้ายโต๊ะใช้กับร้าน Full Service"
+  },
+  {
+    "source": "notion",
+    "title": "ตั้งค่าและจัดการภาษีใน Eats365",
+    "url": "https://yielding-hoverfly-f41.notion.site/Taxes-3c7fa42ca2d381978548e773abddd7d6",
+    "keywords": "ภาษี vat taxes tax type group อัตราภาษี",
+    "text": "สร้าง Tax Type เพื่อกำหนดชื่อ อัตรา และประเภทบริการ จากนั้นจึงสร้าง Tax Group สำหรับนำไปใช้กับสินค้า บน Merchant Portal 2.0 ไปที่ Restaurant Settings, Taxes, Tax Type เลือก Add Tax Type ระบุรายละเอียดแล้วบันทึก จากนั้นใช้เมนู Tax Group ในหน้า Taxes บน POS สร้างประเภทภาษีได้จาก Settings, Taxes, Tax Type"
+  },
+  {
+    "source": "academy",
+    "title": "Update 26.10.1: Pre-order Prep Tool, Beverage Container Return Scheme, and other System Enhancements",
+    "url": "https://www.youtube.com/watch?v=qWza5h6hAr4&t=19s",
+    "keywords": "เครื่องพิมพ์ พิมพ์ซ้ำ modifier preorder เตรียมอาหาร",
+    "text": "อัปเดตอธิบายการใช้ชื่อ Modifier แบบสั้นบนตั๋วครัว การติดป้าย Retry บนงานพิมพ์ที่ระบบกู้คืน และการใช้ Prep Tool วางแผนเตรียมอาหารล่วงหน้าหลายวัน"
+  },
+  {
+    "source": "academy",
+    "title": "Update 26.9.1: Branded Online Store Website Upgrades and Other Enhancements",
+    "url": "https://www.youtube.com/watch?v=KA49RAziays&t=91s",
+    "keywords": "expedite pickup รับสินค้า cfd bos หน้าร้าน",
+    "text": "วิดีโออธิบายการซ่อนเบอร์สมาชิกบน POS และฟังก์ชันของ Expedite Display สำหรับตรวจชื่อออเดอร์รับสินค้าและปิดหลายออเดอร์พร้อมกัน พร้อมอัปเดตการแสดงรายละเอียดค่าใช้จ่ายบน CFD"
+  },
+  {
+    "source": "academy",
+    "title": "Update 26.8.1: Staff Meal Allowances, New eSignage Layout and Other Enhancements",
+    "url": "https://www.youtube.com/watch?v=dh3Cyr8-vYA&t=19s",
+    "keywords": "staff meal อาหารพนักงาน สิทธิ์ งบประมาณ modifier",
+    "text": "Staff Meal Allowance กำหนดงบ รอบเวลา และรายการที่ใช้สิทธิ์ได้ รองรับการจัดการรายชื่อพนักงาน การใช้สิทธิ์ที่ POS หรือร้านออนไลน์ และรายงานการใช้สิทธิ์"
+  },
+  {
+    "source": "academy",
+    "title": "Update 26.7.1: Maximum Tip Limits, New Android Kiosk Payment Methods, and other Enhancements",
+    "url": "https://www.youtube.com/watch?v=_wOX2gQuZ5Q&t=130s",
+    "keywords": "tip ทิป วงเงิน delivery reference ค้นออเดอร์",
+    "text": "อัปเดตแสดงการค้นหาออเดอร์เดลิเวอรีจากเลขอ้างอิงและการกำหนดเพดานทิปสำหรับ 365pay กับ Global Payments"
+  },
+  {
+    "source": "academy",
+    "title": "Update 26.4.1: Filter items, expanded Media Promotion upload specifications, and other enhancements",
+    "url": "https://www.youtube.com/watch?v=7vvwFh5hrRE&t=370s",
+    "keywords": "printer buzzer เครื่องพิมพ์ เสียง star cfd xero สต็อก",
+    "text": "อัปเดตสาธิตเสียงแจ้งเตือนเครื่องพิมพ์ Star สำหรับตั๋วหลายประเภท และอธิบายตัวเลือกข้ามการอัปเดตการติดตามสต็อกเมื่อนำเทมเพลตเมนูไปใช้"
+  },
+  {
+    "source": "academy",
+    "title": "Update 26.3.2: POS Diagnostic Log Status, Merchant Portal, and Self Order Kiosk Enhancements",
+    "url": "https://www.youtube.com/watch?v=dg51g9fBqvM&t=0s",
+    "keywords": "diagnostic log transaction report kiosk pay station",
+    "text": "อัปเดตครอบคลุมการส่ง Diagnostic Log จาก POS แบบทันที การเลือกเวอร์ชันรายงาน Transaction และการใช้ Android Self-Order Kiosk ในโหมดจุดชำระเงิน"
+  },
+  {
+    "source": "academy",
+    "title": "Update 26.3.1: Enhanced Coursing feature and other POS and Merchant Portal enhancements",
+    "url": "https://www.youtube.com/watch?v=E5L0dPPcNOQ&t=78s",
+    "keywords": "coursing course merchant portal offline payment void",
+    "text": "POS 2.79 รองรับการสร้างคอร์สอาหารและกำหนดหมวดหมู่ให้หลายรายการผ่าน Merchant Portal วิดีโอยังอธิบายเสียงแจ้งเตือนออฟไลน์และการตรวจสอบการชำระเงินหน้าร้านที่ผิดปกติ"
+  },
+  {
+    "source": "academy",
+    "title": "Update 26.2.1: Re-ordering Past Orders on the Branded Online Store and Other Modules enhancements",
+    "url": "https://www.youtube.com/watch?v=zVJVJVcc1-Q&t=254s",
+    "keywords": "reorder bos สั่งซ้ำ void reason qr dine in",
+    "text": "อัปเดตแสดงการสั่งซ้ำจากออเดอร์เดิมสำหรับเดลิเวอรีและรับสินค้าใน Branded Online Store รวมถึงการชำระเงิน QR สำหรับ Dine-In และการดูเหตุผล Void ในรายงาน"
+  },
+  {
+    "source": "academy",
+    "title": "รายงาน Sales by Modifier",
+    "url": "https://www.youtube.com/watch?v=dh3Cyr8-vYA&t=198s",
+    "keywords": "ยอดขายท็อปปิ้ง ท็อปปิ้ง ทอปปิ้ง ตัวเลือกเสริม ขายดี รายงานยอดขาย modifier sales by modifier",
+    "text": "ใช้รายงาน Sales by Modifier ใน Merchant Portal เพื่อดูยอดขายแยกตามตัวเลือกเสริม เช่น ท็อปปิ้งและตัวเลือกที่ลูกค้าเลือกใน Modifier Group"
+  }
+]

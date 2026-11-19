@@ -1,0 +1,10 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "functions": {
+    "api/chat.mjs": {
+      "includeFiles": "{public/index.html,lib/knowledge-sources.json}",
+      "maxDuration": 120
+    }
+  }
+}

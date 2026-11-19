@@ -87,8 +87,8 @@
           <div class="flex items-center gap-2">
             <h1 class="font-bold text-stone-900 text-base sm:text-lg leading-tight">Eats365 POS Knowledge Hub</h1>
             <span class="hidden sm:inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-amber-100/90 text-amber-900 border border-amber-300/80">
-              <span class="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse-dot"></span>
-              EatAi Connected
+              <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+              EatAi
             </span>
           </div>
           <p class="text-xs text-stone-500">ศูนย์ช่วยเหลือ & ฐานข้อมูล Q&A POS Knowledge Bank</p>
@@ -305,7 +305,7 @@
 
       <!-- Chat Input Form -->
       <form onsubmit="handleChatSubmit(event)" class="p-3 bg-white border-t border-stone-200 flex items-end gap-2 shrink-0">
-        <textarea id="chatInput" rows="1" placeholder="พิมพ์คำถามเกี่ยวกับ Eats365 POS ได้ทุกเรื่อง..."
+        <textarea id="chatInput" maxlength="1500" rows="1" placeholder="พิมพ์คำถามเกี่ยวกับ Eats365 POS ได้ทุกเรื่อง..."
                   onkeydown="if(event.key==='Enter' && !event.shiftKey){event.preventDefault(); handleChatSubmit(event);}"
                   class="flex-1 resize-none max-h-24 rounded-xl border border-stone-200 px-3.5 py-2.5 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-amber-400/50 focus:border-amber-500"></textarea>
         <button id="sendBtn" type="submit" class="px-4 py-2.5 rounded-xl bg-[#F4A61D] hover:bg-[#E0920B] disabled:opacity-50 text-stone-900 font-bold text-xs sm:text-sm transition flex items-center gap-1 shrink-0 cursor-pointer">
@@ -338,24 +338,6 @@
       </div>
 
       <div class="space-y-4 text-xs sm:text-sm">
-        <div>
-          <label class="block font-semibold text-stone-700 mb-1">API Key</label>
-          <input id="apiKeyInput" type="password" value="AQ.Ab8RN6Jva_aaodZWatZU2LZPyDpYC_X8R2ukd7jiSxBNvxaKFQ"
-                 class="w-full rounded-xl border border-stone-300 px-3 py-2 text-stone-800 focus:outline-none focus:ring-2 focus:ring-amber-500" />
-          <p class="text-[11px] text-stone-500 mt-1">
-            เชื่อมต่อระบบค้นหา 2 ชั้น: ชั้นที่ 1 ค้นหาจาก Google Sheets (Q&A POS Knowledge Bank) และชั้นที่ 2 ค้นหาต่อยอดจากฐานความรู้ทางการของ Eats365
-          </p>
-        </div>
-
-        <div>
-          <label class="block font-semibold text-stone-700 mb-1">โมเดล AI</label>
-          <select id="modelSelect" class="w-full rounded-xl border border-stone-300 px-3 py-2 text-stone-800 focus:outline-none focus:ring-2 focus:ring-amber-500">
-            <option value="gemini-2.5-flash">gemini-2.5-flash (แนะนำ - รองรับค้นหาเว็บ Eats365 อัตโนมัติ)</option>
-            <option value="gemini-2.0-flash">gemini-2.0-flash</option>
-            <option value="gemini-1.5-pro">gemini-1.5-pro</option>
-          </select>
-        </div>
-
         <div class="pt-2 border-t border-stone-100">
           <label class="block font-semibold text-stone-700 mb-1">Google Sheets Webhook URL (สำหรับซิงค์ Feedback อัตโนมัติ)</label>
           <input id="feedbackWebhookInput" type="url" placeholder="https://script.google.com/macros/s/.../exec (เว้นว่างได้)"
@@ -487,23 +469,20 @@
     // State
     let activeCategory = 'ALL';
     let searchQuery = '';
-    let geminiApiKey = 'AQ.Ab8RN6Jva_aaodZWatZU2LZPyDpYC_X8R2ukd7jiSxBNvxaKFQ';
-    let geminiModel = 'gemini-2.5-flash';
     let feedbackWebhookUrl = '';
     let feedbackLogs = [];
     let qaSessionStore = {};
 
     try {
       if (window.localStorage) {
-        geminiApiKey = localStorage.getItem('e365_gemini_key') || geminiApiKey;
-        geminiModel = localStorage.getItem('e365_gemini_model') || geminiModel;
         feedbackWebhookUrl = localStorage.getItem('e365_feedback_webhook') || '';
         const savedFb = localStorage.getItem('e365_eatai_feedbacks');
         if (savedFb) feedbackLogs = JSON.parse(savedFb);
       }
     } catch (e) {}
 
-    let chatHistory = [];
+    let previousQuestion = "";
+    let chatPending = false;
 
     const categoryIcons = {
       'ALL': '🗂️',
@@ -533,16 +512,17 @@
     // 3. INITIALIZATION & UI RENDERING
     // ==========================================
     function initApp() {
-      const apiKeyEl = document.getElementById('apiKeyInput');
-      const modelEl = document.getElementById('modelSelect');
       const webhookEl = document.getElementById('feedbackWebhookInput');
-      if (apiKeyEl) apiKeyEl.value = geminiApiKey;
-      if (modelEl) modelEl.value = geminiModel;
       if (webhookEl) webhookEl.value = feedbackWebhookUrl;
       renderCategories();
       renderFAQs();
       initWelcomeMessage();
       updateFeedbackBadge();
+      if (location.hash === '#test-eatai') {
+        toggleChatbot(true);
+        const input = document.getElementById('chatInput');
+        if (input) input.value = 'ถ้า POS สแกนหาเครื่องพิมพ์ไม่เจอ ต้องตรวจอะไรและเพิ่มเครื่องด้วย IP ยังไง?';
+      }
     }
 
     if (document.readyState === 'loading') {
@@ -690,7 +670,7 @@
         const cleanSteps = stripSupportLinks(item.steps);
 
         return `
-          <div class="faq-card bg-white rounded-2xl border border-stone-200/90 shadow-sm hover:border-amber-400/90 transition overflow-hidden">
+          <div id="faq-${Number(item.idx)}" class="faq-card scroll-mt-20 bg-white rounded-2xl border border-stone-200/90 shadow-sm hover:border-amber-400/90 transition overflow-hidden">
             <button type="button" onclick="toggleAccordion(this)" aria-expanded="${isOpen}"
                     class="w-full text-left px-5 py-4 flex items-start justify-between gap-4 hover:bg-amber-50/30 transition cursor-pointer">
               <div class="space-y-1.5 flex-1">
@@ -772,224 +752,27 @@
       });
     }
 
-    // ==========================================
-    // 4. TWO-TIER HYBRID RAG ENGINE (GOOGLE SHEET -> OFFICIAL EATS365 SUPPORT)
-    // ==========================================
-    const STOP_WORDS = new Set(['วิธี', 'การ', 'ทำ', 'ยังไง', 'อย่างไร', 'ต้อง', 'ตั้งค่า', 'สร้าง', 'เพิ่ม', 'ใน', 'ของ', 'ที่', 'และ', 'หรือ', 'ได้', 'ไหม', 'ครับ', 'ค่ะ', 'ขอดู', 'อยากรู้', 'เรื่อง', 'ระบบ', 'pos', 'eats365']);
+    async function callEatAiWithRAG(userMessage) {
+      if (location.protocol === 'file:') {
+        return { text: 'เปิดเว็บผ่านเซิร์ฟเวอร์ตัวอย่างเพื่อทดลองแชต Google AI Studio ครับ' };
+      }
 
-    function extractSearchTokens(query) {
-      let q = query.toLowerCase().trim();
-      q = q.replace(/^(วิธีสร้าง|วิธีตั้งค่า|วิธีการตั้งค่า|วิธีการ|วิธีทำ|วิธีใช้|วิธีแก้|วิธีดู|อยากทราบวิธี|ตั้งค่า|สร้าง|เพิ่ม)/g, ' ').trim();
-      const raw = q.split(/[\s,?.!\/\-()]+/).filter(t => t.length >= 2 && !STOP_WORDS.has(t));
-      return raw.length > 0 ? raw : query.toLowerCase().trim().split(/[\s,?.!\/\-()]+/).filter(t => t.length >= 2);
-    }
-
-    function retrieveRelevantSheetKB(query, topK = 6) {
-      const cleanQ = query.toLowerCase().trim();
-      const tokens = extractSearchTokens(query);
-
-      const scored = KB_DATA.map(item => {
-        let score = 0;
-        let matchedTokens = 0;
-        const qText = item.question.toLowerCase();
-        const aText = item.answer.toLowerCase();
-        const sText = (item.steps || '').toLowerCase();
-        const kText = (item.keywords || '').toLowerCase();
-        const subText = (item.subcategory || '').toLowerCase();
-
-        if (qText.includes(cleanQ)) score += 45;
-        if (kText.includes(cleanQ)) score += 35;
-
-        tokens.forEach(token => {
-          let tokenMatched = false;
-          if (qText.includes(token)) { score += 10; tokenMatched = true; }
-          if (kText.includes(token)) { score += 9; tokenMatched = true; }
-          if (subText.includes(token)) { score += 6; tokenMatched = true; }
-          if (sText.includes(token)) { score += 4; tokenMatched = true; }
-          if (aText.includes(token)) { score += 3; tokenMatched = true; }
-          if (tokenMatched) matchedTokens++;
+      try {
+        const response = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: userMessage, previousQuestion }),
+          signal: AbortSignal.timeout(175000)
         });
-
-        const coverage = tokens.length > 0 ? (matchedTokens / tokens.length) : 0;
-        if (tokens.length >= 2 && matchedTokens < tokens.length && !qText.includes(cleanQ)) {
-          score = score * coverage * 0.6;
-        }
-
-        if ((cleanQ.includes('บุฟเฟต์') || cleanQ.includes('ayce') || cleanQ.includes('buffet')) && qText.includes('all you can eat')) score += 30;
-        if ((cleanQ.includes('สต็อก') || cleanQ.includes('fmh') || cleanQ.includes('waste') || cleanQ.includes('void')) && (qText.includes('fmh') || aText.includes('fmh'))) score += 20;
-        if ((cleanQ.includes('เสียง') || cleanQ.includes('ดัง') || cleanQ.includes('xprinter')) && aText.includes('xprinter')) score += 30;
-
-        return { item, score, coverage, matchedTokens };
-      });
-
-      scored.sort((a, b) => b.score - a.score);
-      const topScore = scored.length > 0 ? scored[0].score : 0;
-      const topCoverage = scored.length > 0 ? scored[0].coverage : 0;
-      const matches = scored.filter(s => s.score > 0).slice(0, topK).map(s => s.item);
-      return { matches, topScore, topCoverage };
+        const result = await response.json();
+        if (!response.ok) return { text: result.error || 'Google AI Studio ขัดข้องชั่วคราว กรุณาลองอีกครั้งครับ' };
+        previousQuestion = userMessage;
+        return result;
+      } catch {
+        return { text: 'เชื่อมต่อ Google AI Studio ไม่สำเร็จ กรุณาลองอีกครั้ง หรือค้นคำตอบใน FAQ ครับ' };
+      }
     }
 
-    function retrieveOfficialEats365KB(query, topK = 4) {
-      const cleanQ = query.toLowerCase().trim();
-      const tokens = extractSearchTokens(query);
-
-      const scored = OFFICIAL_EATS365_KB.map(item => {
-        let score = 0;
-        let matchedTokens = 0;
-        const tText = item.topic.toLowerCase();
-        const kText = item.keywords.toLowerCase();
-        const aText = item.answer.toLowerCase();
-        const sText = item.steps.toLowerCase();
-
-        if (tText.includes(cleanQ) || kText.includes(cleanQ)) score += 45;
-        tokens.forEach(token => {
-          let tokenMatched = false;
-          if (tText.includes(token)) { score += 12; tokenMatched = true; }
-          if (kText.includes(token)) { score += 12; tokenMatched = true; }
-          if (sText.includes(token)) { score += 5; tokenMatched = true; }
-          if (aText.includes(token)) { score += 4; tokenMatched = true; }
-          if (tokenMatched) matchedTokens++;
-        });
-        const coverage = tokens.length > 0 ? (matchedTokens / tokens.length) : 0;
-        if (coverage === 1 && tokens.length >= 2) score += 20;
-        return { item, score, coverage };
-      });
-
-      scored.sort((a, b) => b.score - a.score);
-      const topOfficialScore = scored.length > 0 ? scored[0].score : 0;
-      const matches = scored.filter(s => s.score > 0).slice(0, topK).map(s => s.item);
-      return {
-        matches: matches.length > 0 ? matches : OFFICIAL_EATS365_KB.slice(0, 3),
-        topScore: topOfficialScore
-      };
-    }
-
-           async function callEatAiWithRAG(userMessage) {
-      // 1. ค้นหาเฉพาะข้อมูลที่เกี่ยวข้องที่สุดจากทั้ง 2 Source มาก่อน (ไม่ยัดทั้งหมดเพื่อป้องกัน AI สับสน)
-      const sheetResult = retrieveRelevantSheetKB(userMessage, 4);
-      const officialResult = retrieveOfficialEats365KB(userMessage, 3);
-
-      const sheetContext = sheetResult.matches.map((it, idx) => 
-        `[Q&A ข้อที่ ${idx+1}] หมวดหมู่: ${it.category} | คำถาม: ${it.question}\nคำตอบ: ${it.answer}\nวิธีแก้: ${it.steps || '-'}`
-      ).join('\n\n');
-
-      const officialContext = officialResult.matches.map((it, idx) => 
-        `[คู่มือทางการ ข้อที่ ${idx+1}] เรื่อง: ${it.topic}\nคำตอบ: ${it.answer}\nวิธีแก้: ${it.steps}`
-      ).join('\n\n');
-
-      // 2. ส่งเฉพาะข้อมูลที่เกี่ยวข้องเข้าไปให้ Gemini AI สรุปอย่างแม่นยำ
-      const systemPrompt = `คุณคือ "EatAi" ผู้ช่วยอัจฉริยะผู้เชี่ยวชาญระบบร้านอาหาร Eats365 POS และ Food Market Hub (FMH)
-หน้าที่ของคุณคืออ่านคำถาม และใช้ข้อมูลอ้างอิงที่คัดมาให้ด้านล่างนี้ในการสรุปคำตอบให้ตรงประเด็น ครบถ้วน และเข้าใจง่ายที่สุด
-
-=== ข้อมูลอ้างอิงที่เกี่ยวข้องกับคำถาม ===
-${sheetContext || 'ไม่พบในชีต'}
----
-${officialContext || 'ไม่พบในคู่มือทางการ'}
-=========================================
-
-กฎการตอบ (บังคับ):
-1. สรุปคำตอบให้ครอบคลุมสิ่งที่ผู้ใช้ถามโดยอิงจากข้อมูลอ้างอิงด้านบน ห้ามตอบหลุดไปประเด็นอื่น
-2. แบ่งรูปแบบคำตอบให้ชัดเจนด้วย:
-   - 💡 **คำตอบ:** [สรุปประเด็นหลัก]
-   - 🛠️ **วิธีเข้าถึง / วิธีแก้ไข:** [อธิบายเป็นขั้นตอน 1, 2, 3 ที่สามารถทำตามบน Merchant Portal หรือแอป POS ได้ทันที]
-3. ห้ามแสดงรหัส KB ID หรือแหล่งอ้างอิงในข้อความคำตอบ`;
-
-      const key = geminiApiKey.trim();
-      const vertexEndpoint = `https://aiplatform.googleapis.com/v1/publishers/google/models/${geminiModel}:generateContent?key=${encodeURIComponent(key)}`;
-      const studioEndpoint = `https://generativelanguage.googleapis.com/v1beta/models/${geminiModel}:generateContent?key=${encodeURIComponent(key)}`;
-      const endpoints = key.startsWith('AQ.') ? [vertexEndpoint, studioEndpoint] : [studioEndpoint, vertexEndpoint];
-
-      const normalizedContents = [
-        ...chatHistory.slice(-4).map(msg => ({
-          role: msg.role || 'user',
-          parts: msg.parts
-        })),
-        { role: 'user', parts: [{ text: userMessage }] }
-      ];
-
-      const payload = {
-        systemInstruction: { parts: [{ text: systemPrompt }] },
-        contents: normalizedContents,
-        generationConfig: { temperature: 0.2, maxOutputTokens: 1024 }
-      };
-
-      for (const endpoint of endpoints) {
-        try {
-          const response = await fetch(endpoint, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-          });
-
-          if (response.ok) {
-            const data = await response.json();
-            const parts = data?.candidates?.[0]?.content?.parts || [];
-            const aiText = parts.map(p => p.text || '').join('').trim();
-            if (aiText) {
-              chatHistory.push({ role: 'user', parts: [{ text: userMessage }] });
-              chatHistory.push({ role: 'model', parts: [{ text: aiText }] });
-              return { text: aiText };
-            }
-          }
-        } catch (err) {
-          console.warn('AI API call warning:', err);
-        }
-      }
-
-      // Fallback กรณีเรียก API ไม่สำเร็จ
-      if (sheetResult.matches.length > 0) {
-        const top = sheetResult.matches[0];
-        return { text: `💡 **คำตอบ:**\n${top.answer}\n\n🛠️ **วิธีเข้าถึง / วิธีแก้ไข:**\n${top.steps || '-'}` };
-      }
-
-      return { text: `💡 **คำตอบ:**\nสำหรับคำถามเรื่อง "${userMessage}" สามารถตรวจสอบการตั้งค่าได้ผ่าน **Merchant Portal** หรือแอป **Eats365 POS** ครับ` };
-    }
-
-
-      // Fallback ถ้าเรียก API ไม่สำเร็จ ค้นหาจากชีตโดยตรง
-      const sheetResult = retrieveRelevantSheetKB(userMessage, 1);
-      if (sheetResult.matches.length > 0) {
-        const top = sheetResult.matches[0];
-        return { text: `💡 **คำตอบ:**\n${top.answer}\n\n🛠️ **วิธีเข้าถึง / วิธีแก้ไข:**\n${top.steps || '-'}` };
-      }
-
-      return { text: `💡 **คำตอบ:**\nสำหรับคำถามเรื่อง "${userMessage}" สามารถตรวจสอบการตั้งค่าได้ผ่าน **Merchant Portal** หรือแอป **Eats365 POS** ครับ\n\n🛠️ **วิธีเข้าถึง / วิธีแก้ไข:**\n1. ตรวจสอบเมนูการตั้งค่าที่เกี่ยวข้องในระบบหลังบ้าน\n2. ทำการบันทึกการตั้งค่า (Save)\n3. กด Red Dot Update บนหน้าจอ POS เพื่อซิงค์ข้อมูลล่าสุด` };
-    }
-
-    function synthesizeHybridResponse(userMessage, sheetResult, officialResult) {
-      const useSheet = (sheetResult.topScore >= 20 && sheetResult.topCoverage >= 0.65 && sheetResult.topScore >= officialResult.topScore);
-
-      if (useSheet && sheetResult.matches.length > 0) {
-        const top = sheetResult.matches[0];
-        const cleanAns = stripSupportLinks(top.answer);
-        const cleanSteps = stripSupportLinks(top.steps);
-
-        let reply = `สำหรับคำถามเรื่อง **"${top.question}"** มีรายละเอียดดังนี้ครับ:\n\n`;
-        if (cleanAns) {
-          reply += `💡 **คำตอบ:**\n${cleanAns}\n`;
-        }
-        if (cleanSteps) {
-          reply += `\n🛠️ **วิธีเข้าถึง / วิธีแก้ไข:**\n${cleanSteps}\n`;
-        }
-        return { text: reply };
-      }
-
-      if (officialResult.matches && officialResult.matches.length > 0) {
-        const topOfficial = officialResult.matches[0];
-        let reply = `สำหรับคำถามเรื่อง **"${topOfficial.topic}"** มีรายละเอียดและขั้นตอนดังนี้ครับ:\n\n`;
-        reply += `💡 **คำตอบ:**\n${topOfficial.answer}\n`;
-        reply += `\n🛠️ **วิธีเข้าถึง / วิธีแก้ไข:**\n${topOfficial.steps}\n`;
-        return { text: reply };
-      }
-
-      return {
-        text: `สำหรับคำถามเรื่อง **"${userMessage}"** สามารถดำเนินการตั้งค่าได้ผ่าน **Merchant Portal** (เมนู Menu Setup หรือ Restaurant Settings) หรือบนแอป **Eats365 POS** ที่เมนู **Settings (ซ้ายบน)** แล้วกด **Update/Sync** ข้อมูลครับ`
-      };
-    }
-
-    // ==========================================
-    // 5. CHATBOT UI INTERACTION & FEEDBACK SYSTEM
-    // ==========================================
     function initWelcomeMessage() {
       const container = document.getElementById('chatMessages');
       if (!container) return;
@@ -1024,7 +807,7 @@ ${officialContext || 'ไม่พบในคู่มือทางการ'
     }
 
     function clearChatHistory() {
-      chatHistory = [];
+      previousQuestion = "";
       initWelcomeMessage();
     }
 
@@ -1050,6 +833,39 @@ ${officialContext || 'ไม่พบในคู่มือทางการ'
       sendQuickPrompt(item.question);
     }
 
+    function renderChatSources(sources = []) {
+      if (!sources.length) return '';
+      const links = sources.map(source => {
+        const label = escapeHtml(`[${source.id}] ${source.source} · ${source.title}`);
+        if (!source.url) return `<li>${label}</li>`;
+        const local = /^#faq-\d+$/.test(source.url);
+        if (!local && !/^https:\/\//i.test(source.url)) return `<li>${label}</li>`;
+        const attributes = local ? 'data-faq-reference' : 'target="_blank" rel="noopener noreferrer"';
+        return `<li><a class="underline" href="${escapeHtml(source.url)}" ${attributes}>${label}</a></li>`;
+      }).join('');
+      return `<details class="rounded-lg bg-amber-50 p-2.5 text-stone-700">
+        <summary class="cursor-pointer font-semibold">แหล่งอ้างอิง (${sources.length})</summary>
+        <ul class="mt-2 space-y-1">${links}</ul>
+      </details>`;
+    }
+
+    document.addEventListener('click', event => {
+      const link = event.target.closest('[data-faq-reference]');
+      if (!link) return;
+      event.preventDefault();
+      selectCategory('ALL');
+      const search = document.getElementById('searchInput');
+      if (search) {
+        search.value = '';
+        search.dispatchEvent(new Event('input', { bubbles: true }));
+      }
+      toggleChatbot(false);
+      const article = document.getElementById(link.hash.slice(1));
+      const button = article?.querySelector('button[aria-expanded="false"]');
+      if (button) toggleAccordion(button);
+      article?.scrollIntoView({ block: 'start' });
+    });
+
     function formatMarkdownToHtml(md) {
       let html = escapeHtml(md);
       html = html.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer" class="text-amber-700 underline font-semibold">$1</a>');
@@ -1064,7 +880,7 @@ ${officialContext || 'ไม่พบในคู่มือทางการ'
       const input = document.getElementById('chatInput');
       if (!input) return;
       const message = input.value.trim();
-      if (!message) return;
+      if (!message || message.length > 1500 || chatPending) return;
 
       input.value = '';
       const container = document.getElementById('chatMessages');
@@ -1092,7 +908,13 @@ ${officialContext || 'ไม่พบในคู่มือทางการ'
       `);
       container.scrollTop = container.scrollHeight;
 
-      const result = await callEatAiWithRAG(message);
+      chatPending = true;
+      input.disabled = true;
+      const result = await callEatAiWithRAG(message).catch(() => ({
+        text: 'ระบบแชตขัดข้องชั่วคราว กรุณาลองอีกครั้งครับ'
+      }));
+      chatPending = false;
+      input.disabled = false;
       const loadingEl = document.getElementById(loadingId);
       if (loadingEl) loadingEl.remove();
 
@@ -1108,7 +930,9 @@ ${officialContext || 'ไม่พบในคู่มือทางการ'
         <div class="flex items-start gap-2.5" id="bubble_${msgId}">
           <div class="w-8 h-8 rounded-xl bg-[#F4A61D] text-stone-900 flex items-center justify-center text-sm shrink-0 shadow-sm">🤖</div>
           <div class="bg-white rounded-2xl rounded-tl-sm p-3.5 shadow-sm border border-stone-200/80 text-xs sm:text-sm text-stone-800 space-y-2.5 max-w-[88%] w-full">
+            ${result.sources?.length ? `<p class="text-sm font-semibold text-amber-900">คำตอบจาก AI · Google AI Studio</p>` : ''}
             <div class="leading-relaxed">${formatMarkdownToHtml(result.text)}</div>
+            ${renderChatSources(result.sources)}
 
             <!-- Feedback Bar (Thumbs Up / Down + Comment) -->
             <div class="pt-2.5 mt-2 border-t border-stone-100">
@@ -1389,16 +1213,10 @@ ${officialContext || 'ไม่พบในคู่มือทางการ'
     }
 
     function saveSettings() {
-      const keyEl = document.getElementById('apiKeyInput');
-      const modEl = document.getElementById('modelSelect');
       const webEl = document.getElementById('feedbackWebhookInput');
-      if (keyEl) geminiApiKey = keyEl.value.trim();
-      if (modEl) geminiModel = modEl.value;
       if (webEl) feedbackWebhookUrl = webEl.value.trim();
       try {
         if (window.localStorage) {
-          localStorage.setItem('e365_gemini_key', geminiApiKey);
-          localStorage.setItem('e365_gemini_model', geminiModel);
           localStorage.setItem('e365_feedback_webhook', feedbackWebhookUrl);
         }
       } catch (e) {}
