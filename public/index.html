@@ -923,7 +923,6 @@
         <div class="flex items-start gap-2.5" id="bubble_${msgId}">
           <div class="w-8 h-8 rounded-xl bg-[#F4A61D] text-stone-900 flex items-center justify-center text-sm shrink-0 shadow-sm">🤖</div>
           <div class="bg-white rounded-2xl rounded-tl-sm p-3.5 shadow-sm border border-stone-200/80 text-xs sm:text-sm text-stone-800 space-y-2.5 max-w-[88%] w-full">
-            ${result.sources?.length ? `<p class="text-sm font-semibold text-amber-900">คำตอบจาก AI · Google AI Studio</p>` : ''}
             <div class="leading-relaxed">${formatMarkdownToHtml(result.text)}</div>
             ${renderChatSources(result.sources)}
 
