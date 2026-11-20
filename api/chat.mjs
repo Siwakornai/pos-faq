@@ -71,7 +71,8 @@ function cite(answer) {
   const footers = [...answer.matchAll(/^\s*(?:\*\*)?SOURCES\s*:[ \t]*(.*?)\s*$/gim)];
   const body = answer.replace(/^\s*STATUS\s*:[^\n]*\n?/gim, "").replace(/^\s*(?:\*\*)?SOURCES\s*:[^\n]*\n?/gim, "").trim();
   const citation = /\[\s*\^?\d{1,3}(?:\s*[,;–—-]\s*\d{1,3})*\s*\]/g;
-  const clean = body.replace(citation, "").replace(/\[ข้อมูลในคลัง\]/g, "").trim();
+  const displayBody = body.replace(/[ \t]*\[\s*ข้อมูลในคลัง(?:\s*ไม่พอ)?\s*\]/gu, "").trim();
+  const clean = displayBody.replace(citation, "").trim();
   const lead = clean.replace(/^[\s*#\-]*(?:คำตอบ\s*[:*]*)?/i, "").trim();
   const negative = /^(?:ขออภัย[^\n]*?\s*)?(?:ผม\s*)?(?:ไม่มีข้อมูล|ข้อมูลในคลังไม่พอ|ไม่พบข้อมูล|ยังไม่พบข้อมูล|(?:ไม่สามารถ|ไม่อาจ|ขอไม่)(?:ตอบ|เปิดเผย|แสดง|ให้ข้อมูล|ให้เบอร์|ให้ที่อยู่|แชร์)|คำขอนี้อยู่นอกขอบเขต)/i;
   const fallback = "ยังไม่พบข้อมูลในคลังที่ยืนยันคำตอบได้ครับ ลองระบุชื่อเมนู รุ่นอุปกรณ์ หรืออาการเพิ่มเติม";
@@ -88,7 +89,7 @@ function cite(answer) {
   }));
   const sources = REFERENCES.filter(reference => ids.has(reference.id));
   if (!body || !sources.length || sources.length > 8) return { text: fallback, sources: [] };
-  return { text: body.replace(citation, match => /[–—-]/.test(match) ? "" : match), sources };
+  return { text: displayBody.replace(citation, match => /[–—-]/.test(match) ? "" : match), sources };
 }
 
 async function chat(request, env, url) {
