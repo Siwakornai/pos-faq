@@ -35,15 +35,15 @@
   <style>
     body {
       font-family: 'IBM Plex Sans Thai', 'Inter', sans-serif;
-      background-color: #FAF7F0;
+      background-color: #f7f5f2;
       color: #1D1912;
     }
     .glass-header {
-      background: rgba(255, 253, 248, 0.9);
+      background: rgba(255, 255, 255, 0.96);
       backdrop-filter: blur(12px);
     }
     .fmh-hero-bg {
-      background: radial-gradient(circle at 18% 35%, #FDE7B0 0%, #FFF8E7 45%, #FAF7F0 85%);
+      background: #fff8ec;
     }
     .custom-scrollbar::-webkit-scrollbar {
       width: 6px;
@@ -72,6 +72,59 @@
       padding: 0 3px;
       border-radius: 4px;
     }
+
+    :root { --ink: #211c16; --muted: #6b5a47; --line: #e7ded1; --accent: #f5a00d; }
+    :focus-visible { outline: 2px solid #924e10; outline-offset: 3px; }
+    .brand-lockup { display: inline-flex; align-items: center; gap: .65rem; font-weight: 700; color: var(--ink); white-space: nowrap; }
+    .brand-mark { display: grid; place-items: center; width: 2.15rem; height: 2.15rem; border-radius: .45rem; background: var(--ink); color: white; }
+    .brand-section { border-left: 1px solid var(--line); padding-left: .65rem; margin-left: .3rem; color: var(--muted); font-weight: 500; }
+    .glass-header { border-color: var(--line); }
+    .glass-header button, .glass-header [target="_blank"] { border-radius: .55rem; box-shadow: none; }
+    .fmh-hero-bg { padding: 3.25rem 1rem 3rem; }
+    .hero-inner { max-width: 76rem; padding-inline: clamp(0rem, 2vw, 1rem); }
+    .help-title { color: var(--ink); font-size: clamp(1.9rem, 4.5vw, 3.2rem); line-height: 1.2; font-weight: 700; }
+    .help-intro { margin: .65rem 0 1.5rem; color: #574732; font-size: 1rem; }
+    .help-search { max-width: 43rem; }
+    .search-bar { min-height: 3.35rem; border-radius: .65rem; padding: .3rem; }
+    .search-bar:focus-within { outline: 2px solid #d98209; outline-offset: 2px; }
+    .search-bar button:last-child { border-radius: .45rem; box-shadow: none; padding-inline: .85rem; }
+    #searchInput { min-width: 0; }
+    .quick-links { color: #574732; }
+    .quick-links span { color: #574732; }
+    .quick-links button { border: 0; border-radius: 0; padding: 0; background: transparent; color: #924e10; box-shadow: none; text-decoration: underline; text-underline-offset: .2em; }
+    .quick-links button:hover { background: transparent; color: #403425; }
+    main aside > div { border-radius: .65rem; border-color: var(--line); box-shadow: none; }
+    main aside h3 { color: var(--muted); font-size: .875rem; letter-spacing: 0; }
+    #categoryNav button { border-radius: .45rem; box-shadow: none; font-size: .875rem; }
+    .help-resources { display: grid; gap: .55rem; margin-top: .9rem; padding: .85rem .3rem .2rem; border-top: 1px solid var(--line); font-size: .875rem; color: #924e10; }
+    .help-resources a:hover { text-decoration: underline; }
+    main .min-w-0 > div:first-child { padding: .1rem 0 .6rem; background: transparent; border: 0; box-shadow: none; }
+    #activeCategoryTitle { font-size: 1.2rem; color: var(--ink); }
+    #faqListContainer { border: 1px solid var(--line); border-radius: .65rem; background: white; overflow: hidden; }
+    #faqListContainer:empty { display: none; }
+    #faqListContainer .faq-card { border: 0; border-radius: 0; box-shadow: none; }
+    #faqListContainer .faq-card + .faq-card { border-top: 1px solid var(--line); }
+    .faq-card > button { padding: 1rem 1.15rem; }
+    .faq-card > button:hover { background: #fff8ec; }
+    .faq-card h4 { font-size: 1rem; color: var(--ink); }
+    .faq-card > button .rounded-full:not(.accordion-icon) { padding: 0; border: 0; border-radius: 0; background: transparent; color: var(--muted); font-size: .78rem; }
+    .faq-card > button .rounded-full:not(.accordion-icon) + .rounded-full::before { content: "·"; margin-inline: .15rem .4rem; }
+    #chatWindow { border-radius: .85rem; }
+    #chatWindow > div:first-child { background: var(--ink); }
+    #chatMessages { background: #f7f5f2; }
+    #chatMessages .leading-relaxed { font-size: .925rem; }
+    #chatToggleBtn { border: 0; border-radius: .65rem; background: var(--ink); color: white; box-shadow: 0 .15rem .5rem #211c1626; }
+    #chatToggleBtn:hover { background: #403425; }
+    @media (max-width: 1023px) {
+      #categoryNav { margin-block: 0; }
+      #categoryNav button { width: auto; flex-shrink: 0; margin-top: 0; white-space: nowrap; }
+    }
+    @media (max-width: 639px) {
+      .brand-section, .glass-header [target="_blank"] { display: none; }
+      .fmh-hero-bg { padding-block: 2.25rem; }
+      .help-resources { display: flex; flex-wrap: wrap; gap: .5rem 1rem; }
+      #chatbotWrapper { right: .75rem; bottom: .75rem; }
+    }
   </style>
 </head>
 <body class="min-h-screen flex flex-col selection:bg-amber-400 selection:text-stone-900">
@@ -79,21 +132,10 @@
   <!-- Top Navigation (FMH Style) -->
   <header class="sticky top-0 z-30 glass-header border-b border-amber-900/10 transition-all">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-full bg-amber-100 border border-amber-300 flex items-center justify-center text-amber-800 font-bold text-sm shadow-sm">
-          E365
-        </div>
-        <div>
-          <div class="flex items-center gap-2">
-            <h1 class="font-bold text-stone-900 text-base sm:text-lg leading-tight">Eats365 POS Knowledge Hub</h1>
-            <span class="hidden sm:inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-amber-100/90 text-amber-900 border border-amber-300/80">
-              <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
-              EatAi
-            </span>
-          </div>
-          <p class="text-xs text-stone-500">ศูนย์ช่วยเหลือ & ฐานข้อมูล Q&A POS Knowledge Bank</p>
-        </div>
-      </div>
+      <a class="brand-lockup" href="#" aria-label="Eats365 POS Help Center">
+        <span class="brand-mark" aria-hidden="true">E</span>
+        <span>Eats365 <span class="brand-section">Help Center</span></span>
+      </a>
 
       <div class="flex items-center gap-2 sm:gap-2.5">
         <a href="https://yielding-hoverfly-f41.notion.site/Eats365-POS-Help-Center-3c1fa42ca2d38030b0c7c19e3a03f500" target="_blank" rel="noopener noreferrer"
@@ -103,7 +145,7 @@
           <svg class="w-3.5 h-3.5 text-stone-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
         </a>
 
-        <button type="button" onclick="toggleChatbot(true)" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs sm:text-sm font-semibold text-stone-900 bg-[#F4A61D] hover:bg-[#E0920B] shadow-sm shadow-amber-500/20 transition cursor-pointer">
+        <button type="button" onclick="toggleChatbot(true)" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs sm:text-sm font-semibold text-stone-900 bg-[#f5a00d] hover:bg-[#d98209] shadow-sm shadow-amber-500/20 transition cursor-pointer">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
           <span>ถาม EatAi ตอนนี้</span>
         </button>
@@ -113,82 +155,37 @@
 
   <!-- Hero Section & Search (FMH Warm Cream & Golden Yellow Aesthetic) -->
   <section class="relative fmh-hero-bg text-stone-900 py-12 sm:py-16 px-4 border-b border-amber-900/10 overflow-hidden">
-    <div class="max-w-4xl mx-auto text-center relative z-10">
-      <!-- FMH-style New Badge Pill -->
-      <div class="inline-flex items-center gap-2 pl-1.5 pr-3.5 py-1 rounded-full bg-white border border-amber-200/90 shadow-sm text-stone-700 text-xs font-medium mb-5">
-        <span class="px-2 py-0.5 rounded-full bg-[#F4A61D] text-stone-900 font-bold text-[11px]">✨ EatAi</span>
-        <span>ศูนย์รวมความรู้ Q&A POS Knowledge Bank + Official Eats365 Support</span>
-      </div>
-
-      <h2 class="font-serif text-3xl sm:text-5xl font-bold tracking-tight text-[#1D1912] mb-4 leading-tight">
-        ค้นหาวิธีตั้งค่า <span class="text-[#E59500]">แก้ปัญหา</span> และคู่มือ Eats365 POS
-      </h2>
-      <p class="text-stone-600 text-sm sm:text-base max-w-2xl mx-auto mb-8 leading-relaxed">
-        รวบรวมคำถาม-คำตอบ วิธีเข้าถึง และวิธีแก้ไขปัญหาจากทีม Support ครบทุกหมวดหมู่ พร้อมแชทบอท EatAi อัจฉริยะ
-      </p>
+    <div class="max-w-4xl mx-auto hero-inner relative z-10">
+      <h1 class="help-title">ศูนย์ช่วยเหลือ Eats365 POS</h1>
+      <p class="help-intro">ค้นหาวิธีตั้งค่า ใช้งาน และแก้ปัญหา POS</p>
 
       <!-- Search Input -->
-      <div class="relative max-w-2xl mx-auto">
-        <div class="flex items-center bg-white rounded-full p-1.5 shadow-lg shadow-amber-900/5 border border-stone-200/90 focus-within:ring-4 focus-within:ring-amber-400/30 focus-within:border-amber-400 transition">
+      <div class="relative help-search">
+        <div class="search-bar flex items-center bg-white border border-stone-200 transition">
           <div class="pl-4 pr-2 text-stone-400">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
           </div>
-          <input id="searchInput" type="text" placeholder="พิมพ์คำค้นหา เช่น ปิดเสียงเครื่องปริ้น, ตั้งค่าบุฟเฟต์ AYCE, ตัดสต็อก FMH, ใบกำกับภาษี..."
+          <input id="searchInput" type="search" aria-label="ค้นหาในคำถามที่พบบ่อย" placeholder="ค้นหาในคำถามที่พบบ่อย"
                  class="w-full py-2.5 px-2 text-stone-900 placeholder-stone-400 text-sm sm:text-base focus:outline-none bg-transparent"
                  oninput="handleSearch()" />
           <button id="clearSearchBtn" type="button" onclick="clearSearch()" class="hidden px-2 text-stone-400 hover:text-stone-600 cursor-pointer" title="ล้างคำค้นหา">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
           </button>
-          <button type="button" onclick="askAIFromSearch()" class="shrink-0 bg-[#F4A61D] hover:bg-[#E0920B] text-stone-900 font-semibold text-xs sm:text-sm px-5 py-2.5 rounded-full transition flex items-center gap-1.5 shadow-sm cursor-pointer">
-            <span>ให้ EatAi สรุปคำตอบ</span>
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+          <button type="button" onclick="askAIFromSearch()" class="shrink-0 bg-[#f5a00d] hover:bg-[#d98209] text-stone-900 font-semibold text-xs sm:text-sm px-5 py-2.5 rounded-full transition flex items-center gap-1.5 shadow-sm cursor-pointer">
+            <span>ถาม EatAi</span>
           </button>
         </div>
 
         <!-- Popular Quick Tags -->
-        <div class="mt-4 flex flex-wrap items-center justify-center gap-2 text-xs">
+        <div class="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm quick-links">
           <span class="text-stone-500 font-medium">คำค้นยอดฮิต:</span>
-          <button type="button" onclick="setQuickSearch('AYCE บุฟเฟต์')" class="px-3 py-1 rounded-full bg-white/90 hover:bg-[#F4A61D] hover:text-stone-900 text-stone-700 border border-amber-900/15 shadow-sm transition cursor-pointer">ตั้งค่าบุฟเฟต์ AYCE</button>
-          <button type="button" onclick="setQuickSearch('XPrinter ปิดเสียง')" class="px-3 py-1 rounded-full bg-white/90 hover:bg-[#F4A61D] hover:text-stone-900 text-stone-700 border border-amber-900/15 shadow-sm transition cursor-pointer">ปิดเสียง XPrinter</button>
-          <button type="button" onclick="setQuickSearch('FMH')" class="px-3 py-1 rounded-full bg-white/90 hover:bg-[#F4A61D] hover:text-stone-900 text-stone-700 border border-amber-900/15 shadow-sm transition cursor-pointer">การเชื่อมต่อ FMH & สต็อก</button>
-          <button type="button" onclick="setQuickSearch('SUNMI V2s')" class="px-3 py-1 rounded-full bg-white/90 hover:bg-[#F4A61D] hover:text-stone-900 text-stone-700 border border-amber-900/15 shadow-sm transition cursor-pointer">เครื่องพิมพ์ mPOS SUNMI</button>
-          <button type="button" onclick="setQuickSearch('End of Day')" class="px-3 py-1 rounded-full bg-white/90 hover:bg-[#F4A61D] hover:text-stone-900 text-stone-700 border border-amber-900/15 shadow-sm transition cursor-pointer">ปิดกะ / End of Day</button>
-          <button type="button" onclick="setQuickSearch('Tax Invoice')" class="px-3 py-1 rounded-full bg-white/90 hover:bg-[#F4A61D] hover:text-stone-900 text-stone-700 border border-amber-900/15 shadow-sm transition cursor-pointer">ออกใบกำกับภาษี</button>
+          <button type="button" onclick="setQuickSearch('AYCE บุฟเฟต์')" class="px-3 py-1 rounded-full bg-white/90 hover:bg-[#f5a00d] hover:text-stone-900 text-stone-700 border border-amber-900/15 shadow-sm transition cursor-pointer">ตั้งค่าบุฟเฟต์ AYCE</button>
+          <button type="button" onclick="setQuickSearch('XPrinter ปิดเสียง')" class="px-3 py-1 rounded-full bg-white/90 hover:bg-[#f5a00d] hover:text-stone-900 text-stone-700 border border-amber-900/15 shadow-sm transition cursor-pointer">ปิดเสียง XPrinter</button>
+          <button type="button" onclick="setQuickSearch('FMH')" class="px-3 py-1 rounded-full bg-white/90 hover:bg-[#f5a00d] hover:text-stone-900 text-stone-700 border border-amber-900/15 shadow-sm transition cursor-pointer">การเชื่อมต่อ FMH & สต็อก</button>
+          <button type="button" onclick="setQuickSearch('SUNMI V2s')" class="px-3 py-1 rounded-full bg-white/90 hover:bg-[#f5a00d] hover:text-stone-900 text-stone-700 border border-amber-900/15 shadow-sm transition cursor-pointer">เครื่องพิมพ์ mPOS SUNMI</button>
+          <button type="button" onclick="setQuickSearch('End of Day')" class="px-3 py-1 rounded-full bg-white/90 hover:bg-[#f5a00d] hover:text-stone-900 text-stone-700 border border-amber-900/15 shadow-sm transition cursor-pointer">ปิดกะ / End of Day</button>
+          <button type="button" onclick="setQuickSearch('Tax Invoice')" class="px-3 py-1 rounded-full bg-white/90 hover:bg-[#f5a00d] hover:text-stone-900 text-stone-700 border border-amber-900/15 shadow-sm transition cursor-pointer">ออกใบกำกับภาษี</button>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Notion Help Center Quick Modules Banner -->
-  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6 relative z-20">
-    <div class="bg-white rounded-2xl shadow-md shadow-amber-900/5 border border-stone-200/90 p-4 sm:p-5">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3 pb-3 border-b border-stone-100">
-        <div class="flex items-center gap-2.5">
-          <span class="w-8 h-8 rounded-lg bg-amber-100 text-amber-800 flex items-center justify-center font-bold">📚</span>
-          <div>
-            <h3 class="text-sm font-bold text-stone-900">คู่มือหลักจาก Notion Help Center & Official Resources</h3>
-            <p class="text-xs text-stone-500">ลิงก์ตรงไปยังหมวดหมู่คู่มือการใช้งาน Eats365 POS สำหรับทีม Onboarding และร้านค้า</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        <a href="https://yielding-hoverfly-f41.notion.site/Eats365-POS-Help-Center-3c1fa42ca2d38030b0c7c19e3a03f500" target="_blank" rel="noopener noreferrer"
-           class="group p-3.5 rounded-xl border border-stone-200/80 hover:border-amber-400 hover:bg-amber-50/50 transition flex items-start gap-3">
-          <span class="text-xl">🖥️</span>
-          <div>
-            <div class="text-xs sm:text-sm font-bold text-stone-800 group-hover:text-amber-800">คู่มือเริ่มใช้งาน POS & ตั้งค่าร้าน</div>
-            <div class="text-[11px] text-stone-500 mt-0.5">Notion Help Center</div>
-          </div>
-        </a>
-        <a href="https://www.youtube.com/@Eats365Academy" target="_blank" rel="noopener noreferrer"
-           class="group p-3.5 rounded-xl border border-stone-200/80 hover:border-amber-400 hover:bg-amber-50/50 transition flex items-start gap-3">
-          <span class="text-xl">🎬</span>
-          <div>
-            <div class="text-xs sm:text-sm font-bold text-stone-800 group-hover:text-amber-800">วิดีโอสอนใช้งาน Eats365</div>
-            <div class="text-[11px] text-stone-500 mt-0.5">Eats365 Academy YouTube</div>
-          </div>
-        </a>
       </div>
     </div>
   </section>
@@ -201,24 +198,15 @@
       <aside class="lg:w-64 shrink-0">
         <div class="bg-white rounded-2xl border border-stone-200/90 p-4 sticky top-20 shadow-sm">
           <div class="flex items-center justify-between mb-3">
-            <h3 class="text-xs font-bold uppercase tracking-wider text-stone-400">หมวดหมู่คำถาม (Categories)</h3>
+            <h3 class="text-xs font-bold uppercase tracking-wider text-stone-400">หมวดหมู่</h3>
           </div>
           <nav id="categoryNav" class="space-y-1 flex lg:flex-col overflow-x-auto lg:overflow-visible pb-2 lg:pb-0 gap-1 lg:gap-0 custom-scrollbar">
             <!-- Populated by JS -->
           </nav>
 
-          <div class="mt-6 pt-4 border-t border-stone-100 hidden lg:block">
-            <div class="bg-gradient-to-br from-amber-50/90 to-orange-50/60 rounded-xl p-3.5 border border-amber-200/80">
-              <div class="flex items-center gap-2 text-stone-900 font-bold text-xs mb-1">
-                <span>🤖 หาคำตอบไม่เจอ?</span>
-              </div>
-              <p class="text-[11px] text-stone-700 leading-relaxed mb-2.5">
-                ถามแชทบอท EatAi ได้เลย บอทจะค้นหาข้อมูลจากข้อมูลและสรุปขั้นตอนให้ทันที
-              </p>
-              <button type="button" onclick="toggleChatbot(true)" class="w-full py-2 px-3 rounded-full bg-[#F4A61D] hover:bg-[#E0920B] text-stone-900 font-semibold text-xs transition shadow-sm cursor-pointer">
-                เปิดแชทคุยกับ EatAi
-              </button>
-            </div>
+          <div class="help-resources">
+            <a href="https://yielding-hoverfly-f41.notion.site/Eats365-POS-Help-Center-3c1fa42ca2d38030b0c7c19e3a03f500" target="_blank" rel="noopener noreferrer">คู่มือ Notion</a>
+            <a href="https://www.youtube.com/@Eats365Academy" target="_blank" rel="noopener noreferrer">วิดีโอ Eats365 Academy</a>
           </div>
         </div>
       </aside>
@@ -228,17 +216,17 @@
         <!-- Filter Status Bar -->
         <div class="flex flex-wrap items-center justify-between gap-2 mb-4 bg-white px-4 py-3 rounded-xl border border-stone-200/80 shadow-sm">
           <div class="flex items-center gap-2">
-            <span id="activeCategoryTitle" class="font-bold text-stone-900 text-sm sm:text-base">ทุกหมวดหมู่ (All Categories)</span>
+            <span id="activeCategoryTitle" class="font-bold text-stone-900 text-sm sm:text-base">คำถามที่พบบ่อย</span>
           </div>
           <div class="flex items-center gap-2">
-            <button type="button" onclick="expandAllFAQs(true)" class="text-xs text-stone-600 hover:text-amber-700 font-medium px-2 py-1 rounded hover:bg-amber-50 cursor-pointer">กางทั้งหมด</button>
-            <span class="text-stone-300">|</span>
-            <button type="button" onclick="expandAllFAQs(false)" class="text-xs text-stone-600 hover:text-amber-700 font-medium px-2 py-1 rounded hover:bg-amber-50 cursor-pointer">ย่อทั้งหมด</button>
+            <button type="button" onclick="expandAllFAQs(true)" class="text-xs text-stone-600 hover:text-amber-700 font-medium px-2 py-1 rounded hover:bg-amber-50 cursor-pointer">เปิดทั้งหมด</button>
+
+            <button type="button" onclick="expandAllFAQs(false)" class="text-xs text-stone-600 hover:text-amber-700 font-medium px-2 py-1 rounded hover:bg-amber-50 cursor-pointer">ปิดทั้งหมด</button>
           </div>
         </div>
 
         <!-- FAQ Accordion Container -->
-        <div id="faqListContainer" class="space-y-3">
+        <div id="faqListContainer">
           <!-- Populated by JS -->
         </div>
 
@@ -247,7 +235,7 @@
           <div class="w-12 h-12 rounded-full bg-amber-50 text-amber-600 flex items-center justify-center mx-auto mb-3 text-xl">🔍</div>
           <h4 class="font-bold text-stone-900 text-base mb-1">ไม่พบคำถามนี้ในรายการหลัก</h4>
           <p class="text-xs text-stone-500 mb-4">กดปุ่มด้านล่างเพื่อให้แชทบอท EatAi ค้นหาคำตอบเพิ่มเติมจากฐานความรู้ Eats365 POS ให้ทันที</p>
-          <button type="button" onclick="askAIFromSearch()" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#F4A61D] hover:bg-[#E0920B] text-stone-900 text-xs font-semibold transition cursor-pointer shadow-sm">
+          <button type="button" onclick="askAIFromSearch()" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#f5a00d] hover:bg-[#d98209] text-stone-900 text-xs font-semibold transition cursor-pointer shadow-sm">
             <span>ถามคำถามนี้กับ EatAi</span>
           </button>
         </div>
@@ -263,13 +251,13 @@
       <!-- Chat Header (Dark Espresso Card look from FMH right panel) -->
       <div class="bg-[#231F18] text-white px-4 py-3.5 flex items-center justify-between shrink-0 border-b border-amber-500/30">
         <div class="flex items-center gap-2.5">
-          <div class="w-9 h-9 rounded-xl bg-[#F4A61D] text-stone-900 flex items-center justify-center text-lg font-bold shadow-sm">🤖</div>
+          <div class="w-9 h-9 rounded-xl bg-[#f5a00d] text-stone-900 flex items-center justify-center text-lg font-bold shadow-sm">🤖</div>
           <div>
             <div class="flex items-center gap-1.5">
-              <h3 class="font-bold text-sm leading-tight text-amber-50">EatAi Support Assistant</h3>
-              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse-dot"></span>
+              <h3 class="font-bold text-sm leading-tight text-amber-50">EatAi</h3>
+
             </div>
-            <p class="text-[11px] text-stone-300">ค้นหาจาก Q&A Sheet + Official Eats365 Support</p>
+            <p class="text-[11px] text-stone-300">ผู้ช่วย Eats365 POS</p>
           </div>
         </div>
         <div class="flex items-center gap-1">
@@ -290,10 +278,10 @@
 
       <!-- Quick Suggestions Bar -->
       <div class="px-3 py-2 bg-white border-t border-stone-100 flex items-center gap-1.5 overflow-x-auto custom-scrollbar shrink-0">
-        <button type="button" onclick="sendQuickPrompt('วิธีสร้าง sales categories')" class="shrink-0 text-[11px] px-2.5 py-1 rounded-full bg-amber-50 hover:bg-[#F4A61D] hover:text-stone-900 text-stone-700 border border-amber-200/80 transition cursor-pointer">วิธีสร้าง Sales Categories</button>
-        <button type="button" onclick="sendQuickPrompt('วิธีตั้งค่าบุฟเฟต์ All You Can Eat (AYCE) ต้องทำยังไง?')" class="shrink-0 text-[11px] px-2.5 py-1 rounded-full bg-amber-50 hover:bg-[#F4A61D] hover:text-stone-900 text-stone-700 border border-amber-200/80 transition cursor-pointer">ตั้งค่าบุฟเฟต์ AYCE</button>
-        <button type="button" onclick="sendQuickPrompt('วิธีย้ายโต๊ะ รวมโต๊ะ และแยกบิลทำยังไง?')" class="shrink-0 text-[11px] px-2.5 py-1 rounded-full bg-amber-50 hover:bg-[#F4A61D] hover:text-stone-900 text-stone-700 border border-amber-200/80 transition cursor-pointer">ย้ายโต๊ะ/แยกบิล</button>
-        <button type="button" onclick="sendQuickPrompt('บิล Void ตีคืนเข้าครัว จะจัดการตัดสต็อกกับ FMH ยังไง?')" class="shrink-0 text-[11px] px-2.5 py-1 rounded-full bg-amber-50 hover:bg-[#F4A61D] hover:text-stone-900 text-stone-700 border border-amber-200/80 transition cursor-pointer">ตัดสต็อกบิล Void ใน FMH</button>
+        <button type="button" onclick="sendQuickPrompt('วิธีสร้าง sales categories')" class="shrink-0 text-[11px] px-2.5 py-1 rounded-full bg-amber-50 hover:bg-[#f5a00d] hover:text-stone-900 text-stone-700 border border-amber-200/80 transition cursor-pointer">วิธีสร้าง Sales Categories</button>
+        <button type="button" onclick="sendQuickPrompt('วิธีตั้งค่าบุฟเฟต์ All You Can Eat (AYCE) ต้องทำยังไง?')" class="shrink-0 text-[11px] px-2.5 py-1 rounded-full bg-amber-50 hover:bg-[#f5a00d] hover:text-stone-900 text-stone-700 border border-amber-200/80 transition cursor-pointer">ตั้งค่าบุฟเฟต์ AYCE</button>
+        <button type="button" onclick="sendQuickPrompt('วิธีย้ายโต๊ะ รวมโต๊ะ และแยกบิลทำยังไง?')" class="shrink-0 text-[11px] px-2.5 py-1 rounded-full bg-amber-50 hover:bg-[#f5a00d] hover:text-stone-900 text-stone-700 border border-amber-200/80 transition cursor-pointer">ย้ายโต๊ะ/แยกบิล</button>
+        <button type="button" onclick="sendQuickPrompt('บิล Void ตีคืนเข้าครัว จะจัดการตัดสต็อกกับ FMH ยังไง?')" class="shrink-0 text-[11px] px-2.5 py-1 rounded-full bg-amber-50 hover:bg-[#f5a00d] hover:text-stone-900 text-stone-700 border border-amber-200/80 transition cursor-pointer">ตัดสต็อกบิล Void ใน FMH</button>
       </div>
 
       <!-- Chat Input Form -->
@@ -301,7 +289,7 @@
         <textarea id="chatInput" maxlength="1500" rows="1" placeholder="พิมพ์คำถามเกี่ยวกับ Eats365 POS ได้ทุกเรื่อง..."
                   onkeydown="if(event.key==='Enter' && !event.shiftKey){event.preventDefault(); handleChatSubmit(event);}"
                   class="flex-1 resize-none max-h-24 rounded-xl border border-stone-200 px-3.5 py-2.5 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-amber-400/50 focus:border-amber-500"></textarea>
-        <button id="sendBtn" type="submit" class="px-4 py-2.5 rounded-xl bg-[#F4A61D] hover:bg-[#E0920B] disabled:opacity-50 text-stone-900 font-bold text-xs sm:text-sm transition flex items-center gap-1 shrink-0 cursor-pointer">
+        <button id="sendBtn" type="submit" class="px-4 py-2.5 rounded-xl bg-[#f5a00d] hover:bg-[#d98209] disabled:opacity-50 text-stone-900 font-bold text-xs sm:text-sm transition flex items-center gap-1 shrink-0 cursor-pointer">
           <span>ส่ง</span>
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
         </button>
@@ -309,12 +297,8 @@
     </div>
 
     <!-- Floating Toggle Button -->
-    <button id="chatToggleBtn" type="button" onclick="toggleChatbot()" class="group flex items-center gap-2.5 pl-4 pr-5 py-3.5 rounded-full bg-[#F4A61D] hover:bg-[#E0920B] text-stone-900 font-bold text-sm shadow-xl shadow-amber-900/15 border border-amber-300 transition transform hover:scale-[1.02] cursor-pointer">
-      <span class="relative flex h-3 w-3">
-        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-600 opacity-75"></span>
-        <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-600"></span>
-      </span>
-      <span>💬 ถาม EatAi ช่วยเหลือ (POS Q&A)</span>
+    <button id="chatToggleBtn" type="button" onclick="toggleChatbot()" class="group flex items-center gap-2.5 pl-4 pr-5 py-3.5 rounded-full bg-[#f5a00d] hover:bg-[#d98209] text-stone-900 font-bold text-sm shadow-xl shadow-amber-900/15 border border-amber-300 transition transform hover:scale-[1.02] cursor-pointer">
+      <span>แชตกับ EatAi</span>
     </button>
   </div>
 
@@ -363,7 +347,7 @@
         </button>
         <div class="flex items-center gap-2">
           <button type="button" onclick="closeSettingsModal()" class="px-4 py-2 rounded-full border border-stone-200 text-stone-600 text-xs font-semibold hover:bg-stone-50 cursor-pointer">ยกเลิก</button>
-          <button type="button" onclick="saveSettings()" class="px-5 py-2 rounded-full bg-[#F4A61D] hover:bg-[#E0920B] text-stone-900 text-xs font-bold shadow-sm cursor-pointer">บันทึกการตั้งค่า</button>
+          <button type="button" onclick="saveSettings()" class="px-5 py-2 rounded-full bg-[#f5a00d] hover:bg-[#d98209] text-stone-900 text-xs font-bold shadow-sm cursor-pointer">บันทึกการตั้งค่า</button>
         </div>
       </div>
     </div>
@@ -405,7 +389,7 @@
       <!-- Action Toolbar -->
       <div class="flex flex-wrap items-center justify-between gap-2 mb-3 shrink-0">
         <div class="flex items-center gap-2">
-          <button type="button" onclick="exportFeedbackCSV()" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#F4A61D] hover:bg-[#E0920B] text-stone-900 font-bold text-xs shadow-sm transition cursor-pointer">
+          <button type="button" onclick="exportFeedbackCSV()" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#f5a00d] hover:bg-[#d98209] text-stone-900 font-bold text-xs shadow-sm transition cursor-pointer">
             <span>📥 ดาวน์โหลดเป็นไฟล์ CSV (เปิดใน Excel / Sheets)</span>
           </button>
           <button type="button" onclick="toggleAppsScriptGuide()" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 font-semibold text-xs transition cursor-pointer">
@@ -477,17 +461,6 @@
     let previousQuestion = "";
     let chatPending = false;
 
-    const categoryIcons = {
-      'ALL': '🗂️',
-      'Core Module POS': '🖥️',
-      'Printer & Hardware': '🖨️',
-      'Payment & Billing': '💳',
-      'Reports & Analytics': '📊',
-      'mPOS & Multi POS': '📱',
-      'Integration & CRM': '🔗',
-      'General & Organization': '🏢',
-      'Expedite, KDS & Kiosk': '👨‍🍳'
-    };
 
     const orderedCategories = [
       'ALL',
@@ -531,16 +504,14 @@
       nav.innerHTML = orderedCategories.map((cat, index) => {
         const isSelected = activeCategory === cat;
         const label = cat === 'ALL' ? 'ทุกหมวดหมู่ (All)' : cat;
-        const icon = categoryIcons[cat] || '📌';
-        return `
+          return `
           <button type="button" onclick="selectCategoryByIndex(${index})"
                   class="w-full flex items-center justify-between gap-2 px-3.5 py-2.5 rounded-xl text-xs font-medium transition shrink-0 lg:shrink cursor-pointer ${
                     isSelected
-                      ? 'bg-[#F4A61D] text-stone-900 shadow-sm font-bold'
+                      ? 'bg-[#f5a00d] text-stone-900 shadow-sm font-bold'
                       : 'text-stone-700 hover:bg-amber-50/80'
                   }">
             <span class="flex items-center gap-2 truncate">
-              <span>${icon}</span>
               <span class="truncate">${label}</span>
             </span>
           </button>
@@ -557,7 +528,7 @@
       activeCategory = cat;
       const titleEl = document.getElementById('activeCategoryTitle');
       if (titleEl) {
-        titleEl.textContent = cat === 'ALL' ? 'ทุกหมวดหมู่ (All Categories)' : cat;
+        titleEl.textContent = cat === 'ALL' ? 'คำถามที่พบบ่อย' : cat;
       }
       renderCategories();
       renderFAQs();
@@ -582,7 +553,7 @@
       if (input) input.value = q;
       activeCategory = 'ALL';
       const titleEl = document.getElementById('activeCategoryTitle');
-      if (titleEl) titleEl.textContent = 'ทุกหมวดหมู่ (All Categories)';
+      if (titleEl) titleEl.textContent = 'คำถามที่พบบ่อย';
       renderCategories();
       handleSearch();
       const faqEl = document.getElementById('faqListContainer');
@@ -658,7 +629,6 @@
 
       container.innerHTML = filtered.map((item, idx) => {
         const isOpen = (autoExpand && idx < 5) || idx === 0;
-        const icon = categoryIcons[item.category] || '📌';
         const cleanAns = stripSupportLinks(item.answer);
         const cleanSteps = stripSupportLinks(item.steps);
 
@@ -668,7 +638,7 @@
                     class="w-full text-left px-5 py-4 flex items-start justify-between gap-4 hover:bg-amber-50/30 transition cursor-pointer">
               <div class="space-y-1.5 flex-1">
                 <div class="flex flex-wrap items-center gap-1.5">
-                  <span class="px-2.5 py-0.5 rounded-full bg-amber-100/90 text-amber-900 border border-amber-300/60 text-[11px] font-semibold">${icon} ${escapeHtml(item.category)}</span>
+                  <span class="px-2.5 py-0.5 rounded-full bg-amber-100/90 text-amber-900 border border-amber-300/60 text-[11px] font-semibold">${escapeHtml(item.category)}</span>
                   ${item.subcategory ? `<span class="px-2.5 py-0.5 rounded-full bg-stone-100 text-stone-600 text-[11px]">${highlightText(item.subcategory, searchQuery)}</span>` : ''}
                 </div>
                 <h4 class="font-bold text-stone-900 text-sm sm:text-base leading-snug">
@@ -771,11 +741,11 @@
       if (!container) return;
       container.innerHTML = `
         <div class="flex items-start gap-2.5">
-          <div class="w-8 h-8 rounded-xl bg-[#F4A61D] text-stone-900 flex items-center justify-center text-sm shrink-0 shadow-sm">🤖</div>
+          <div class="w-8 h-8 rounded-xl bg-[#f5a00d] text-stone-900 flex items-center justify-center text-sm shrink-0 shadow-sm">🤖</div>
           <div class="bg-white rounded-2xl rounded-tl-sm p-3.5 shadow-sm border border-stone-200/80 text-xs sm:text-sm text-stone-700 space-y-2 max-w-[88%]">
             <p class="font-bold text-stone-900">สวัสดีครับ! ผมคือแชทบอท EatAi 👋</p>
             <p class="leading-relaxed">
-              ถามแชทบอท EatAi ได้เลย บอทจะค้นหาข้อมูลจากข้อมูลและสรุปขั้นตอนให้ทันที และคุณสามารถกด <strong>👍 / 👎 พร้อมเขียน Comment</strong> ใต้คำตอบเพื่อประเมินผลได้ทุกข้อครับ!
+              พิมพ์คำถามเกี่ยวกับการใช้งาน Eats365 POS ได้เลย คุณสามารถกด <strong>👍 / 👎 พร้อมเขียน Comment</strong> ใต้คำตอบเพื่อประเมินผลได้ทุกข้อครับ!
             </p>
           </div>
         </div>
@@ -881,7 +851,7 @@
 
       container.insertAdjacentHTML('beforeend', `
         <div class="flex justify-end">
-          <div class="bg-[#F4A61D] text-stone-900 font-medium rounded-2xl rounded-tr-sm px-4 py-2.5 shadow-sm text-xs sm:text-sm max-w-[85%] leading-relaxed">
+          <div class="bg-[#f5a00d] text-stone-900 font-medium rounded-2xl rounded-tr-sm px-4 py-2.5 shadow-sm text-xs sm:text-sm max-w-[85%] leading-relaxed">
             ${escapeHtml(message)}
           </div>
         </div>
@@ -890,7 +860,7 @@
       const loadingId = 'loading-' + Date.now();
       container.insertAdjacentHTML('beforeend', `
         <div id="${loadingId}" class="flex items-start gap-2.5">
-          <div class="w-8 h-8 rounded-xl bg-[#F4A61D] text-stone-900 flex items-center justify-center text-sm shrink-0">🤖</div>
+          <div class="w-8 h-8 rounded-xl bg-[#f5a00d] text-stone-900 flex items-center justify-center text-sm shrink-0">🤖</div>
           <div class="bg-white rounded-2xl rounded-tl-sm px-4 py-3 shadow-sm border border-stone-200/80 text-xs text-stone-500 flex items-center gap-2">
             <span class="w-2 h-2 rounded-full bg-amber-500 animate-bounce"></span>
             <span class="w-2 h-2 rounded-full bg-amber-500 animate-bounce" style="animation-delay: 0.15s"></span>
@@ -921,7 +891,7 @@
 
       container.insertAdjacentHTML('beforeend', `
         <div class="flex items-start gap-2.5" id="bubble_${msgId}">
-          <div class="w-8 h-8 rounded-xl bg-[#F4A61D] text-stone-900 flex items-center justify-center text-sm shrink-0 shadow-sm">🤖</div>
+          <div class="w-8 h-8 rounded-xl bg-[#f5a00d] text-stone-900 flex items-center justify-center text-sm shrink-0 shadow-sm">🤖</div>
           <div class="bg-white rounded-2xl rounded-tl-sm p-3.5 shadow-sm border border-stone-200/80 text-xs sm:text-sm text-stone-800 space-y-2.5 max-w-[88%] w-full">
             <div class="leading-relaxed">${formatMarkdownToHtml(result.text)}</div>
             ${result.showSupport ? '<a class="inline-flex rounded-lg bg-green-700 px-4 py-2 text-sm font-semibold text-white hover:bg-green-800" href="https://line.me/R/ti/p/%40208uuosf" target="_blank" rel="noopener noreferrer">ติดต่อ Support ทาง LINE · @208uuosf</a>' : ''}
@@ -958,7 +928,7 @@
                   <span class="text-[10px] text-stone-400">ส่งความคิดเห็นถึงทีมงาน</span>
                   <div class="flex items-center gap-1.5">
                     <button type="button" onclick="toggleCommentBox('${msgId}', false)" class="px-2.5 py-1 rounded-full text-[11px] text-stone-500 hover:bg-stone-200/60 cursor-pointer">ปิด</button>
-                    <button type="button" onclick="submitFeedbackEntry('${msgId}')" class="px-3 py-1 rounded-full bg-[#F4A61D] hover:bg-[#E0920B] text-stone-900 font-bold text-[11px] shadow-sm cursor-pointer">บันทึก Feedback</button>
+                    <button type="button" onclick="submitFeedbackEntry('${msgId}')" class="px-3 py-1 rounded-full bg-[#f5a00d] hover:bg-[#d98209] text-stone-900 font-bold text-[11px] shadow-sm cursor-pointer">บันทึก Feedback</button>
                   </div>
                 </div>
               </div>
