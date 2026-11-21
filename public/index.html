@@ -123,7 +123,10 @@
     }
 
     .fmh-hero-bg {
-      background: radial-gradient(ellipse at 90% 12%, #ffedcc 0%, #fff8ec 48%, #fffdfa 85%);
+      background: radial-gradient(ellipse at 90% 12%, #ffedcc 0%, transparent 63%),
+                  linear-gradient(90deg, #b4630c0a 1px, transparent 1px),
+                  linear-gradient(#b4630c0a 1px, transparent 1px), #fffaf2;
+      background-size: auto, 32px 32px, 32px 32px, auto;
       padding-block: clamp(2.5rem, 6vw, 5rem);
     }
     .hero-inner {
@@ -151,7 +154,7 @@
     .topic-row button:hover { background: #fff8ec; }
     .topic-row button:focus-visible { outline-offset: -3px; }
     .topic-label { color: var(--ink); font-size: .95rem; font-weight: 600; }
-    .topic-count { flex-shrink: 0; color: #6b5a47; font-size: .82rem; font-variant-numeric: tabular-nums; }
+    .topic-count { flex-shrink: 0; padding: .18rem .55rem; border-radius: .35rem; background: #fff3dc; color: #6b5a47; font-size: .82rem; font-variant-numeric: tabular-nums; }
     #activeCategoryTitle { scroll-margin-top: 5rem; }
     @media (max-width: 767px) {
       .hero-inner { grid-template-columns: minmax(0, 1fr); gap: 1.4rem; }
@@ -212,7 +215,7 @@
         </div>
       </div>
       <section class="topic-panel" aria-labelledby="repeatedTopicsTitle">
-        <h2 id="repeatedTopicsTitle">หัวข้อที่พบซ้ำใน FAQ</h2>
+        <h2 id="repeatedTopicsTitle">คำค้นที่พบซ้ำใน FAQ</h2>
         <ul id="repeatedTopics"></ul>
       </section>
     </div>
@@ -506,6 +509,16 @@
     // ==========================================
     // 3. INITIALIZATION & UI RENDERING
     // ==========================================
+    const questionSegmenter = typeof Intl.Segmenter === 'function'
+      ? new Intl.Segmenter('th', { granularity: 'word' }) : null;
+    const commonQuestionWords = new Set(
+      ('ไม่ ได้ หรือ อย่างไร และ ที่ จาก ให้ ต้อง ตั้ง บน ใน ใช้ แล้ว การ ใด สามารถ ของ แสดง ร้าน รายการ ค่า '
+       + 'อะไร เป็น มี กับ ระบบ เข้า ตาม อาหาร ใบ หลัง จะ ข้อมูล ทำไม ทำ รองรับ ลูกค้า ต้องการ แยก ยอด เวลา '
+       + 'อร์ ปิด แต่ เมื่อ แก้ ออก เปิด แต่ละ ต่าง ต่อ ไหน สำหรับ ค้า ไป บ้าง รับ ดู ขาย ตรวจ กัน ควร '
+       + 'ซ่อน งาน ชื่อ เปลี่ยน ออ เด ยัง เพื่อ ว่า ตัว ตอน มา pos eats365 the and for can how with').split(' ')
+    );
+    const questionTerms = new Map();
+
     function initApp() {
       const webhookEl = document.getElementById('feedbackWebhookInput');
       if (webhookEl) webhookEl.value = feedbackWebhookUrl;
@@ -582,24 +595,25 @@
 
     function renderRepeatedTopics() {
       const list = document.getElementById('repeatedTopics');
-      const terms = [
-        ['AYCE', 'บุฟเฟต์ AYCE'],
-        ['XPrinter', 'XPrinter'],
-        ['FMH', 'การเชื่อมต่อ FMH'],
-        ['SUNMI', 'เครื่องพิมพ์ SUNMI'],
-        ['End of Day', 'ปิดกะ / End of Day'],
-        ['Tax Invoice', 'ใบกำกับภาษี'],
-      ];
-      const topics = terms.flatMap(([term, label]) => {
-        const needle = term.toLowerCase();
-        const counts = new Map();
-        for (const faq of KB_DATA) {
-          const heading = [faq.question, faq.subcategory, faq.keywords].join(' ').toLowerCase();
-          if (heading.includes(needle)) counts.set(faq.category, (counts.get(faq.category) || 0) + 1);
+      const counts = new Map();
+      for (const faq of KB_DATA) {
+        const words = questionSegmenter
+          ? Array.from(questionSegmenter.segment(faq.question), part => part.isWordLike ? part.segment : '')
+          : (faq.question.match(/[a-z][a-z0-9]+/gi) || []);
+        const terms = new Set();
+        for (const word of words) {
+          const term = word.toLowerCase();
+          if (term.length < 2 || !/\p{L}/u.test(term) || commonQuestionWords.has(term) || terms.has(term)) continue;
+          terms.add(term);
+          const item = counts.get(term) || { term, label: word, count: 0 };
+          item.count++;
+          counts.set(term, item);
         }
-        const best = [...counts].sort((a, b) => b[1] - a[1])[0];
-        return best?.[1] >= 2 ? [{ term, label, category: best[0], count: best[1] }] : [];
-      }).sort((a, b) => b.count - a.count);
+        questionTerms.set(faq.idx, terms);
+      }
+      const topics = [...counts.values()].filter(item => item.count >= 2)
+        .sort((a, b) => b.count - a.count || a.label.localeCompare(b.label, 'th')).slice(0, 6);
+      list.replaceChildren();
       list.closest('.topic-panel').classList.toggle('hidden', topics.length === 0);
       for (const topic of topics) {
         const row = document.createElement('li');
@@ -611,18 +625,18 @@
         title.textContent = topic.label;
         const count = document.createElement('span');
         count.className = 'topic-count';
-        count.textContent = `${topic.count} FAQ`;
+        count.textContent = `${topic.count} คำถาม`;
         button.append(title, count);
-        button.addEventListener('click', () => setQuickSearch(topic.term, topic.category));
+        button.addEventListener('click', () => setQuickSearch(topic.term));
         row.append(button);
         list.append(row);
       }
     }
 
-    function setQuickSearch(term, category) {
+    function setQuickSearch(term) {
       repeatedTopic = term;
       document.getElementById('searchInput').value = term;
-      selectCategory(category);
+      selectCategory('ALL');
       handleSearch();
       document.getElementById('activeCategoryTitle').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
@@ -674,7 +688,7 @@
         if (activeCategory !== 'ALL' && item.category !== activeCategory) return false;
         if (terms.length === 0) return true;
         if (repeatedTopic === searchQuery) {
-          return [item.question, item.subcategory, item.keywords].join(' ').toLowerCase().includes(qLower);
+          return questionTerms.get(item.idx)?.has(qLower) ?? false;
         }
         const haystack = `${item.category} ${item.subcategory} ${item.question} ${item.answer} ${item.steps} ${item.keywords}`.toLowerCase();
         return terms.every(t => haystack.includes(t));
