@@ -507,6 +507,7 @@
        + 'อร์ ปิด แต่ เมื่อ แก้ ออก เปิด แต่ละ ต่าง ต่อ ไหน สำหรับ ค้า ไป บ้าง รับ ดู ขาย ตรวจ กัน ควร '
        + 'ซ่อน งาน ชื่อ เปลี่ยน ออ เด ยัง เพื่อ ว่า ตัว ตอน มา pos eats365 the and for can how with').split(' ')
     );
+    const completeQuestionTerms = new Map([["พิมพ์", "เครื่องพิมพ์"], ["ชำระ", "ชำระเงิน"]]);
     const questionTerms = new Map();
 
     function initApp() {
@@ -592,6 +593,7 @@
           ? Array.from(questionSegmenter.segment(faq.question), part => part.isWordLike ? part.segment : '')
           : (faq.question.match(/[a-z][a-z0-9]+/gi) || []);
         const terms = new Set();
+        words.push(...[...completeQuestionTerms.values()].filter(term => faq.question.includes(term)));
         for (const word of words) {
           const term = word.toLowerCase();
           if (term.length < 2 || !/\p{L}/u.test(term) || commonQuestionWords.has(term) || terms.has(term)) continue;
@@ -602,9 +604,16 @@
         }
         questionTerms.set(faq.idx, terms);
       }
-      const topics = [...counts.values()].filter(item => item.count >= 2)
-        .sort((a, b) => b.count - a.count || a.label.localeCompare(b.label, 'th')).slice(0, 6);
-      for (const topic of topics) {
+      const ranked = [...counts.values()].filter(item => item.count >= 2)
+        .sort((a, b) => b.count - a.count || a.label.localeCompare(b.label, 'th'));
+      const topics = new Map();
+      for (const item of ranked) {
+        const complete = counts.get(completeQuestionTerms.get(item.term));
+        const topic = complete?.count >= 2 ? complete : item;
+        if (!topics.has(topic.term)) topics.set(topic.term, topic);
+        if (topics.size === 6) break;
+      }
+      for (const topic of topics.values()) {
         const button = document.createElement('button');
         button.type = 'button';
         button.className = 'px-3 py-1 rounded-full bg-white/90 hover:bg-[#F4A61D] hover:text-stone-900 text-stone-700 border border-amber-900/15 shadow-sm transition cursor-pointer';
